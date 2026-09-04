@@ -1,0 +1,88 @@
+@use 'variables' as *;
+
+/* --- Cabeçalho --- */
+.topbar {
+  background-color: $primary-color;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    
+    a {
+      color: $white;
+      text-decoration: none;
+      font-weight: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+      opacity: 0.8;
+      transition: 0.3s;
+
+      &:hover, &.active {
+        opacity: 1;
+      }
+    }
+  }
+
+  .search-cart {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .search-bar {
+      background: $white;
+      border-radius: 20px;
+      padding: 8px 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: $text-dark;
+
+      input {
+        border: none;
+        outline: none;
+        width: 250px;
+        background: transparent;
+      }
+    }
+
+    .cart-btn {
+      background: $white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      position: relative;
+      cursor: pointer;
+
+      .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: $primary-color;
+        color: $white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 12px;
+        font-weight: bold;
+        border: 2px solid $white;
+      }
+    }
+  }
+}
