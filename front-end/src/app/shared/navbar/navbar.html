@@ -1,4 +1,4 @@
-<header class="topbar">
+<header class="topbar" #topbarEl>
   <div class="logo">
     <span>🐔</span>
     <span>Casa do Frango</span>
@@ -10,30 +10,51 @@
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
     >
-      🏠 Início
+      Início
+    </a>
+
+    <a routerLink="/cardapio" routerLinkActive="active">
+      Cardápio
     </a>
 
     <a routerLink="/produtos" routerLinkActive="active">
-      📋 Pedidos
-    </a>
-
-    <a href="#">
-      🔔 Avisos
-    </a>
-
-    <a href="#">
-      👤 Perfil
+      Pedidos
     </a>
   </nav>
 
-  <div class="search-cart">
-    <div class="search-bar">
-      <span>🔍</span>
-      <input type="text" placeholder="O que deseja pedir?" />
-      <span>⚲</span>
+  <div class="search-bar">
+    <span>🔍</span>
+    <input type="text" placeholder="O que deseja pedir?" />
+  </div>
+
+  <div class="actions">
+    <button class="icon-btn" type="button" aria-label="Notificações">
+      🔔
+      <span class="badge">2</span>
+    </button>
+
+    <div class="profile-menu">
+      <button
+        class="icon-btn profile-trigger"
+        type="button"
+        aria-label="Menu do perfil"
+        (click)="toggleProfileMenu($event)"
+      >
+        👤
+      </button>
+
+      @if (isProfileMenuOpen) {
+        <div class="dropdown">
+          <a routerLink="/perfil" (click)="closeProfileMenu()">Meu Perfil</a>
+          <a routerLink="/pedidos/historico" (click)="closeProfileMenu()">Histórico de Pedidos</a>
+          <a routerLink="/enderecos" (click)="closeProfileMenu()">Endereços</a>
+          <div class="dropdown-divider"></div>
+          <a href="#" (click)="closeProfileMenu()">Sair</a>
+        </div>
+      }
     </div>
 
-    <button class="cart-btn" type="button">
+    <button class="cart-btn" type="button" aria-label="Carrinho">
       🛒 <span class="badge">1</span>
     </button>
   </div>

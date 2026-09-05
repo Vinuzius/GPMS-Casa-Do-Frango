@@ -1,6 +1,6 @@
 @use 'variables' as *;
-
 .dashboard-container {
+  padding-top: var(--topbar-height, 90px); // 90px é um fallback seguro caso a variável ainda não tenha sido calculada
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: $bg-color;
   min-height: 100vh;
