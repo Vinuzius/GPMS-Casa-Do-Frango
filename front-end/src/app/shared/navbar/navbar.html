@@ -1,6 +1,5 @@
 <header class="topbar">
   <div class="logo">
-    <span>🐔</span>
     <span>Casa do Frango</span>
   </div>
 
@@ -9,31 +8,23 @@
       routerLink="/dashboard"
       routerLinkActive="active"
       [routerLinkActiveOptions]="{ exact: true }"
-    >
-      🏠 Início
-    </a>
+    >Início</a>
 
-    <a routerLink="/produtos" routerLinkActive="active">
-      📋 Pedidos
-    </a>
+    <a routerLink="/produtos" routerLinkActive="active">Pedidos</a>
 
-    <a href="#">
-      🔔 Avisos
-    </a>
+    <a routerLink="/notificacoes">Avisos</a>
 
-    <a href="#">
-      👤 Perfil
+    <a routerLink="/perfil">Perfil
     </a>
   </nav>
 
   <div class="search-cart">
     <div class="search-bar">
-      <span>🔍</span>
       <input type="text" placeholder="O que deseja pedir?" />
       <span>⚲</span>
     </div>
 
-    <button class="cart-btn" type="button">
+    <button class="cart-btn" type="button" routerLink="/carrinho">
       🛒 <span class="badge">1</span>
     </button>
   </div>
