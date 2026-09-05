@@ -1,1 +1,25 @@
-<p>login works!</p>
+<mat-card-header>
+  <p>
+    <strong>Login</strong>
+  </p>
+</mat-card-header>
+
+<mat-dialog-content>
+  <div>
+    <form>
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" required/>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" required />
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" type="submit">Login</button>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>

@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { Dashboard } from './pages/dashboard/dashboard';
 import { Carrinho } from './pages/carrinho/carrinho';
-import { Perfil } from './perfil/perfil';
-import { Notificacoes } from './notificacoes/notificacoes';
+import { Perfil } from './pages/perfil/perfil';
+import { Notificacoes } from './pages/notificacoes/notificacoes';
+import { Produtos } from './pages/produtos/produtos';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Rota padrão
@@ -12,4 +13,5 @@ export const routes: Routes = [
   { path: 'carrinho', component: Carrinho},
   { path: 'perfil', component: Perfil},
   { path: 'notificacoes', component: Notificacoes},
+  { path: 'pedidos', component: Produtos}
 ];
