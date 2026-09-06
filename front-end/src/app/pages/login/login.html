@@ -1,25 +1,25 @@
-<mat-card-header>
-  <p>
-    <strong>Login</strong>
-  </p>
-</mat-card-header>
+<main class="login-page">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
 
-<mat-dialog-content>
-  <div>
-    <form>
-      <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" required/>
-      </mat-form-field>
+    <mat-card-content>
+      <form class="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="email" required/>
+        </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" required />
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" [(ngModel)]="password" required/>
+        </mat-form-field>
 
-      <div class="button-container">
-        <button mat-raised-button color="primary" type="submit">Login</button>
-      </div>
-    </form>
-  </div>
-</mat-dialog-content>
+        <button mat-raised-button class="login-button" type="submit" [disabled]="!isFormValid"
+        >Entrar
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</main>

@@ -3,12 +3,12 @@ import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-produtos',
   imports: [
     ...SHARED_IMPORTS,
     ...MATERIAL_IMPORTS
   ],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss',
+  templateUrl: './produtos.html',
+  styleUrl: './produtos.scss',
 })
-export class Dashboard {}
+export class Produtos {}

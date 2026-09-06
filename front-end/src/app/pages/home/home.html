@@ -1,0 +1,44 @@
+<section class="home-shell">
+
+  <section class="promo-banner">
+    <div class="promo-copy">
+      <span class="promo-badge">{{ promo.badge }}</span>
+      <h2>{{ promo.title }}</h2>
+      <p>{{ promo.subtitle }}</p>
+    </div>
+    <div class="promo-art" aria-hidden="true">🍗</div>
+  </section>
+
+  <div class="content-grid">
+    <section class="panel panel--wide">
+      <div class="panel-header">
+        <h3>Cardápio do dia</h3>
+        <button mat-stroked-button>Ver tudo</button>
+      </div>
+
+      <div class="menu-list">
+        <article class="menu-item" *ngFor="let item of menuDoDia">
+          <div class="menu-thumb" aria-hidden="true">🍽️</div>
+          <div class="menu-copy">
+            <span class="menu-tag">{{ item.tag }}</span>
+            <h4>{{ item.name }}</h4>
+          </div>
+          <strong>{{ item.price }}</strong>
+        </article>
+      </div>
+    </section>
+
+    <aside class="panel panel--side">
+      <div class="panel-header">
+        <h3>Categorias</h3>
+      </div>
+
+      <div class="category-list">
+        <button matRipple class="category-item" *ngFor="let category of categorias">
+          <span class="category-emoji">{{ category.emoji }}</span>
+          <span>{{ category.name }}</span>
+        </button>
+      </div>
+    </aside>
+  </div>
+</section>

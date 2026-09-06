@@ -1,0 +1,35 @@
+<main class="history-page">
+  <header class="history-heading">
+    <div>
+      <p class="eyebrow">Área do cliente</p>
+      <h1>Meus pedidos</h1>
+      <p>Consulte os pedidos que você já realizou na Casa do Frango.</p>
+    </div>
+    <a class="menu-link" routerLink="/dashboard"><mat-icon aria-hidden="true">restaurant_menu</mat-icon> Pedir novamente</a>
+  </header>
+
+  <section class="history-list" aria-labelledby="history-title">
+    <div class="list-heading"><h2 id="history-title">Histórico de pedidos</h2><span>3 pedidos</span></div>
+
+    <article class="history-card">
+      <div class="history-card-heading"><div><p class="order-number">Pedido #1048</p><h3>Frango assado + acompanhamentos</h3></div><span class="status delivered">Concluído</span></div>
+      <div class="history-meta"><span><mat-icon aria-hidden="true">calendar_today</mat-icon> 04 set 2026, 19:42</span><span><mat-icon aria-hidden="true">two_wheeler</mat-icon> Delivery</span><strong>R$ 59,99</strong></div>
+      <p class="history-items">Frango assado, farofa especial e guaraná natural</p>
+      <button class="details-button" type="button">Ver detalhes <mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
+    </article>
+
+    <article class="history-card">
+      <div class="history-card-heading"><div><p class="order-number">Pedido #1037</p><h3>Combo família</h3></div><span class="status preparing">Em preparo</span></div>
+      <div class="history-meta"><span><mat-icon aria-hidden="true">calendar_today</mat-icon> 01 set 2026, 12:15</span><span><mat-icon aria-hidden="true">storefront</mat-icon> Retirada no local</span><strong>R$ 82,50</strong></div>
+      <p class="history-items">Dois frangos assados, arroz e batata frita</p>
+      <button class="details-button" type="button">Ver detalhes <mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
+    </article>
+
+    <article class="history-card">
+      <div class="history-card-heading"><div><p class="order-number">Pedido #1022</p><h3>Porção de frango</h3></div><span class="status canceled">Cancelado</span></div>
+      <div class="history-meta"><span><mat-icon aria-hidden="true">calendar_today</mat-icon> 27 ago 2026, 20:08</span><span><mat-icon aria-hidden="true">two_wheeler</mat-icon> Delivery</span><strong>R$ 38,00</strong></div>
+      <p class="history-items">Porção de frango crocante e refrigerante</p>
+      <button class="details-button" type="button">Ver detalhes <mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
+    </article>
+  </section>
+</main>

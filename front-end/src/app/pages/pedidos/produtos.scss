@@ -1,0 +1,93 @@
+@use 'variables' as *;
+
+.history-page { max-width: 1040px; margin: 0 auto; padding: 42px 28px 64px; color: $text-dark; }
+.history-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+.history-heading h1 { margin: 6px 0 8px; color: #262626; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+.history-heading p:last-child { margin: 0; color: $text-light; }
+.menu-link, .details-button { display: inline-flex; align-items: center; gap: 8px; border: 0; background: transparent; color: $primary-color; cursor: pointer; font-weight: 800; text-decoration: none; }
+.history-list { padding: 28px; border: 1px solid rgba(51, 51, 51, 0.08); border-radius: 18px; background: $white; box-shadow: 0 14px 35px rgba(91, 52, 38, 0.08); }
+.list-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.list-heading h2 { margin: 0; color: #262626; font-size: 1.35rem; }
+.list-heading span { color: $text-light; font-size: 0.82rem; }
+.history-card { padding: 22px 0; border-bottom: 1px solid #f0e9e6; }
+.history-card:last-child { border-bottom: 0; padding-bottom: 0; }
+.history-card-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.order-number { margin: 0 0 6px; color: $primary-color; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.history-card h3 { margin: 0; color: #262626; font-size: 1rem; }
+.status { border-radius: 999px; padding: 6px 10px; font-size: 0.74rem; font-weight: 800; white-space: nowrap; }
+.delivered { background: #e6f7ed; color: #25804b; } .preparing { background: #fff2d7; color: #a66a00; } .canceled { background: #fce8e8; color: #b63d3d; }
+.history-meta { display: flex; align-items: center; gap: 22px; margin-top: 16px; color: $text-light; font-size: 0.8rem; }
+.history-meta span { display: inline-flex; align-items: center; gap: 5px; } .history-meta .mat-icon { width: 16px; height: 16px; font-size: 16px; color: $primary-color; }
+.history-meta strong { margin-left: auto; color: $primary-color; font-size: 1rem; }
+.history-items { margin: 12px 0 16px; color: $text-light; font-size: 0.85rem; }
+.details-button { padding: 0; font-size: 0.82rem; } .details-button .mat-icon { font-size: 17px; }
+@media (max-width: 700px) { .history-page { padding: 28px 18px 48px; } .history-heading { align-items: flex-start; flex-direction: column; } .history-list { padding: 20px; } .history-meta { align-items: flex-start; flex-direction: column; gap: 8px; } .history-meta strong { margin-left: 0; } }
+
+:host {
+    display: block;
+    min-height: calc(100vh - 76px);
+    background: radial-gradient(circle at 10% 0%, rgba(249, 95, 70, 0.1), transparent 30%), $bg-color;
+}
+
+.orders-page { max-width: 1180px; margin: 0 auto; padding: 42px 28px 64px; color: $text-dark; }
+.orders-heading, .section-heading, .checkout-topline { display: flex; align-items: center; justify-content: space-between; }
+.eyebrow, .section-kicker, .checkout-label { margin: 0; color: $primary-color; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.orders-heading h1 { margin: 6px 0 8px; color: #262626; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+.heading-copy, .service-copy { margin: 0; color: $text-light; }
+.back-link { display: inline-flex; align-items: center; gap: 8px; color: $text-dark; font-size: 0.9rem; font-weight: 700; text-decoration: none; }
+.back-link:hover { color: $primary-color; }
+.orders-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 28px; align-items: start; margin-top: 36px; }
+.order-panel, .checkout-panel { border: 1px solid rgba(51, 51, 51, 0.08); border-radius: 18px; background: $white; box-shadow: 0 14px 35px rgba(91, 52, 38, 0.08); }
+.order-panel { padding: 28px; }
+.section-heading h2, .checkout-panel h2 { margin: 6px 0 0; color: #262626; font-size: 1.45rem; }
+.item-count { border-radius: 999px; background: #fff0ec; color: $primary-color; padding: 7px 12px; font-size: 0.78rem; font-weight: 800; }
+.order-items { margin-top: 24px; }
+.order-item { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid #f0e9e6; }
+.item-image { display: grid; width: 76px; height: 76px; place-items: center; border-radius: 14px; font-size: 2.5rem; }
+.chicken-image { background: #ffe0c2; }
+.farofa-image { background: #fff0c7; }
+.soda-image { background: #e0f2f7; }
+.item-details h3 { margin: 0 0 5px; color: #262626; font-size: 1rem; }
+.item-details p { margin: 0 0 9px; color: $text-light; font-size: 0.82rem; }
+.item-details strong { color: $primary-color; font-size: 0.95rem; }
+.quantity-control { display: flex; align-items: center; gap: 12px; color: #262626; font-weight: 800; }
+.quantity-control button { display: grid; width: 28px; height: 28px; place-items: center; border: 1px solid #eadbd6; border-radius: 50%; background: $white; color: $primary-color; cursor: pointer; font-size: 1.1rem; line-height: 1; }
+.quantity-control button:hover { border-color: $primary-color; background: #fff5f2; }
+.add-item-button { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; border: 0; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.9rem; font-weight: 800; }
+.checkout-panel { position: sticky; top: 24px; padding: 26px; }
+.checkout-topline { color: $primary-color; }
+.checkout-topline .mat-icon { font-size: 22px; }
+.checkout-panel h2 { margin-top: 24px; font-size: 1.3rem; }
+.service-copy { margin-top: 8px; font-size: 0.85rem; line-height: 1.5; }
+.service-options { display: grid; gap: 12px; margin-top: 22px; }
+.service-option { display: grid; grid-template-columns: 44px minmax(0, 1fr) 20px; gap: 12px; align-items: center; width: 100%; padding: 13px; border: 1px solid #eadbd6; border-radius: 12px; background: $white; color: #262626; cursor: pointer; text-align: left; transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease; }
+.service-option:hover, .service-option.selected { border-color: $primary-color; background: #fff7f4; transform: translateY(-1px); }
+.service-icon { display: grid; width: 44px; height: 44px; place-items: center; border-radius: 10px; background: #ffe8e1; color: $primary-color; }
+.service-text { display: grid; gap: 3px; }
+.service-text strong { font-size: 0.9rem; }
+.service-text small { color: $text-light; font-size: 0.75rem; }
+.check-icon { color: #e5d5d0; font-size: 20px; }
+.selected .check-icon { color: $primary-color; }
+.price-summary { display: grid; gap: 13px; margin-top: 26px; padding-top: 22px; border-top: 1px solid #f0e9e6; font-size: 0.88rem; }
+.price-summary div { display: flex; justify-content: space-between; color: $text-light; }
+.price-summary strong { color: #262626; }
+.price-summary .total { margin-top: 5px; color: #262626; font-size: 1.05rem; font-weight: 800; }
+.price-summary .total strong { color: $primary-color; font-size: 1.2rem; }
+.continue-button { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; margin-top: 26px; padding: 14px 18px; border: 0; border-radius: 10px; background: $primary-color; color: $white; cursor: pointer; font-size: 0.95rem; font-weight: 800; transition: background 0.2s ease, transform 0.2s ease; }
+.continue-button:hover { background: #e84e36; transform: translateY(-1px); }
+.secure-note { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 15px 0 0; color: $text-light; font-size: 0.72rem; }
+.secure-note .mat-icon { width: 15px; height: 15px; font-size: 15px; }
+
+@media (max-width: 800px) {
+    .orders-page { padding: 28px 18px 48px; }
+    .orders-heading { align-items: flex-start; flex-direction: column; gap: 18px; }
+    .orders-layout { grid-template-columns: 1fr; margin-top: 28px; }
+    .checkout-panel { position: static; }
+}
+
+@media (max-width: 480px) {
+    .order-panel, .checkout-panel { padding: 20px; }
+    .order-item { grid-template-columns: 58px minmax(0, 1fr); gap: 12px; }
+    .item-image { width: 58px; height: 58px; font-size: 1.9rem; }
+    .quantity-control { grid-column: 2; }
+}
