@@ -2,7 +2,7 @@
 	@if (successNotice()) {
 		<div class="success-toast" role="status"><mat-icon aria-hidden="true">check_circle</mat-icon><span>{{ successNotice() }}</span></div>
 	}
-	@if (order(); as currentOrder) {
+	@if (orders().length) {
 	<header class="tracking-heading">
 		<div>
 			<p class="eyebrow">Acompanhamento</p>
@@ -15,12 +15,14 @@
 		</a>
 	</header>
 
-	<section class="tracking-card" aria-labelledby="order-title">
+	<div class="orders-list">
+	@for (currentOrder of orders(); track currentOrder.id) {
+	<section class="tracking-card" [attr.aria-labelledby]="'order-title-' + currentOrder.id">
 		<div class="order-header">
 			<div>
 				<p class="order-number">Pedido #{{ currentOrder.id }}</p>
-				<h2 id="order-title">Pedido recebido pela Casa do Frango</h2>
-				<p class="order-time">Realizado agora</p>
+				<h2 [id]="'order-title-' + currentOrder.id">Pedido recebido pela Casa do Frango</h2>
+				<p class="order-time">Realizado em {{ currentOrder.createdAt | date:'dd/MM/yyyy, HH:mm' }}</p>
 			</div>
 			<span class="status-badge"><span aria-hidden="true"></span> Em preparação</span>
 		</div>
@@ -65,6 +67,8 @@
 			</aside>
 		</div>
 	</section>
+	}
+	</div>
 	} @else {
 		<section class="empty-tracking"><mat-icon aria-hidden="true">hourglass_empty</mat-icon><h2>Nenhum pedido em andamento</h2><p>Quando você finalizar uma compra, ela aparecerá aqui.</p><a class="back-link" routerLink="/cardapio">Ir para o cardápio</a></section>
 	}

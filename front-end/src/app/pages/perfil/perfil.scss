@@ -22,8 +22,18 @@
 .details-form input, .details-form select { width: 100%; padding: 12px; border: 1px solid #eadbd6; border-radius: 8px; outline: none; background: $white; font: inherit; font-weight: 400; } .details-form input:focus, .details-form select:focus { border-color: $primary-color; }
 .save-button { grid-column: 1 / -1; width: 100%; margin-top: 8px; padding: 13px; border: 0; border-radius: 9px; background: #f6c9bf; color: $white; cursor: not-allowed; font-weight: 800; }
 .address-card { display: flex; align-items: flex-start; gap: 15px; margin-top: 28px; padding: 20px; border: 1px solid #eadbd6; border-radius: 13px; background: #fff7f4; }
+.address-card + .address-card { margin-top: 12px; }
 .address-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 10px; background: #ffe8e1; color: $primary-color; } .address-copy { flex: 1; } .address-copy > div { display: flex; align-items: center; gap: 8px; } .address-copy strong { color: #262626; } .address-copy p { margin: 9px 0 0; color: $text-light; font-size: 0.82rem; line-height: 1.6; }
 .default-label { border-radius: 999px; background: #e6f7ed; color: #25804b; padding: 4px 8px; font-size: 0.65rem; font-weight: 800; } .edit-button, .add-address-button { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.78rem; font-weight: 800; } .edit-button .mat-icon, .add-address-button .mat-icon { width: 17px; height: 17px; font-size: 17px; }
 .add-address-button { margin-top: 22px; padding: 0; }
+.address-form { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 22px; padding: 20px; border: 1px solid #eadbd6; border-radius: 13px; background: $white; }
+.address-form h3 { grid-column: 1 / -1; margin: 0; color: #262626; font-size: 1rem; }
+.address-form label { display: grid; gap: 6px; color: #262626; font-size: 0.78rem; font-weight: 800; }
+.address-form input { width: 100%; padding: 10px 11px; border: 1px solid #eadbd6; border-radius: 7px; outline: none; font: inherit; font-weight: 400; }
+.address-form input:focus { border-color: $primary-color; }
+.address-form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px; }
+.cancel-button, .save-address-button { padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; }
+.cancel-button { border: 1px solid #eadbd6; background: $white; color: $text-light; }
+.save-address-button { border: 0; background: $primary-color; color: $white; }
 @media (max-width: 720px) { .profile-page { padding: 28px 18px 48px; } .profile-heading { align-items: flex-start; flex-direction: column; } .profile-layout { grid-template-columns: 1fr; } .profile-menu { text-align: left; } .profile-avatar { margin-left: 0; } .profile-menu nav { grid-template-columns: 1fr 1fr; } .details-form { grid-template-columns: 1fr; } .save-button { grid-column: auto; } }
-@media (max-width: 480px) { .profile-content { padding: 22px; } .profile-menu nav { grid-template-columns: 1fr; } .address-card { flex-wrap: wrap; } .edit-button { margin-left: 57px; } }
+@media (max-width: 480px) { .profile-content { padding: 22px; } .profile-menu nav { grid-template-columns: 1fr; } .address-card { flex-wrap: wrap; } .edit-button { margin-left: 57px; } .address-form { grid-template-columns: 1fr; } .address-form h3, .address-form-actions { grid-column: auto; } .address-form-actions { justify-content: stretch; } .address-form-actions button { flex: 1; } }

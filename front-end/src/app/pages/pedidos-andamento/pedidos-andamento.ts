@@ -10,11 +10,11 @@ import { OrdersService } from '../../shared/services/orders.service';
   styleUrl: './pedidos-andamento.scss',
 })
 export class PedidosAndamento {
-  readonly order;
+  readonly orders;
   readonly successNotice: Signal<string | null>;
 
   constructor(ordersService: OrdersService) {
-    this.order = ordersService.currentOrder;
+    this.orders = ordersService.currentOrders;
     this.successNotice = ordersService.successNotice;
     if (this.successNotice()) window.setTimeout(() => ordersService.clearSuccessNotice(), 5000);
   }

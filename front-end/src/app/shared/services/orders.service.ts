@@ -14,11 +14,12 @@ export interface CurrentOrder {
   createdAt: string;
 }
 
-const ORDER_STORAGE_KEY = 'casa-do-frango-current-order';
+const ORDER_STORAGE_KEY = 'casa-do-frango-current-orders';
+const LEGACY_ORDER_STORAGE_KEY = 'casa-do-frango-current-order';
 
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
-  readonly currentOrder = signal<CurrentOrder | null>(this.loadOrder());
+  readonly currentOrders = signal<CurrentOrder[]>(this.loadOrders());
   readonly successNotice = signal<string | null>(null);
 
   constructor(
@@ -39,8 +40,8 @@ export class OrdersService {
       createdAt: new Date().toISOString(),
     };
 
-    localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(order));
-    this.currentOrder.set(order);
+    this.currentOrders.update((orders) => [order, ...orders]);
+    this.persistOrders();
     this.successNotice.set('Compra finalizada com sucesso!');
     this.notificationsService.addOrderNotification(order.id);
     this.cartService.clear();
@@ -51,15 +52,30 @@ export class OrdersService {
     this.successNotice.set(null);
   }
 
-  private loadOrder(): CurrentOrder | null {
-    const storedOrder = localStorage.getItem(ORDER_STORAGE_KEY);
-    if (!storedOrder) return null;
+  private loadOrders(): CurrentOrder[] {
+    const storedOrders = localStorage.getItem(ORDER_STORAGE_KEY);
+    const legacyOrder = localStorage.getItem(LEGACY_ORDER_STORAGE_KEY);
 
     try {
-      return JSON.parse(storedOrder) as CurrentOrder;
+      if (storedOrders) {
+        const orders = JSON.parse(storedOrders) as CurrentOrder[];
+        return Array.isArray(orders) ? orders : [];
+      }
+
+      if (legacyOrder) {
+        const order = JSON.parse(legacyOrder) as CurrentOrder;
+        return order ? [order] : [];
+      }
+
+      return [];
     } catch {
       localStorage.removeItem(ORDER_STORAGE_KEY);
-      return null;
+      localStorage.removeItem(LEGACY_ORDER_STORAGE_KEY);
+      return [];
     }
+  }
+
+  private persistOrders(): void {
+    localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(this.currentOrders()));
   }
 }

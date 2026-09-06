@@ -33,12 +33,26 @@
 				</form>
 			} @else {
 				<div class="content-heading"><p class="section-kicker">Onde receber</p><h2>Meus endereços</h2><p>Escolha onde deseja receber seus próximos pedidos.</p></div>
-				<article class="address-card">
-					<div class="address-icon"><mat-icon aria-hidden="true">home</mat-icon></div>
-					<div class="address-copy"><div><strong>Casa</strong><span class="default-label">Principal</span></div><p>Rua das Flores, 123<br>Centro, São Paulo - SP<br>CEP 01000-000</p></div>
-					<button class="edit-button" type="button"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
-				</article>
-				<button class="add-address-button" type="button"><mat-icon aria-hidden="true">add</mat-icon> Adicionar novo endereço</button>
+				@for (address of addresses(); track $index; let index = $index) {
+					<article class="address-card">
+						<div class="address-icon"><mat-icon aria-hidden="true">home</mat-icon></div>
+						<div class="address-copy"><div><strong>{{ address.label }}</strong>@if (index === 0) { <span class="default-label">Principal</span> }</div><p>{{ address.street }}, {{ address.number }}<br>{{ address.neighborhood }}, {{ address.city }} - {{ address.state }}<br>CEP {{ address.zipCode }}</p></div>
+						<button class="edit-button" type="button" (click)="editAddress(index)"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
+					</article>
+				}
+				@if (isAddressFormOpen()) {
+					<form class="address-form">
+						<h3>{{ editingAddressIndex() === null ? 'Novo endereço' : 'Editar endereço' }}</h3>
+						<label>Rua<input name="street" [(ngModel)]="addressDraft.street" placeholder="Nome da rua" /></label>
+						<label>Número<input name="number" [(ngModel)]="addressDraft.number" placeholder="Número" /></label>
+						<label>Bairro<input name="neighborhood" [(ngModel)]="addressDraft.neighborhood" placeholder="Bairro" /></label>
+						<label>Cidade<input name="city" [(ngModel)]="addressDraft.city" placeholder="Cidade" /></label>
+						<label>Estado<input name="state" [(ngModel)]="addressDraft.state" placeholder="UF" /></label>
+						<label>CEP<input name="zipCode" [(ngModel)]="addressDraft.zipCode" placeholder="00000-000" /></label>
+						<div class="address-form-actions"><button type="button" class="cancel-button" (click)="cancelAddressForm()">Cancelar</button><button type="button" class="save-address-button" (click)="saveAddress()">Salvar endereço</button></div>
+					</form>
+				}
+				<button class="add-address-button" type="button" (click)="addAddress()"><mat-icon aria-hidden="true">add</mat-icon> Adicionar novo endereço</button>
 			}
 		</section>
 	</div>
