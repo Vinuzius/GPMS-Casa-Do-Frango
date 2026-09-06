@@ -1,25 +1,84 @@
 <main class="login-page">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
+  <section class="login-card" aria-live="polite">
+    <div class="brand-mark" aria-hidden="true">🍗</div>
 
-    <mat-card-content>
+    @if (view() === 'login') {
+      <div class="form-heading">
+        <p class="eyebrow">Casa do Frango</p>
+        <h1>Bem-vindo de volta</h1>
+        <p>Entre para acompanhar seus pedidos.</p>
+      </div>
+
       <form class="login-form">
         <mat-form-field appearance="outline">
           <mat-label>Email</mat-label>
-          <input matInput type="email" [(ngModel)]="email" name="email" required/>
+          <input matInput type="email" [(ngModel)]="email" name="email" autocomplete="email" required />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Senha</mat-label>
-          <input matInput type="password" [(ngModel)]="password" required/>
+          <input matInput type="password" [(ngModel)]="password" name="password" autocomplete="current-password" required />
         </mat-form-field>
 
-        <button mat-raised-button class="login-button" type="submit" [disabled]="!isFormValid"
-        >Entrar
-        </button>
+        <button class="forgot-link" type="button" (click)="showForgot()">Esqueceu sua senha?</button>
+        <button mat-raised-button class="login-button" type="submit" [disabled]="!isFormValid">Entrar</button>
       </form>
-    </mat-card-content>
-  </mat-card>
+
+      <p class="switch-copy">Ainda não tem uma conta?</p>
+      <button class="outline-action" type="button" (click)="showRegister()">Criar minha conta</button>
+    }
+
+    @if (view() === 'register') {
+      <div class="form-heading">
+        <p class="eyebrow">Casa do Frango</p>
+        <h1>Crie sua conta</h1>
+        <p>Salve seus dados e acompanhe cada pedido.</p>
+      </div>
+
+      <form class="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome completo</mat-label>
+          <input matInput type="text" [(ngModel)]="name" name="name" autocomplete="name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="registerEmail" autocomplete="email" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" [(ngModel)]="password" name="registerPassword" autocomplete="new-password" required />
+          <mat-hint>Mínimo de 6 caracteres</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Confirme sua senha</mat-label>
+          <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" autocomplete="new-password" required />
+        </mat-form-field>
+
+        <button mat-raised-button class="login-button" type="submit" [disabled]="!isRegisterValid">Criar conta</button>
+      </form>
+
+      <button class="back-link" type="button" (click)="showLogin()"><mat-icon aria-hidden="true">arrow_back</mat-icon> Já tenho uma conta</button>
+    }
+
+    @if (view() === 'forgot') {
+      <div class="form-heading">
+        <p class="eyebrow">Recuperação de acesso</p>
+        <h1>Esqueceu sua senha?</h1>
+        <p>Informe seu email e enviaremos as instruções para você.</p>
+      </div>
+
+      <form class="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Email cadastrado</mat-label>
+          <input matInput type="email" [(ngModel)]="email" name="forgotEmail" autocomplete="email" required />
+        </mat-form-field>
+        <button mat-raised-button class="login-button" type="submit" [disabled]="!isForgotValid">Enviar instruções</button>
+      </form>
+
+      <button class="back-link" type="button" (click)="showLogin()"><mat-icon aria-hidden="true">arrow_back</mat-icon> Voltar para o login</button>
+    }
+  </section>
 </main>
