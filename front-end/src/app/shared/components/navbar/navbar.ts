@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Signal, ViewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
+import { NotificationsService } from '../../services/notifications.service';
 
 
 @Component({
@@ -12,11 +14,18 @@ export class Navbar implements AfterViewInit {
   @ViewChild('topbarEl') topbarEl!: ElementRef<HTMLElement>;
 
   isProfileMenuOpen = false;
+  readonly cartItemCount: Signal<number>;
+  readonly unreadNotificationCount: Signal<number>;
 
   constructor(
     private elementRef: ElementRef<HTMLElement>, 
-    private router: Router
-  ) {}
+    private router: Router,
+    cartService: CartService,
+    notificationsService: NotificationsService,
+  ) {
+    this.cartItemCount = cartService.itemCount;
+    this.unreadNotificationCount = notificationsService.unreadCount;
+  }
 
   search(term: string): void {
     const trimmed = term.trim();

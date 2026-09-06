@@ -1,5 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { CartItem, CartService } from './cart.service';
+import { NotificationsService } from './notifications.service';
 
 type ServiceType = 'delivery' | 'pickup';
 type PaymentType = 'pix' | 'card';
@@ -20,7 +21,10 @@ export class OrdersService {
   readonly currentOrder = signal<CurrentOrder | null>(this.loadOrder());
   readonly successNotice = signal<string | null>(null);
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    private notificationsService: NotificationsService,
+  ) {}
 
   confirmOrder(service: ServiceType, payment: PaymentType): CurrentOrder | null {
     const items = this.cartService.cartItems();
@@ -38,6 +42,7 @@ export class OrdersService {
     localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(order));
     this.currentOrder.set(order);
     this.successNotice.set('Compra finalizada com sucesso!');
+    this.notificationsService.addOrderNotification(order.id);
     this.cartService.clear();
     return order;
   }

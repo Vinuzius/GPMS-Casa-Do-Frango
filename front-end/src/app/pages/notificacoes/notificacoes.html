@@ -7,7 +7,7 @@
     </div>
     <div class="unread-summary">
       <span class="unread-dot" aria-hidden="true"></span>
-      <strong>2 novos avisos</strong>
+      <strong>{{ unreadCount() }} {{ unreadCount() === 1 ? 'novo aviso' : 'novos avisos' }}</strong>
     </div>
   </header>
 
@@ -17,11 +17,11 @@
         <p class="section-kicker">Central de avisos</p>
         <h2 id="notifications-title">Suas notificações</h2>
       </div>
-      <button class="mark-read-button" type="button">Marcar todas como lidas</button>
+      <button class="mark-read-button" type="button" [disabled]="!unreadCount()" (click)="markAllAsRead()">Marcar todas como lidas</button>
     </div>
 
     <div class="notification-list">
-      @for (notification of notifications; track notification.title) {
+      @for (notification of notifications(); track notification.id) {
         <article class="notification-item" [class.unread]="notification.unread">
           <div class="notification-icon" [class]="notification.type" aria-hidden="true">
             <mat-icon>{{ notification.icon }}</mat-icon>
@@ -40,6 +40,9 @@
             <mat-icon aria-hidden="true">chevron_right</mat-icon>
           </button>
         </article>
+      }
+      @if (!notifications().length) {
+        <div class="empty-notifications"><mat-icon aria-hidden="true">notifications_none</mat-icon><h3>Nenhum aviso por enquanto</h3><p>Quando houver novidades sobre seus pedidos, elas aparecerão aqui.</p></div>
       }
     </div>
   </section>
