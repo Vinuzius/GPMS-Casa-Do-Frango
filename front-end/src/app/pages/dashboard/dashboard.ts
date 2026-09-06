@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 import { ProductsService } from '../../shared/services/products.service';
 import { Product } from '../../shared/models/product.model';
+import { CartService } from '../../shared/services/cart.service';
+import { MatIconModule } from '@angular/material/icon';
 
 interface PromoBanner {
   variant: 'photo' | 'solid';
@@ -13,7 +15,7 @@ interface PromoBanner {
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ProductCard],
+  imports: [ProductCard, MatIconModule],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -21,6 +23,7 @@ interface PromoBanner {
 export class Dashboard {
   meals: Product[] = [];
   drinks: Product[] = [];
+  readonly cartNotice: Signal<string | null>;
 
   promos: PromoBanner[] = [
     {
@@ -55,7 +58,13 @@ export class Dashboard {
     },
   ];
 
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private cartService: CartService,
+  ) {
+    this.cartNotice = this.cartService.cartNotice;
+    if (this.cartNotice()) window.setTimeout(() => this.cartService.clearNotice(), 5000);
+  }
 
   ngOnInit(): void {
     this.meals = this.productsService
@@ -80,5 +89,9 @@ export class Dashboard {
       left: direction * step,
       behavior: 'smooth',
     });
+  }
+
+  dismissCartNotice(): void {
+    this.cartService.clearNotice();
   }
 }

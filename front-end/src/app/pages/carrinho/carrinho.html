@@ -1,4 +1,5 @@
 <main class="orders-page">
+  @if (checkoutStep() === 'cart') {
   <div class="orders-heading">
     <div>
       <p class="eyebrow">Casa do Frango</p>
@@ -64,9 +65,37 @@
         </button>
       </div>
 
+      <label class="coupon-field">
+        <span>Cupom de desconto</span>
+        <div><input type="text" [(ngModel)]="coupon" placeholder="Digite seu cupom" /><button type="button" disabled>Aplicar</button></div>
+        <small>Nenhum cupom disponível no momento.</small>
+      </label>
       <div class="price-summary"><div><span>Subtotal</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><div><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="total"><span>Total do pedido</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div></div>
-      <button class="continue-button" type="button" [disabled]="!cartItems().length">Continuar<mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
+      <button class="continue-button" type="button" [disabled]="!cartItems().length" (click)="continueToPayment()">Continuar<mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
       <p class="secure-note"><mat-icon aria-hidden="true">lock</mat-icon> Pagamento seguro</p>
     </aside>
   </div>
+  } @else {
+    <div class="checkout-heading">
+      <button class="back-link back-button" type="button" (click)="backToCart()"><mat-icon aria-hidden="true">arrow_back</mat-icon> Voltar ao carrinho</button>
+      <p class="eyebrow">Finalização</p>
+      <h1>Finalize seu pedido</h1>
+      <p class="heading-copy">Confira os dados abaixo antes de confirmar a compra.</p>
+    </div>
+
+    <div class="payment-layout">
+      <section class="payment-panel" aria-labelledby="payment-title">
+        <h2 id="payment-title">Forma de pagamento</h2>
+        <div class="payment-options" role="radiogroup" aria-label="Forma de pagamento">
+          <button class="payment-option" [class.selected]="selectedPayment() === 'pix'" type="button" role="radio" [attr.aria-checked]="selectedPayment() === 'pix'" (click)="selectPayment('pix')"><mat-icon aria-hidden="true">qr_code_2</mat-icon><span><strong>Pix</strong><small>Pagamento instantâneo</small></span><mat-icon class="payment-check" aria-hidden="true">check_circle</mat-icon></button>
+          <button class="payment-option" [class.selected]="selectedPayment() === 'card'" type="button" role="radio" [attr.aria-checked]="selectedPayment() === 'card'" (click)="selectPayment('card')"><mat-icon aria-hidden="true">credit_card</mat-icon><span><strong>Cartão</strong><small>Crédito ou débito</small></span><mat-icon class="payment-check" aria-hidden="true">check_circle</mat-icon></button>
+        </div>
+
+        <h2 class="address-title">Endereço de entrega</h2>
+        <div class="address-card"><mat-icon aria-hidden="true">location_on</mat-icon><div><strong>Rua das Flores, 123</strong><span>Centro, São Paulo - SP</span></div><button type="button">Alterar</button></div>
+      </section>
+
+      <aside class="finish-panel"><p class="section-kicker">Resumo da compra</p><div class="finish-line"><span>{{ itemCount() }} itens</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><div class="finish-line"><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="finish-total"><span>Total</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><button class="finish-button" type="button" (click)="finishOrder()">Finalizar compra<mat-icon aria-hidden="true">check</mat-icon></button><p class="secure-note"><mat-icon aria-hidden="true">lock</mat-icon> Compra segura</p></aside>
+    </div>
+  }
 </main>

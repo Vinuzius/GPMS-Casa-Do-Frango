@@ -1,4 +1,8 @@
 <main class="tracking-page">
+	@if (successNotice()) {
+		<div class="success-toast" role="status"><mat-icon aria-hidden="true">check_circle</mat-icon><span>{{ successNotice() }}</span></div>
+	}
+	@if (order(); as currentOrder) {
 	<header class="tracking-heading">
 		<div>
 			<p class="eyebrow">Acompanhamento</p>
@@ -14,9 +18,9 @@
 	<section class="tracking-card" aria-labelledby="order-title">
 		<div class="order-header">
 			<div>
-				<p class="order-number">Pedido #1048</p>
-				<h2 id="order-title">Frango assado + acompanhamentos</h2>
-				<p class="order-time">Realizado hoje, às 19:42</p>
+				<p class="order-number">Pedido #{{ currentOrder.id }}</p>
+				<h2 id="order-title">Pedido recebido pela Casa do Frango</h2>
+				<p class="order-time">Realizado agora</p>
 			</div>
 			<span class="status-badge"><span aria-hidden="true"></span> Em preparação</span>
 		</div>
@@ -45,20 +49,23 @@
 
 		<div class="tracking-content">
 			<div class="items-section">
-				<div class="section-heading"><h3>Itens do pedido</h3><span>3 itens</span></div>
-				<div class="item-row"><span class="item-emoji chicken">&#x1f357;</span><span><strong>Frango assado</strong><small>Inteiro, tempero da casa</small></span><b>R$ 49,99</b></div>
-				<div class="item-row"><span class="item-emoji farofa">&#x1f35a;</span><span><strong>Farofa especial</strong><small>Porção individual</small></span><b>R$ 6,00</b></div>
-				<div class="item-row"><span class="item-emoji soda">&#x1f964;</span><span><strong>Guaraná natural</strong><small>Lata 350 ml</small></span><b>R$ 4,00</b></div>
+				<div class="section-heading"><h3>Itens do pedido</h3><span>{{ currentOrder.items.length }} itens</span></div>
+				@for (item of currentOrder.items; track item.product.id + (item.size?.label ?? 'default')) {
+					<div class="item-row"><img class="item-emoji" [src]="item.product.imageUrl" [alt]="item.product.name" /><span><strong>{{ item.quantity }}x {{ item.product.name }}</strong><small>{{ item.size?.label ?? item.product.description }}</small></span><b>R$ {{ (item.unitPrice * item.quantity).toFixed(2) }}</b></div>
+				}
 			</div>
 
 			<aside class="delivery-summary">
 				<p class="section-kicker">Previsão</p>
 				<strong class="estimate">20:15 - 20:30</strong>
-				<p>Entrega no endereço cadastrado</p>
-				<div class="summary-line"><span>Subtotal</span><b>R$ 59,99</b></div>
+				<p>{{ currentOrder.service === 'delivery' ? 'Entrega no endereço cadastrado' : 'Retirada no local' }}</p>
+				<div class="summary-line"><span>Subtotal</span><b>R$ {{ currentOrder.total.toFixed(2) }}</b></div>
 				<div class="summary-line"><span>Taxa de serviço</span><b>Grátis</b></div>
-				<div class="summary-line total"><span>Total</span><b>R$ 59,99</b></div>
+				<div class="summary-line total"><span>Total</span><b>R$ {{ currentOrder.total.toFixed(2) }}</b></div>
 			</aside>
 		</div>
 	</section>
+	} @else {
+		<section class="empty-tracking"><mat-icon aria-hidden="true">hourglass_empty</mat-icon><h2>Nenhum pedido em andamento</h2><p>Quando você finalizar uma compra, ela aparecerá aqui.</p><a class="back-link" routerLink="/cardapio">Ir para o cardápio</a></section>
+	}
 </main>

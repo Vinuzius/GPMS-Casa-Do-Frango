@@ -72,6 +72,11 @@ export class CartService {
     this.persist();
   }
 
+  clear(): void {
+    this.items.set([]);
+    this.persist();
+  }
+
   private getItemKey(product: Product, size?: ProductSize): string {
     return `${product.id}:${size?.label ?? 'default'}`;
   }

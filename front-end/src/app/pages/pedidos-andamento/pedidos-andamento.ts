@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Signal } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
+import { OrdersService } from '../../shared/services/orders.service';
 
 @Component({
   selector: 'app-pedidos-andamento',
@@ -8,4 +9,13 @@ import { MATERIAL_IMPORTS } from '../../shared/material-imports';
   templateUrl: './pedidos-andamento.html',
   styleUrl: './pedidos-andamento.scss',
 })
-export class PedidosAndamento {}
+export class PedidosAndamento {
+  readonly order;
+  readonly successNotice: Signal<string | null>;
+
+  constructor(ordersService: OrdersService) {
+    this.order = ordersService.currentOrder;
+    this.successNotice = ordersService.successNotice;
+    if (this.successNotice()) window.setTimeout(() => ordersService.clearSuccessNotice(), 5000);
+  }
+}

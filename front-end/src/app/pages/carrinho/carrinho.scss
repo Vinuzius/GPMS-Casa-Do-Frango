@@ -44,5 +44,31 @@
 .continue-button:hover { background: #e84e36; } .secure-note { display: flex; align-items: center; justify-content: center; gap: 5px; margin: 15px 0 0; color: $text-light; font-size: 0.72rem; }
 .continue-button:disabled { background: #f6c9bf; cursor: not-allowed; }
 .secure-note .mat-icon { width: 15px; height: 15px; font-size: 15px; }
+.coupon-field { display: grid; gap: 7px; margin-top: 24px; color: #262626; font-size: 0.8rem; font-weight: 800; }
+.coupon-field div { display: flex; gap: 8px; }
+.coupon-field input { min-width: 0; flex: 1; padding: 10px 12px; border: 1px solid #eadbd6; border-radius: 8px; outline: none; font: inherit; font-weight: 400; }
+.coupon-field input:focus { border-color: $primary-color; }
+.coupon-field button { padding: 0 12px; border: 0; border-radius: 8px; background: #f0e9e6; color: #9a8e89; font-weight: 800; }
+.coupon-field small { color: $text-light; font-size: 0.7rem; font-weight: 400; }
+.checkout-heading { margin-bottom: 30px; }
+.checkout-heading h1 { margin: 8px 0; color: #262626; font-size: clamp(2rem, 4vw, 3rem); }
+.checkout-heading .back-button { margin-bottom: 24px; }
+.payment-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
+.payment-panel, .finish-panel { padding: 28px; border: 1px solid rgba(51, 51, 51, 0.08); border-radius: 18px; background: $white; box-shadow: 0 14px 35px rgba(91, 52, 38, 0.08); }
+.payment-panel h2 { margin: 0; color: #262626; font-size: 1.3rem; }
+.payment-options { display: grid; gap: 12px; margin: 20px 0 32px; }
+.payment-option { display: grid; grid-template-columns: 28px minmax(0, 1fr) 20px; gap: 12px; align-items: center; padding: 15px; border: 1px solid #eadbd6; border-radius: 12px; background: $white; color: $primary-color; cursor: pointer; text-align: left; }
+.payment-option.selected { border-color: $primary-color; background: #fff7f4; }
+.payment-option span { display: grid; gap: 4px; color: #262626; } .payment-option small { color: $text-light; } .payment-check { color: #e5d5d0; } .payment-option.selected .payment-check { color: $primary-color; }
+.address-title { padding-top: 25px; border-top: 1px solid #f0e9e6; }
+.address-card { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 15px; border-radius: 12px; background: #fff7f4; color: $primary-color; }
+.address-card div { display: grid; flex: 1; gap: 4px; color: #262626; } .address-card span { color: $text-light; font-size: 0.8rem; } .address-card button { border: 0; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.78rem; font-weight: 800; }
+.finish-panel { position: sticky; top: calc(var(--topbar-height, 90px) + 24px); }
+.finish-line, .finish-total { display: flex; justify-content: space-between; color: $text-light; font-size: 0.85rem; }
+.finish-line { margin-top: 18px; } .finish-line strong { color: #262626; }
+.finish-total { margin-top: 22px; padding-top: 18px; border-top: 1px solid #f0e9e6; color: #262626; font-size: 1.05rem; font-weight: 800; } .finish-total strong { color: $primary-color; font-size: 1.2rem; }
+.finish-button { display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; margin-top: 25px; padding: 14px; border: 0; border-radius: 10px; background: $primary-color; color: $white; cursor: pointer; font-weight: 800; }
+.finish-button:hover { background: #e84e36; }
 @media (max-width: 800px) { .orders-page { padding: 28px 18px 48px; } .orders-heading { align-items: flex-start; flex-direction: column; gap: 18px; } .orders-layout { grid-template-columns: 1fr; margin-top: 28px; } .checkout-panel { position: static; } }
+@media (max-width: 800px) { .payment-layout { grid-template-columns: 1fr; } .finish-panel { position: static; } }
 @media (max-width: 480px) { .order-panel, .checkout-panel { padding: 20px; } .order-item { grid-template-columns: 58px minmax(0, 1fr); gap: 12px; } .item-image { width: 58px; height: 58px; font-size: 1.9rem; } .quantity-control { grid-column: 2; } }
