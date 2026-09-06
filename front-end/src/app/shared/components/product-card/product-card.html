@@ -1,6 +1,10 @@
-<div class="product-card">
+<!-- product-card.html -->
+<div class="product-card" [class.unavailable]="isUnavailable">
   <div class="card-image" [class.drink-img]="product.isDrink">
     <img [src]="product.imageUrl" [alt]="product.name" />
+    @if (isUnavailable) {
+      <div class="unavailable-badge">Indisponível</div>
+    }
   </div>
   <div class="card-info">
     <h4>{{ product.name }}</h4>

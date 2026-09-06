@@ -9,4 +9,8 @@ import { Product } from '../../models/product.model';
 })
 export class ProductCard {
   @Input({ required: true }) product!: Product;
+
+    get isUnavailable(): boolean {
+    return this.product.available === false;
+  }
 }

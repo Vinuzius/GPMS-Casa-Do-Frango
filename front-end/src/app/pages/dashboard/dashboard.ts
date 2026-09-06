@@ -58,8 +58,14 @@ export class Dashboard {
   constructor(private productsService: ProductsService) {}
 
   ngOnInit(): void {
-    this.meals = this.productsService.getProductsByCategory('refeicoes');
-    this.drinks = this.productsService.getProductsByCategory('bebidas');
+    this.meals = this.productsService
+    // nao mostra quem é false
+      .getProductsByCategory('refeicoes')
+      .filter((p) => p.available !== false);  
+
+    this.drinks = this.productsService
+      .getProductsByCategory('bebidas')
+      .filter((p) => p.available !== false);
   }
 
   moveCarousel(direction: number, track: HTMLElement): void {

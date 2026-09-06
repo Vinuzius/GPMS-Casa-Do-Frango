@@ -8,4 +8,5 @@ export interface Product {
   rating: number;
   imageUrl: string;
   isDrink?: boolean;
+  available?: boolean;
 }
