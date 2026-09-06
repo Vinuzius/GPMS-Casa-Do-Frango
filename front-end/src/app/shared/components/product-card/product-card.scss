@@ -6,6 +6,7 @@
 }
 
 .product-card {
+  display: block; 
   height: 100%; // preenche o :host inteiro, já que ele quem tem a largura certa agora
   scroll-snap-align: start;
 
@@ -74,6 +75,9 @@
       font-weight: bold;
     }
   }
+
+  text-decoration: none;
+  color: inherit;
 }
 
 @media (max-width: 900px) {

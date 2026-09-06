@@ -1,5 +1,6 @@
+// cardapio.ts
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 import { ProductsService } from '../../shared/services/products.service';
 import { Product, ProductCategory } from '../../shared/models/product.model';
@@ -32,6 +33,7 @@ export class Cardapio implements OnInit {
   constructor(
     private productsService: ProductsService,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -39,13 +41,17 @@ export class Cardapio implements OnInit {
 
     this.route.queryParams.subscribe((params) => {
       this.searchTerm = params['busca'] ?? '';
+      this.activeCategory = (params['categoria'] as ProductCategory) ?? 'todos';
       this.applyFilters();
     });
   }
 
   selectCategory(category: ProductCategory | 'todos'): void {
-    this.activeCategory = category;
-    this.applyFilters();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { categoria: category === 'todos' ? null : category },
+      queryParamsHandling: 'merge', // preserva o "busca" que já estiver na URL
+    });
   }
 
   private applyFilters(): void {

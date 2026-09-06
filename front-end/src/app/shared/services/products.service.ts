@@ -1,808 +1,831 @@
 import { Injectable } from '@angular/core';
-import { Product, ProductCategory } from '../models/product.model';
+
+export type ProductCategory = 'refeicoes' | 'bebidas' | 'aperitivos' | 'sobremesas';
+
+export interface ProductSize {
+  label: string;
+  priceModifier: number; // valor somado ao preço base (0 = tamanho padrão)
+}
+
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  category: ProductCategory;
+  price: number;
+  rating: number;
+  imageUrl: string;
+  isDrink?: boolean;
+  available?: boolean;
+  sizes?: ProductSize[]; // opcional — só produtos com variação de tamanho têm isso
+}
 
 const MOCK_PRODUCTS: Product[] = [
   // Refeições
   {
     id: 'ref-1',
     name: 'Combo Frango + Linguiça',
+    description: 'Um combo perfeito combinando suculentos pedaços de frango e linguiça artesanal.',
     category: 'refeicoes',
     price: 49.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?w=500&q=80',
+    sizes: [
+      { label: 'Padrão (2 Pessoas)', priceModifier: 0 },
+      { label: 'Família (4 Pessoas)', priceModifier: 25.00 }
+    ]
   },
   {
     id: 'ref-2',
     name: 'Frango Grelhado com Salada',
+    description: 'Opção leve e saudável: filé de frango grelhado acompanhado de salada fresca.',
     category: 'refeicoes',
     price: 49.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80',
   },
   {
     id: 'ref-3',
     name: 'Asas de Frango Crocantes',
+    description: 'Asinhas fritas com uma casquinha super crocante e tempero da casa.',
     category: 'refeicoes',
     price: 59.99,
     rating: 4.9,
-    imageUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7jVOvIhWO0VD4tQ8S338n8Ute1CwX0kvwwqL-CBiufEGwyZh71wVrgWk&s=10',
+    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7jVOvIhWO0VD4tQ8S338n8Ute1CwX0kvwwqL-CBiufEGwyZh71wVrgWk&s=10',
   },
   {
     id: 'ref-4',
     name: 'Frango à Passarinho',
+    description: 'Tradicional frango à passarinho, frito na hora com bastante alho.',
     category: 'refeicoes',
     price: 44.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80',
   },
   {
     id: 'ref-5',
     name: 'Frango à Parmegiana',
+    description: 'Filé de frango empanado, coberto com molho de tomate artesanal e queijo derretido.',
     category: 'refeicoes',
     price: 47.99,
     rating: 4.9,
-    imageUrl:
-      'https://www.receitasja.com.br/wp-content/uploads/2024/10/file-parmegiana-e1728685958140.webp',
+    imageUrl: 'https://www.receitasja.com.br/wp-content/uploads/2024/10/file-parmegiana-e1728685958140.webp',
   },
   {
     id: 'ref-6',
     name: 'Coxinha da Asa ao Molho Barbecue',
+    description: 'Drumets de frango suculentos envoltos em um delicioso molho barbecue.',
     category: 'refeicoes',
     price: 42.99,
     rating: 4.7,
-    imageUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ35TB5AUqAN122lOrl9nnzfH77eC8qKOuGqbC4ldnilTUJs33mDpVE85P&s=10',
+    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ35TB5AUqAN122lOrl9nnzfH77eC8qKOuGqbC4ldnilTUJs33mDpVE85P&s=10',
   },
   {
     id: 'ref-7',
     name: 'Peito de Frango Recheado',
+    description: 'Peito de frango assado e recheado com queijo e presunto.',
     category: 'refeicoes',
     price: 46.99,
     rating: 4.6,
-    imageUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6b2Jqfvh3sHjvIw1iul8tta-P_530RKfza71igLVEyGHvuFncIDiTLpYh&s=10',
+    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6b2Jqfvh3sHjvIw1iul8tta-P_530RKfza71igLVEyGHvuFncIDiTLpYh&s=10',
   },
   {
     id: 'ref-8',
     name: 'Sobrecoxa Assada com Batatas',
+    description: 'Sobrecoxas de frango assadas no forno acompanhadas de batatas rústicas.',
     category: 'refeicoes',
     price: 41.99,
     rating: 4.8,
-    imageUrl:
-      'https://guiadacozinha.com.br/wp-content/uploads/2019/10/coxa-e-sobrecoxa-assada-47429.jpg',
+    imageUrl: 'https://guiadacozinha.com.br/wp-content/uploads/2019/10/coxa-e-sobrecoxa-assada-47429.jpg',
   },
   {
     id: 'ref-9',
     name: 'Strogonoff de Frango',
+    description: 'Clássico strogonoff cremoso de frango, servido com batata palha.',
     category: 'refeicoes',
     price: 43.99,
     rating: 4.9,
-    imageUrl:
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfTnizun1XcSmLrQ7lwGwa7jwMwpOarSZ2MG5pct4mYJpv9F-_0x0tSnW&s=10',
+    imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfTnizun1XcSmLrQ7lwGwa7jwMwpOarSZ2MG5pct4mYJpv9F-_0x0tSnW&s=10',
   },
   {
     id: 'ref-10',
     name: 'Frango Xadrez',
+    description: 'Cubos de frango com pimentões, cebola e amendoim ao molho shoyu.',
     category: 'refeicoes',
     price: 45.99,
     rating: 4.7,
-    imageUrl:
-      'https://edge.osuper.com.br/XgORjkiFU8JM6wgQAfflEwdSk0s=/0x600/smart/https://osuper-ecommerce-cotrifacil.s3.sa-east-1.amazonaws.com/536af8d0-086f15bbgchinagarden9f7cf4724f.jpg',
+    imageUrl: 'https://edge.osuper.com.br/XgORjkiFU8JM6wgQAfflEwdSk0s=/0x600/smart/https://osuper-ecommerce-cotrifacil.s3.sa-east-1.amazonaws.com/536af8d0-086f15bbgchinagarden9f7cf4724f.jpg',
   },
-
   {
     id: 'ref-11',
     name: 'Filé de Frango Grelhado',
+    description: 'O tradicional filé de frango grelhado na chapa, simples e saboroso.',
     category: 'refeicoes',
     price: 38.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=500&q=80',
   },
   {
     id: 'ref-12',
     name: 'Frango Crocante com Fritas',
+    description: 'Pedaços de frango empanado acompanhados de batatas fritas sequinhas.',
     category: 'refeicoes',
     price: 39.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80',
   },
   {
     id: 'ref-13',
     name: 'Frango Grelhado com Arroz e Feijão',
+    description: 'O verdadeiro prato feito brasileiro com frango, arroz e feijão.',
     category: 'refeicoes',
     price: 36.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80',
   },
   {
     id: 'ref-14',
     name: 'Parmegiana de Frango com Fritas',
+    description: 'Deliciosa parmegiana servida com uma porção de batatas fritas.',
     category: 'refeicoes',
     price: 52.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=500&q=80',
   },
   {
     id: 'ref-15',
     name: 'Frango Cremoso com Queijo',
+    description: 'Frango desfiado envolto em um creme rico de queijos selecionados.',
     category: 'refeicoes',
     price: 48.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80',
   },
   {
     id: 'ref-16',
     name: 'Filé de Frango ao Molho de Mostarda',
+    description: 'Filé de frango grelhado regado com molho de mostarda e mel.',
     category: 'refeicoes',
     price: 45.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80',
   },
   {
     id: 'ref-17',
     name: 'Frango Assado com Farofa',
+    description: 'Pedaços de frango assado servidos com uma farofa especial da casa.',
     category: 'refeicoes',
     price: 42.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&q=80',
   },
   {
     id: 'ref-18',
     name: 'Frango ao Molho de Alho',
+    description: 'Frango refogado lentamente em um perfumado molho de alho.',
     category: 'refeicoes',
     price: 44.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80',
   },
   {
     id: 'ref-19',
     name: 'Frango com Creme de Milho',
+    description: 'Filé de frango acompanhado de um creme de milho aveludado.',
     category: 'refeicoes',
     price: 46.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
     available: false,
   },
   {
     id: 'ref-20',
     name: 'Frango Empanado com Arroz Cremoso',
+    description: 'Frango crocante servido ao lado de um arroz cremoso cheio de sabor.',
     category: 'refeicoes',
     price: 43.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&q=80',
   },
   {
     id: 'ref-21',
     name: 'Frango Desfiado com Purê de Batata',
+    description: 'Comfort food clássica: frango desfiado temperado com purê de batatas.',
     category: 'refeicoes',
     price: 39.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80',
   },
   {
     id: 'ref-22',
     name: 'Coxa e Sobrecoxa Assadas',
+    description: 'Cortes suculentos de coxa e sobrecoxa assados até dourarem.',
     category: 'refeicoes',
     price: 43.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80',
   },
   {
     id: 'ref-23',
     name: 'Frango ao Molho de Ervas',
+    description: 'Frango preparado com um mix de ervas finas e especiarias.',
     category: 'refeicoes',
     price: 44.99,
     rating: 4.6,
-    imageUrl:
-      'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&q=80',
   },
   {
     id: 'ref-24',
     name: 'Combo Frango Crocante + Fritas',
+    description: 'Tiras de frango frito extra crocantes servidas com batatas fritas.',
     category: 'refeicoes',
     price: 54.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80',
   },
   {
     id: 'ref-25',
     name: 'Frango Grelhado com Legumes',
+    description: 'Opção nutritiva de filé de frango grelhado com seleção de legumes.',
     category: 'refeicoes',
     price: 47.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80',
   },
 
-  // ============================================================
   // APERITIVOS
-  // ============================================================
   {
     id: 'ape-1',
     name: 'Asinhas de Frango Barbecue',
+    description: 'Asinhas empanadas mergulhadas em molho barbecue defumado.',
     category: 'aperitivos',
     price: 29.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    sizes: [
+      { label: 'Meia Porção', priceModifier: 0 },
+      { label: 'Porção Inteira', priceModifier: 15.00 }
+    ]
   },
   {
     id: 'ape-2',
     name: 'Asinhas de Frango Picantes',
+    description: 'Asinhas fritas ao molho picante estilo buffalo.',
     category: 'aperitivos',
     price: 31.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
   },
   {
     id: 'ape-3',
     name: 'Tiras de Frango Crocantes',
+    description: 'Fingers de frango empanados perfeitos para compartilhar.',
     category: 'aperitivos',
     price: 27.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80',
   },
   {
     id: 'ape-4',
     name: 'Nuggets Artesanais de Frango',
+    description: 'Nuggets de frango de verdade, feitos artesanalmente.',
     category: 'aperitivos',
     price: 24.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80',
   },
   {
     id: 'ape-5',
     name: 'Coxinha da Asa Crocante',
+    description: 'Drumets de frango fritos, dourados e muito crocantes.',
     category: 'aperitivos',
     price: 28.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
   },
   {
     id: 'ape-6',
     name: 'Iscas de Frango com Molho Especial',
+    description: 'Iscas de frango servidas com o molho de alho exclusivo da casa.',
     category: 'aperitivos',
     price: 29.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80',
     available: false,
   },
   {
     id: 'ape-7',
     name: 'Frango Empanado com Barbecue',
+    description: 'Cubinhos de frango empanados acompanhados de barbecue.',
     category: 'aperitivos',
     price: 30.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80',
   },
   {
     id: 'ape-8',
     name: 'Batata Frita com Cheddar',
+    description: 'Porção de batatas fritas generosamente cobertas com queijo cheddar.',
     category: 'aperitivos',
     price: 22.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80',
   },
   {
     id: 'ape-9',
     name: 'Batata Rústica com Ervas',
+    description: 'Batatas cortadas em gomos com casca e temperadas com alecrim.',
     category: 'aperitivos',
     price: 19.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=500&q=80',
   },
   {
     id: 'ape-10',
     name: 'Mandioca Frita Crocante',
+    description: 'Pedaços de mandioca (aipim) fritos na perfeição.',
     category: 'aperitivos',
     price: 18.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1639024471283-03518883512d?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1639024471283-03518883512d?w=500&q=80',
   },
   {
     id: 'ape-11',
     name: 'Polenta Frita com Parmesão',
+    description: 'Palitos de polenta polvilhados com queijo parmesão ralado.',
     category: 'aperitivos',
     price: 21.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80',
   },
   {
     id: 'ape-12',
     name: 'Combo Aperitivo da Casa',
+    description: 'Um mix completo com os melhores aperitivos do nosso cardápio.',
     category: 'aperitivos',
     price: 49.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
   },
   {
     id: 'ape-13',
     name: 'Asinhas ao Molho de Mel e Mostarda',
+    description: 'Asinhas crocantes envoltas num molho agridoce maravilhoso.',
     category: 'aperitivos',
     price: 32.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
   },
   {
     id: 'ape-14',
     name: 'Asinhas ao Molho de Alho',
+    description: 'Asinhas fritas com uma cobertura saborosa de creme de alho.',
     category: 'aperitivos',
     price: 30.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
   },
   {
     id: 'ape-15',
     name: 'Tiras de Frango com Cheddar',
+    description: 'Tiras de frango frito servidas com muito cheddar derretido.',
     category: 'aperitivos',
     price: 31.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80',
   },
   {
     id: 'ape-16',
     name: 'Bolinho de Frango com Queijo',
+    description: 'Bolinhos recheados com frango desfiado e queijo derretido.',
     category: 'aperitivos',
     price: 23.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80',
   },
   {
     id: 'ape-17',
     name: 'Mini Coxinhas de Frango',
+    description: 'Porção com deliciosas mini coxinhas de frango tradicionais.',
     category: 'aperitivos',
     price: 21.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80',
   },
   {
     id: 'ape-18',
     name: 'Chips de Batata com Molho da Casa',
+    description: 'Batatas em rodelas bem fininhas, acompanhadas do molho especial.',
     category: 'aperitivos',
     price: 19.99,
     rating: 4.6,
-    imageUrl:
-      'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&q=80',
   },
   {
     id: 'ape-19',
     name: 'Batata Frita com Bacon e Cheddar',
+    description: 'Clássica porção de batatas com cheddar e pedacinhos de bacon.',
     category: 'aperitivos',
     price: 27.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&q=80',
   },
   {
     id: 'ape-20',
     name: 'Combo Asinhas + Batata',
+    description: 'Uma combinação irresistível de asinhas fritas com batatas.',
     category: 'aperitivos',
     price: 39.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80',
   },
 
-  // ============================================================
   // BEBIDAS
-  // ============================================================
   {
     id: 'beb-1',
     name: 'Refrigerante Cola 2L',
+    description: 'Refrigerante sabor cola na versão 2 litros.',
     category: 'bebidas',
     price: 14.99,
     rating: 4.9,
-    imageUrl:
-      'https://acdn-us.mitiendanube.com/stores/001/043/122/products/499_secundario-8f5cb963633401774117745586921722-1024-1024.webp',
+    imageUrl: 'https://acdn-us.mitiendanube.com/stores/001/043/122/products/499_secundario-8f5cb963633401774117745586921722-1024-1024.webp',
     isDrink: true,
   },
   {
     id: 'beb-2',
     name: 'Suco Natural de Laranja',
+    description: 'Suco de laranja espremido na hora.',
     category: 'bebidas',
     price: 9.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',
     isDrink: true,
+    sizes: [
+      { label: '300ml', priceModifier: 0 },
+      { label: '500ml', priceModifier: 3.00 }
+    ]
   },
   {
     id: 'beb-3',
     name: 'Água Mineral 500ml',
+    description: 'Água mineral sem gás bem gelada.',
     category: 'bebidas',
     price: 4.99,
     rating: 4.9,
-    imageUrl:
-      'https://www.imigrantesbebidas.com.br/bebida/images/products/full/2893-agua-mineral-crystal-sem-gas-500ml.jpg',
+    imageUrl: 'https://www.imigrantesbebidas.com.br/bebida/images/products/full/2893-agua-mineral-crystal-sem-gas-500ml.jpg',
     isDrink: true,
   },
   {
     id: 'beb-4',
     name: 'Chá Gelado de Pêssego',
+    description: 'Chá refrescante com sabor natural de pêssego.',
     category: 'bebidas',
     price: 8.99,
     rating: 4.6,
-    imageUrl:
-      'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-5',
     name: 'Suco de Uva Integral',
+    description: 'Suco 100% uva, sem adição de açúcares.',
     category: 'bebidas',
     price: 10.99,
     rating: 4.8,
-    imageUrl:
-      'https://www.vinhosevinhos.com/media/catalog/product/cache/f551083cd20de7ac8cf7d25adc91480d/s/u/suco-de-uva-quinta-do-morgado-tinto-1l.jpg',
+    imageUrl: 'https://www.vinhosevinhos.com/media/catalog/product/cache/f551083cd20de7ac8cf7d25adc91480d/s/u/suco-de-uva-quinta-do-morgado-tinto-1l.jpg',
     isDrink: true,
   },
-
   {
     id: 'beb-6',
     name: 'Refrigerante Guaraná 2L',
+    description: 'O tradicional refrigerante de guaraná em versão família.',
     category: 'bebidas',
     price: 13.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-7',
     name: 'Refrigerante Cola Lata 350ml',
+    description: 'Refrigerante sabor cola em lata.',
     category: 'bebidas',
     price: 6.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-8',
     name: 'Refrigerante Guaraná Lata 350ml',
+    description: 'Refrigerante sabor guaraná em lata.',
     category: 'bebidas',
     price: 6.49,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-9',
     name: 'Suco Natural de Maracujá',
+    description: 'Suco de maracujá feito da fruta.',
     category: 'bebidas',
     price: 10.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-10',
     name: 'Suco Natural de Abacaxi',
+    description: 'Suco refrescante de abacaxi batido na hora.',
     category: 'bebidas',
     price: 9.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1546173159-315724a31696?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1546173159-315724a31696?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-11',
     name: 'Suco Natural de Morango',
+    description: 'Suco feito com morangos frescos.',
     category: 'bebidas',
     price: 11.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-12',
     name: 'Limonada Natural',
+    description: 'Limonada simples, gelada e refrescante.',
     category: 'bebidas',
     price: 8.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-13',
     name: 'Limonada Suíça',
+    description: 'Limões batidos com leite condensado e gelo.',
     category: 'bebidas',
     price: 10.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-14',
     name: 'Água Mineral com Gás 500ml',
+    description: 'Água mineral gaseificada.',
     category: 'bebidas',
     price: 5.49,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-15',
     name: 'Chá Gelado de Limão',
+    description: 'Chá preto servido gelado com um toque de limão.',
     category: 'bebidas',
     price: 8.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-16',
     name: 'Chá Gelado de Frutas Vermelhas',
+    description: 'Chá aromático de frutas vermelhas super refrescante.',
     category: 'bebidas',
     price: 9.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-17',
     name: 'Suco de Acerola',
+    description: 'Suco puro de acerola batido na hora.',
     category: 'bebidas',
     price: 9.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-18',
     name: 'Água de Coco',
+    description: 'Água de coco 100% natural, ideal para matar a sede.',
     category: 'bebidas',
     price: 8.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1581375074612-d1fd0e661aeb?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1581375074612-d1fd0e661aeb?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-19',
     name: 'Refrigerante Laranja 2L',
+    description: 'Refrigerante de laranja tamanho família.',
     category: 'bebidas',
     price: 13.99,
     rating: 4.6,
-    imageUrl:
-      'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80',
     isDrink: true,
   },
   {
     id: 'beb-20',
     name: 'Água Mineral 1,5L',
+    description: 'Garrafa grande de água mineral sem gás.',
     category: 'bebidas',
     price: 7.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&q=80',
     isDrink: true,
   },
 
-  // ============================================================
   // SOBREMESAS
-  // ============================================================
   {
     id: 'sob-1',
     name: 'Brownie com Chocolate',
+    description: 'Brownie macio por dentro e com casquinha crocante.',
     category: 'sobremesas',
     price: 12.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=500&q=80',
   },
   {
     id: 'sob-2',
     name: 'Brownie com Sorvete',
+    description: 'Brownie quente acompanhado de uma bola de sorvete de creme.',
     category: 'sobremesas',
     price: 17.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500&q=80',
   },
   {
     id: 'sob-3',
     name: 'Pudim de Leite Condensado',
+    description: 'O tradicional pudim de leite liso e com bastante calda.',
     category: 'sobremesas',
     price: 11.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
   },
   {
     id: 'sob-4',
     name: 'Cheesecake de Frutas Vermelhas',
+    description: 'Fatia de cheesecake servida com geleia de frutas vermelhas.',
     category: 'sobremesas',
     price: 16.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80',
   },
   {
     id: 'sob-5',
     name: 'Torta de Chocolate',
+    description: 'Torta com recheio denso e cremoso de chocolate intenso.',
     category: 'sobremesas',
     price: 15.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80',
   },
   {
     id: 'sob-6',
     name: 'Mousse de Chocolate',
+    description: 'Mousse de chocolate bem aerada e geladinha.',
     category: 'sobremesas',
     price: 10.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&q=80',
   },
   {
     id: 'sob-7',
     name: 'Mousse de Maracujá',
+    description: 'Mousse refrescante de maracujá com sementinhas na cobertura.',
     category: 'sobremesas',
     price: 10.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80',
   },
   {
     id: 'sob-8',
     name: 'Pavê de Chocolate',
+    description: 'Sobremesa de família com biscoito champanhe e cremes.',
     category: 'sobremesas',
     price: 12.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80',
   },
   {
     id: 'sob-9',
     name: 'Banoffee',
+    description: 'Torta de banana com doce de leite, chantilly e base de biscoito.',
     category: 'sobremesas',
     price: 15.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&q=80',
   },
   {
     id: 'sob-10',
     name: 'Torta de Limão',
+    description: 'Torta cítrica de limão coberta com merengue tostado.',
     category: 'sobremesas',
     price: 13.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&q=80',
   },
   {
     id: 'sob-11',
     name: 'Doce de Leite com Queijo',
+    description: 'A autêntica sobremesa mineira de queijo minas com doce de leite.',
     category: 'sobremesas',
     price: 11.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80',
   },
   {
     id: 'sob-12',
     name: 'Brigadeiro Gourmet',
+    description: 'Dois brigadeiros em tamanho especial feitos com chocolate puro.',
     category: 'sobremesas',
     price: 9.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&q=80',
   },
   {
     id: 'sob-13',
     name: 'Cocada Cremosa',
+    description: 'Cocada branca feita na panela, super cremosa e doce na medida.',
     category: 'sobremesas',
     price: 9.99,
     rating: 4.7,
-    imageUrl:
-      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
   },
   {
     id: 'sob-14',
     name: 'Romeu e Julieta',
+    description: 'Fatias de goiabada e queijo, a clássica combinação brasileira.',
     category: 'sobremesas',
     price: 12.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80',
   },
   {
     id: 'sob-15',
     name: 'Pudim de Chocolate',
+    description: 'Uma variação perfeita do pudim de leite com muito chocolate.',
     category: 'sobremesas',
     price: 12.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80',
   },
   {
     id: 'sob-16',
     name: 'Mini Churros com Doce de Leite',
+    description: 'Porção de churros passados no açúcar e canela com doce de leite.',
     category: 'sobremesas',
     price: 13.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1624371414361-e670edf4898d?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1624371414361-e670edf4898d?w=500&q=80',
   },
   {
     id: 'sob-17',
     name: 'Petit Gâteau de Chocolate',
+    description: 'Bolo recheado com creme de chocolate que derrete no prato.',
     category: 'sobremesas',
     price: 18.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80',
   },
   {
     id: 'sob-18',
     name: 'Cheesecake de Maracujá',
+    description: 'Cheesecake cremosa servida com calda azedinha de maracujá.',
     category: 'sobremesas',
     price: 16.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80',
   },
   {
     id: 'sob-19',
     name: 'Torta Holandesa',
+    description: 'Fatia de torta gelada com base de biscoito e cobertura de chocolate.',
     category: 'sobremesas',
     price: 15.99,
     rating: 4.8,
-    imageUrl:
-      'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80',
   },
   {
     id: 'sob-20',
     name: 'Brigadeiro com Morango',
+    description: 'Massa de brigadeiro recheada com um grande morango fresco.',
     category: 'sobremesas',
     price: 13.99,
     rating: 4.9,
-    imageUrl:
-      'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&q=80',
   },
 ];
 
@@ -814,5 +837,9 @@ export class ProductsService {
 
   getProductsByCategory(category: ProductCategory): Product[] {
     return MOCK_PRODUCTS.filter((p) => p.category === category);
+  }
+
+  getProductById(id: string): Product | undefined {
+    return MOCK_PRODUCTS.find((p) => p.id === id);
   }
 }

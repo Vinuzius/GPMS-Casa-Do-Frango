@@ -1,5 +1,5 @@
 <!-- product-card.html -->
-<div class="product-card" [class.unavailable]="isUnavailable">
+<a class="product-card" [class.unavailable]="isUnavailable" [routerLink]="['/cardapio/produto', product.id]">
   <div class="card-image" [class.drink-img]="product.isDrink">
     <img [src]="product.imageUrl" [alt]="product.name" />
     @if (isUnavailable) {
@@ -11,4 +11,4 @@
     <div class="rating">⭐ {{ product.rating }}</div>
     <div class="price">R$ {{ product.price.toFixed(2) }}</div>
   </div>
-</div>
+</a>
