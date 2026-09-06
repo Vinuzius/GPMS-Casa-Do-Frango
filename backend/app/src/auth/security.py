@@ -3,7 +3,7 @@ from functools import lru_cache
 import jwt
 from jwt import PyJWKClient
 
-from app.src.core.config import settings
+from backend.app.src.core.config import settings
 
 
 @lru_cache

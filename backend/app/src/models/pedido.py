@@ -4,7 +4,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from app.src.models.enums import FormaPagamento, StatusPedido
+from backend.app.src.models.enums import FormaPagamento, StatusPedido
 
 
 class Pedido(BaseModel):
