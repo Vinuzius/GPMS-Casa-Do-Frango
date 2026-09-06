@@ -24,9 +24,13 @@
 
   <div class="search-bar">
     <span>🔍</span>
-    <input type="text" placeholder="O que deseja pedir?" />
+    <input
+      type="text"
+      placeholder="O que deseja pedir?"
+      #searchInput
+      (keyup.enter)="search(searchInput.value)"
+    />
   </div>
-
   <div class="actions">
     <button class="icon-btn" type="button" aria-label="Notificações">
       🔔

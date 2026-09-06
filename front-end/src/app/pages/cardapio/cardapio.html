@@ -1,1 +1,40 @@
-<p>produtos works!</p>
+<div class="cardapio-container">
+  <main class="main-content">
+
+    <div class="page-header">
+      <h2>Cardápio</h2>
+      @if (searchTerm) {
+        <p class="search-info">Resultados para "<strong>{{ searchTerm }}</strong>"</p>
+      }
+    </div>
+
+    <!-- Barra de categorias -->
+    <div class="category-bar">
+      @for (category of categories; track category.value) {
+        <button
+          type="button"
+          class="category-pill"
+          [class.active]="activeCategory === category.value"
+          (click)="selectCategory(category.value)"
+        >
+          {{ category.label }}
+        </button>
+      }
+    </div>
+
+    <!-- Grid de resultados -->
+    @if (filteredProducts.length > 0) {
+      <div class="products-grid">
+        @for (product of filteredProducts; track product.id) {
+          <app-product-card [product]="product"></app-product-card>
+        }
+      </div>
+    } @else {
+      <div class="empty-state">
+        <span class="empty-icon">🔍</span>
+        <p>Nenhum produto encontrado.</p>
+      </div>
+    }
+
+  </main>
+</div>

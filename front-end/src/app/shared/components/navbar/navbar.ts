@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,17 @@ export class Navbar implements AfterViewInit {
 
   isProfileMenuOpen = false;
 
-  constructor(private elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private elementRef: ElementRef<HTMLElement>, 
+    private router: Router
+  ) {}
+
+  search(term: string): void {
+    const trimmed = term.trim();
+    this.router.navigate(['/cardapio'], {
+      queryParams: { busca: trimmed || null },
+    });
+  }
 
   ngAfterViewInit(): void {
     this.updateTopbarHeight();
