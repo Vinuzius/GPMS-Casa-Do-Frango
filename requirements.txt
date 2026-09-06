@@ -4,6 +4,6 @@ pydantic
 pydantic-settings
 sqlalchemy
 psycopg2-binary
-python-jose[cryptography]
+pyjwt[crypto]
 pytest
 httpx
