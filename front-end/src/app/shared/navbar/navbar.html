@@ -1,0 +1,35 @@
+<header class="topbar">
+  <a class="logo" routerLink="/dashboard">
+    <img src="front-end\src\app\shared\casaFrango.png"/>
+    <span>Casa do Frango</span>
+  </a>
+
+  <nav class="nav-links">
+    <a routerLink="/dashboard" routerLinkActive="active">Início</a>
+
+    <a
+      routerLink="/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >Categorias</a>
+
+    <a routerLink="/pedidos" routerLinkActive="active">Pedidos</a>
+
+    <a routerLink="/notificacoes" routerLinkActive="active">Avisos</a>
+  </nav>
+
+  <div class="search-cart">
+    <div class="search-bar">
+      <input type="text" placeholder="O que deseja pedir?" />
+      <mat-icon>search</mat-icon>
+    </div>
+
+    <button class="cart-btn" type="button" routerLink="/carrinho">
+      🛒 <span class="badge">1</span>
+    </button>
+
+    <button class="profile-btn" type="button" routerLink="/login">
+      <mat-icon>person</mat-icon>
+    </button>
+  </div>
+</header>

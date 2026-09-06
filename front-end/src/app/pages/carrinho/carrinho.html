@@ -1,0 +1,64 @@
+<main class="orders-page">
+  <div class="orders-heading">
+    <div>
+      <p class="eyebrow">Casa do Frango</p>
+      <h1>Monte seu pedido</h1>
+      <p class="heading-copy">Confira seus itens e escolha como deseja receber.</p>
+    </div>
+    <a class="back-link" routerLink="/dashboard">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      Voltar ao cardápio
+    </a>
+  </div>
+
+  <div class="orders-layout">
+    <section class="order-panel" aria-labelledby="order-title">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Pedido atual</p>
+          <h2 id="order-title">Seus itens</h2>
+        </div>
+        <span class="item-count">3 itens</span>
+      </div>
+
+      <div class="order-items">
+        <article class="order-item">
+          <div class="item-image chicken-image" aria-hidden="true">&#x1f357;</div>
+          <div class="item-details"><h3>Frango assado</h3><p>Inteiro, tempero da casa</p><strong>R$ 49,99</strong></div>
+          <div class="quantity-control" aria-label="Quantidade: 1 unidade"><button type="button" aria-label="Remover uma unidade">-</button><span>1</span><button type="button" aria-label="Adicionar uma unidade">+</button></div>
+        </article>
+        <article class="order-item">
+          <div class="item-image farofa-image" aria-hidden="true">&#x1f35a;</div>
+          <div class="item-details"><h3>Farofa especial</h3><p>Porção individual</p><strong>R$ 6,00</strong></div>
+          <div class="quantity-control" aria-label="Quantidade: 1 unidade"><button type="button" aria-label="Remover uma unidade">-</button><span>1</span><button type="button" aria-label="Adicionar uma unidade">+</button></div>
+        </article>
+        <article class="order-item">
+          <div class="item-image soda-image" aria-hidden="true">&#x1f964;</div>
+          <div class="item-details"><h3>Guaraná natural</h3><p>Lata 350 ml</p><strong>R$ 4,00</strong></div>
+          <div class="quantity-control" aria-label="Quantidade: 1 unidade"><button type="button" aria-label="Remover uma unidade">-</button><span>1</span><button type="button" aria-label="Adicionar uma unidade">+</button></div>
+        </article>
+      </div>
+
+      <button class="add-item-button" type="button" routerLink="/dashboard"><mat-icon aria-hidden="true">add</mat-icon>Adicionar mais itens</button>
+    </section>
+
+    <aside class="checkout-panel" aria-labelledby="service-title">
+      <div class="checkout-topline"><span class="checkout-label">Resumo</span><mat-icon aria-hidden="true">receipt_long</mat-icon></div>
+      <h2 id="service-title">Como você quer receber?</h2>
+      <p class="service-copy">Escolha uma opção para continuar com seu pedido.</p>
+
+      <div class="service-options" role="radiogroup" aria-label="Tipo de serviço">
+        <button class="service-option" [class.selected]="selectedService() === 'delivery'" type="button" role="radio" [attr.aria-checked]="selectedService() === 'delivery'" (click)="selectService('delivery')">
+          <span class="service-icon"><mat-icon aria-hidden="true">two_wheeler</mat-icon></span><span class="service-text"><strong>Delivery</strong><small>Receba em casa</small></span><mat-icon class="check-icon" aria-hidden="true">check_circle</mat-icon>
+        </button>
+        <button class="service-option" [class.selected]="selectedService() === 'pickup'" type="button" role="radio" [attr.aria-checked]="selectedService() === 'pickup'" (click)="selectService('pickup')">
+          <span class="service-icon"><mat-icon aria-hidden="true">storefront</mat-icon></span><span class="service-text"><strong>Retirada no local</strong><small>Busque na Casa do Frango</small></span><mat-icon class="check-icon" aria-hidden="true">check_circle</mat-icon>
+        </button>
+      </div>
+
+      <div class="price-summary"><div><span>Subtotal</span><strong>R$ 59,99</strong></div><div><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="total"><span>Total do pedido</span><strong>R$ 59,99</strong></div></div>
+      <button class="continue-button" type="button">Continuar<mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
+      <p class="secure-note"><mat-icon aria-hidden="true">lock</mat-icon> Pagamento seguro</p>
+    </aside>
+  </div>
+</main>
