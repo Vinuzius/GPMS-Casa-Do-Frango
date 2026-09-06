@@ -1,0 +1,45 @@
+<main class="profile-page">
+	<header class="profile-heading">
+		<div>
+			<p class="eyebrow">Área do cliente</p>
+			<h1>Meu perfil</h1>
+			<p>Gerencie seus dados e endereços de entrega.</p>
+		</div>
+		<a class="back-link" routerLink="/dashboard"><mat-icon aria-hidden="true">arrow_back</mat-icon> Voltar ao início</a>
+	</header>
+
+	<div class="profile-layout">
+		<aside class="profile-menu" aria-label="Opções do perfil">
+			<div class="profile-avatar" aria-hidden="true">👤</div>
+			<strong>Paulo Henrique Ganso</strong>
+			<span>phgansolu@gmail.com</span>
+
+			<nav>
+				<button type="button" [class.active]="activeSection() === 'details'" (click)="showDetails()"><mat-icon aria-hidden="true">person_outline</mat-icon> Dados cadastrais</button>
+				<button type="button" [class.active]="activeSection() === 'addresses'" (click)="showAddresses()"><mat-icon aria-hidden="true">location_on</mat-icon> Meus endereços</button>
+			</nav>
+		</aside>
+
+		<section class="profile-content" aria-live="polite">
+			@if (activeSection() === 'details') {
+				<div class="content-heading"><p class="section-kicker">Minha conta</p><h2>Dados cadastrais</h2><p>Confira e mantenha seus dados sempre atualizados.</p></div>
+				<form class="details-form">
+					<label>Nome completo<input type="text" value="Paulo Henrique Ganso" /></label>
+					<label>Email<input type="email" value="phgansolu@gmail.com" /></label>
+					<label>Data de nascimento<input type="date" value="1989-10-12" /></label>
+					<label>Gênero<select><option selected>Homem</option><option>Mulher</option><option>Prefiro não informar</option></select></label>
+					<label>Número de telefone<input type="tel" value="(21) 9 4002 8922" /></label>
+					<button class="save-button" type="button" disabled>Salvar alterações</button>
+				</form>
+			} @else {
+				<div class="content-heading"><p class="section-kicker">Onde receber</p><h2>Meus endereços</h2><p>Escolha onde deseja receber seus próximos pedidos.</p></div>
+				<article class="address-card">
+					<div class="address-icon"><mat-icon aria-hidden="true">home</mat-icon></div>
+					<div class="address-copy"><div><strong>Casa</strong><span class="default-label">Principal</span></div><p>Rua das Flores, 123<br>Centro, São Paulo - SP<br>CEP 01000-000</p></div>
+					<button class="edit-button" type="button"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
+				</article>
+				<button class="add-address-button" type="button"><mat-icon aria-hidden="true">add</mat-icon> Adicionar novo endereço</button>
+			}
+		</section>
+	</div>
+</main>
