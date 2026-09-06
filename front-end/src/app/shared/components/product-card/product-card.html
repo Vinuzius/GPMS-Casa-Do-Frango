@@ -1,0 +1,14 @@
+<!-- product-card.html -->
+<a class="product-card" [class.unavailable]="isUnavailable" [routerLink]="['/cardapio/produto', product.id]">
+  <div class="card-image" [class.drink-img]="product.isDrink">
+    <img [src]="product.imageUrl" [alt]="product.name" />
+    @if (isUnavailable) {
+      <div class="unavailable-badge">Indisponível</div>
+    }
+  </div>
+  <div class="card-info">
+    <h4>{{ product.name }}</h4>
+    <div class="rating">⭐ {{ product.rating }}</div>
+    <div class="price">R$ {{ product.price.toFixed(2) }}</div>
+  </div>
+</a>

@@ -1,0 +1,18 @@
+import { Component, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Product } from '../../models/product.model';
+
+@Component({
+  selector: 'app-product-card',
+  standalone: true,
+  imports: [RouterLink],
+  templateUrl: './product-card.html',
+  styleUrl: './product-card.scss',
+})
+export class ProductCard {
+  @Input({ required: true }) product!: Product;
+
+  get isUnavailable(): boolean {
+    return this.product.available === false;
+  }
+}

@@ -1,0 +1,109 @@
+@use 'variables' as *;
+
+.cardapio-container {
+  padding-top: var(--topbar-height, 90px);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $bg-color;
+  min-height: 100vh;
+}
+
+.main-content {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.page-header {
+  margin-bottom: 25px;
+
+  h2 {
+    color: $text-dark;
+    font-weight: normal;
+    font-size: 28px;
+    margin: 0 0 8px 0;
+  }
+
+  .search-info {
+    color: $text-dark;
+    opacity: 0.7;
+    font-size: 15px;
+    margin: 0;
+  }
+}
+
+/* --- Barra de categorias --- */
+.category-bar {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 35px;
+  padding-bottom: 5px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.category-pill {
+  flex: 0 0 auto;
+  padding: 10px 22px;
+  border-radius: 25px;
+  border: 2px solid transparent;
+  background: $white;
+  color: $text-dark;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: 0.2s;
+
+  &:hover {
+    border-color: #{$primary-color}55;
+  }
+
+  &.active {
+    background: $primary-color;
+    color: $white;
+  }
+}
+
+/* --- Grid de produtos --- */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 25px;
+}
+
+/* --- Estado vazio --- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  color: $text-dark;
+  opacity: 0.6;
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-content {
+    padding: 20px;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+  }
+}

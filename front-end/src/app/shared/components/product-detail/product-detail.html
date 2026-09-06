@@ -1,0 +1,69 @@
+<div class="modal-overlay">
+  <div class="modal-panel">
+
+    <button type="button" class="close-btn" aria-label="Voltar" (click)="goBack()">✕</button>
+
+
+    @if (notFound) {
+      <div class="state-message">
+        <span class="state-icon">🔍</span>
+        <h3>Produto não encontrado</h3>
+        <p>Este produto não existe ou não está mais disponível no nosso cardápio.</p>
+        <button type="button" class="back-link" (click)="goBack()">Voltar ao Cardápio</button>
+      </div>
+    } @else if (product) {
+      <div class="product-detail">
+        <div class="detail-image" [class.grayscale]="isUnavailable">
+          <img [src]="product.imageUrl" [alt]="product.name" />
+          @if (isUnavailable) {
+            <div class="unavailable-badge">Indisponível</div>
+          }
+        </div>
+
+        <div class="detail-info">
+          <span class="detail-category">{{ product.category }}</span>
+          <h2>{{ product.name }}</h2>
+          <p class="detail-description">{{ product.description }}</p>
+
+          @if (product.sizes?.length) {
+            <div class="size-options">
+              <h4>Tamanho</h4>
+              <div class="size-pills">
+                @for (size of product.sizes; track size.label) {
+                  <button
+                    type="button"
+                    class="size-pill"
+                    [class.active]="selectedSize === size"
+                    [disabled]="isUnavailable"
+                    (click)="selectSize(size)"
+                  >
+                    {{ size.label }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
+
+          <div class="detail-price">R$ {{ finalPrice.toFixed(2) }}</div>
+
+          @if (isUnavailable) {
+            <p class="unavailable-message">Este produto está temporariamente indisponível.</p>
+          } @else {
+            <div class="quantity-selector">
+              <button type="button" (click)="decreaseQuantity()">−</button>
+              <span>{{ quantity }}</span>
+              <button type="button" (click)="increaseQuantity()">+</button>
+            </div>
+
+            <button type="button" class="add-to-cart-btn" (click)="addToCart()">
+              Adicionar ao Carrinho — R$ {{ (finalPrice * quantity).toFixed(2) }}
+            </button>
+          }
+
+          <button type="button" class="back-link" (click)="goBack()">← Voltar</button>
+        </div>
+      </div>
+    }
+
+  </div>
+</div>
