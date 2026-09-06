@@ -1,6 +1,6 @@
 @use 'variables' as *;
 
-.history-page { max-width: 1040px; margin: 0 auto; padding: 42px 28px 64px; color: $text-dark; }
+.history-page { max-width: 1040px; margin: 0 auto; padding: calc(42px + var(--topbar-height, 90px)) 28px 64px; color: $text-dark; }
 .history-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
 .history-heading h1 { margin: 6px 0 8px; color: #262626; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
 .history-heading p:last-child { margin: 0; color: $text-light; }
@@ -21,7 +21,7 @@
 .history-meta strong { margin-left: auto; color: $primary-color; font-size: 1rem; }
 .history-items { margin: 12px 0 16px; color: $text-light; font-size: 0.85rem; }
 .details-button { padding: 0; font-size: 0.82rem; } .details-button .mat-icon { font-size: 17px; }
-@media (max-width: 700px) { .history-page { padding: 28px 18px 48px; } .history-heading { align-items: flex-start; flex-direction: column; } .history-list { padding: 20px; } .history-meta { align-items: flex-start; flex-direction: column; gap: 8px; } .history-meta strong { margin-left: 0; } }
+@media (max-width: 700px) { .history-page { padding: calc(28px + var(--topbar-height, 90px)) 18px 48px; } .history-heading { align-items: flex-start; flex-direction: column; } .history-list { padding: 20px; } .history-meta { align-items: flex-start; flex-direction: column; gap: 8px; } .history-meta strong { margin-left: 0; } }
 
 :host {
     display: block;

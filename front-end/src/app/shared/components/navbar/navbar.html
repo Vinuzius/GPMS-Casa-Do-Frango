@@ -1,7 +1,9 @@
 <header class="topbar" #topbarEl>
   <div class="logo">
-    <span>🐔</span>
-    <span>Casa do Frango</span>
+    <a routerLink="/dashboard">
+      <span>🐔</span>
+      <span>Casa do Frango</span>
+    </a>
   </div>
 
   <nav class="nav-links">
@@ -17,7 +19,7 @@
       Cardápio
     </a>
 
-    <a routerLink="/produtos" routerLinkActive="active">
+    <a routerLink="/pedidos" routerLinkActive="active">
       Pedidos
     </a>
   </nav>
@@ -32,7 +34,7 @@
     />
   </div>
   <div class="actions">
-    <button class="icon-btn" type="button" aria-label="Notificações">
+    <button class="icon-btn" type="button" [routerLink]="['/notificacoes']" aria-label="Notificações">
       🔔
       <span class="badge">2</span>
     </button>
@@ -58,7 +60,7 @@
       }
     </div>
 
-    <button class="cart-btn" type="button" aria-label="Carrinho">
+    <button class="cart-btn" type="button" [routerLink]="['/carrinho']" aria-label="Carrinho">
       🛒 <span class="badge">1</span>
     </button>
   </div>

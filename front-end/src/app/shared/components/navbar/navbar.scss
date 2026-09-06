@@ -27,6 +27,22 @@
     align-items: center;
     gap: 10px;
     white-space: nowrap;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: $white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: $white;
+      text-decoration: none;
+      opacity: 0.9;
+    }
   }
 
   .nav-links {

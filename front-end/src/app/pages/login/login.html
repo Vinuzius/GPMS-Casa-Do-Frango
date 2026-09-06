@@ -21,7 +21,7 @@
         </mat-form-field>
 
         <button class="forgot-link" type="button" (click)="showForgot()">Esqueceu sua senha?</button>
-        <button mat-raised-button class="login-button" type="submit" [disabled]="!isFormValid">Entrar</button>
+        <button mat-raised-button class="login-button" type="button" [disabled]="!isFormValid" (click)="enterMockAccount()">Entrar</button>
       </form>
 
       <p class="switch-copy">Ainda não tem uma conta?</p>
@@ -57,7 +57,7 @@
           <input matInput type="password" [(ngModel)]="confirmPassword" name="confirmPassword" autocomplete="new-password" required />
         </mat-form-field>
 
-        <button mat-raised-button class="login-button" type="submit" [disabled]="!isRegisterValid">Criar conta</button>
+        <button mat-raised-button class="login-button" type="button" [disabled]="!isRegisterValid" (click)="enterMockAccount()">Criar conta</button>
       </form>
 
       <button class="back-link" type="button" (click)="showLogin()"><mat-icon aria-hidden="true">arrow_back</mat-icon> Já tenho uma conta</button>

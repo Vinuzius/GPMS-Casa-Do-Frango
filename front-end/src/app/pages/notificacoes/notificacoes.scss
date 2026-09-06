@@ -9,7 +9,7 @@
 .notifications-page {
     max-width: 1040px;
     margin: 0 auto;
-    padding: 42px 28px 64px;
+    padding: calc(42px + var(--topbar-height, 90px)) 28px 64px;
     color: $text-dark;
 }
 
@@ -168,7 +168,7 @@
 .unread .notification-content h3 { font-weight: 800; }
 
 @media (max-width: 640px) {
-    .notifications-page { padding: 28px 18px 48px; }
+    .notifications-page { padding: calc(28px + var(--topbar-height, 90px)) 18px 48px; }
     .notifications-heading { align-items: flex-start; flex-direction: column; gap: 20px; }
     .notifications-panel { margin-top: 28px; padding: 20px; }
     .panel-heading { align-items: flex-start; flex-direction: column; gap: 14px; }

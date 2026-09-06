@@ -1,4 +1,5 @@
 import { Component, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
 
@@ -12,6 +13,8 @@ import { MATERIAL_IMPORTS } from '../../shared/material-imports';
   styleUrl: './login.scss',
 })
 export class Login {
+  constructor(private router: Router) {}
+
   view = signal<'login' | 'register' | 'forgot'>('login');
   name = '';
   email = '';
@@ -43,5 +46,13 @@ export class Login {
 
   showForgot(): void {
     this.view.set('forgot');
+  }
+
+  enterMockAccount(): void {
+    sessionStorage.setItem('casa-do-frango-user', JSON.stringify({
+      name: this.name.trim() || 'Cliente Casa do Frango',
+      email: this.email.trim() || 'cliente@casadofrango.local',
+    }));
+    this.router.navigate(['/dashboard']);
   }
 }

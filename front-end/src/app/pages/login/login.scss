@@ -4,7 +4,7 @@
   min-height: calc(100vh - 76px);
   display: grid;
   place-items: center;
-  padding: 42px 24px;
+  padding: calc(42px + var(--topbar-height, 90px)) 24px 42px;
   background: radial-gradient(circle at 15% 10%, rgba(249, 95, 70, 0.16), transparent 30%), $bg-color;
 }
 
@@ -45,6 +45,6 @@
 .back-link .mat-icon { width: 17px; height: 17px; font-size: 17px; }
 
 @media (max-width: 480px) {
-  .login-page { padding: 24px 16px; }
+  .login-page { padding: calc(24px + var(--topbar-height, 90px)) 16px 24px; }
   .login-card { padding: 28px 22px 24px; }
 }

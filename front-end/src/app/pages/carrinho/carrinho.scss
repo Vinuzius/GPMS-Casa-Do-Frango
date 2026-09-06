@@ -1,6 +1,6 @@
 @use 'variables' as *;
 
-:host { display: block; min-height: calc(100vh - 76px); background: radial-gradient(circle at 10% 0%, rgba(249, 95, 70, 0.1), transparent 30%), $bg-color; }
+:host { display: block; min-height: calc(100vh - 76px); padding-top: var(--topbar-height, 90px); background: radial-gradient(circle at 10% 0%, rgba(249, 95, 70, 0.1), transparent 30%), $bg-color; }
 .orders-page { max-width: 1180px; margin: 0 auto; padding: 42px 28px 64px; color: $text-dark; }
 .orders-heading, .section-heading, .checkout-topline { display: flex; align-items: center; justify-content: space-between; }
 .eyebrow, .section-kicker, .checkout-label { margin: 0; color: $primary-color; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
