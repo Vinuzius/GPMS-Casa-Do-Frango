@@ -1,0 +1,64 @@
+<main class="tracking-page">
+	<header class="tracking-heading">
+		<div>
+			<p class="eyebrow">Acompanhamento</p>
+			<h1>Status de Pedidos</h1>
+			<p>Acompanhe o status do seu pedido em tempo real.</p>
+		</div>
+		<a class="back-link" routerLink="/pedidos/historico">
+			<mat-icon aria-hidden="true">arrow_back</mat-icon>
+			Histórico de pedidos
+		</a>
+	</header>
+
+	<section class="tracking-card" aria-labelledby="order-title">
+		<div class="order-header">
+			<div>
+				<p class="order-number">Pedido #1048</p>
+				<h2 id="order-title">Frango assado + acompanhamentos</h2>
+				<p class="order-time">Realizado hoje, às 19:42</p>
+			</div>
+			<span class="status-badge"><span aria-hidden="true"></span> Em preparação</span>
+		</div>
+
+		<div class="progress-track" aria-label="Pedido em preparação">
+			<div class="progress-step complete">
+				<span class="step-icon"><mat-icon aria-hidden="true">check</mat-icon></span>
+				<strong>Recebido</strong>
+			</div>
+			<div class="progress-line active"></div>
+			<div class="progress-step current">
+				<span class="step-icon"><mat-icon aria-hidden="true">soup_kitchen</mat-icon></span>
+				<strong>Em preparação</strong>
+			</div>
+			<div class="progress-line"></div>
+			<div class="progress-step">
+				<span class="step-icon"><mat-icon aria-hidden="true">two_wheeler</mat-icon></span>
+				<strong>A caminho</strong>
+			</div>
+			<div class="progress-line"></div>
+			<div class="progress-step">
+				<span class="step-icon"><mat-icon aria-hidden="true">home</mat-icon></span>
+				<strong>Entregue</strong>
+			</div>
+		</div>
+
+		<div class="tracking-content">
+			<div class="items-section">
+				<div class="section-heading"><h3>Itens do pedido</h3><span>3 itens</span></div>
+				<div class="item-row"><span class="item-emoji chicken">&#x1f357;</span><span><strong>Frango assado</strong><small>Inteiro, tempero da casa</small></span><b>R$ 49,99</b></div>
+				<div class="item-row"><span class="item-emoji farofa">&#x1f35a;</span><span><strong>Farofa especial</strong><small>Porção individual</small></span><b>R$ 6,00</b></div>
+				<div class="item-row"><span class="item-emoji soda">&#x1f964;</span><span><strong>Guaraná natural</strong><small>Lata 350 ml</small></span><b>R$ 4,00</b></div>
+			</div>
+
+			<aside class="delivery-summary">
+				<p class="section-kicker">Previsão</p>
+				<strong class="estimate">20:15 - 20:30</strong>
+				<p>Entrega no endereço cadastrado</p>
+				<div class="summary-line"><span>Subtotal</span><b>R$ 59,99</b></div>
+				<div class="summary-line"><span>Taxa de serviço</span><b>Grátis</b></div>
+				<div class="summary-line total"><span>Total</span><b>R$ 59,99</b></div>
+			</aside>
+		</div>
+	</section>
+</main>

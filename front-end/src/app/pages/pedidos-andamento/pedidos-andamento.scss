@@ -1,0 +1,30 @@
+@use 'variables' as *;
+
+:host { display: block; min-height: calc(100vh - 76px); padding-top: var(--topbar-height, 90px); background: radial-gradient(circle at 90% 0%, rgba(249, 95, 70, 0.1), transparent 30%), $bg-color; }
+.tracking-page { max-width: 1040px; margin: 0 auto; padding: 42px 28px 64px; color: $text-dark; }
+.tracking-heading, .order-header, .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.eyebrow, .order-number, .section-kicker { margin: 0; color: $primary-color; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.tracking-heading h1 { margin: 6px 0 8px; color: #262626; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.05; }
+.tracking-heading p:last-child, .order-time, .delivery-summary p { margin: 0; color: $text-light; }
+.back-link { display: inline-flex; align-items: center; gap: 8px; color: $text-dark; font-size: 0.85rem; font-weight: 800; text-decoration: none; }
+.back-link:hover { color: $primary-color; }
+.tracking-card { margin-top: 36px; padding: 30px; border: 1px solid rgba(51, 51, 51, 0.08); border-radius: 18px; background: $white; box-shadow: 0 14px 35px rgba(91, 52, 38, 0.08); }
+.order-header { align-items: flex-start; }
+.order-header h2 { margin: 6px 0 7px; color: #262626; font-size: 1.3rem; }
+.order-time { font-size: 0.8rem; }
+.status-badge { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; background: #fff2d7; color: #a66a00; padding: 8px 12px; font-size: 0.78rem; font-weight: 800; white-space: nowrap; }
+.status-badge span { width: 7px; height: 7px; border-radius: 50%; background: #d99100; }
+.progress-track { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr; align-items: start; margin: 38px 10px 36px; }
+.progress-step { display: grid; justify-items: center; gap: 9px; color: #b6aaa5; font-size: 0.72rem; text-align: center; }
+.step-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 2px solid #eadbd6; border-radius: 50%; background: $white; color: #b6aaa5; }
+.complete .step-icon, .current .step-icon { border-color: $primary-color; background: $primary-color; color: $white; }
+.current { color: $primary-color; } .progress-line { height: 3px; margin-top: 20px; background: #eadbd6; } .progress-line.active { background: $primary-color; }
+.tracking-content { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 28px; padding-top: 26px; border-top: 1px solid #f0e9e6; }
+.section-heading { margin-bottom: 12px; } .section-heading h3 { margin: 0; color: #262626; font-size: 1.05rem; } .section-heading span { color: $text-light; font-size: 0.8rem; }
+.item-row { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0e9e6; }
+.item-emoji { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 11px; font-size: 1.6rem; } .chicken { background: #ffe0c2; } .farofa { background: #fff0c7; } .soda { background: #e0f2f7; }
+.item-row span:nth-child(2) { display: grid; gap: 4px; } .item-row small { color: $text-light; font-size: 0.74rem; } .item-row b { color: $primary-color; font-size: 0.85rem; }
+.delivery-summary { padding: 20px; border-radius: 14px; background: #fff7f4; } .estimate { display: block; margin: 7px 0; color: #262626; font-size: 1.25rem; } .delivery-summary > p:not(.section-kicker) { margin-bottom: 24px; font-size: 0.78rem; line-height: 1.4; }
+.summary-line { display: flex; justify-content: space-between; padding-top: 11px; color: $text-light; font-size: 0.78rem; } .summary-line b { color: #262626; } .summary-line.total { margin-top: 8px; padding-top: 14px; border-top: 1px solid #efd8d0; color: #262626; font-size: 0.95rem; font-weight: 800; } .summary-line.total b { color: $primary-color; }
+@media (max-width: 760px) { .tracking-page { padding: 28px 18px 48px; } .tracking-heading { align-items: flex-start; flex-direction: column; } .tracking-card { padding: 22px; } .tracking-content { grid-template-columns: 1fr; } .progress-track { margin-right: 0; margin-left: 0; } }
+@media (max-width: 520px) { .order-header { align-items: flex-start; flex-direction: column; } .progress-track { grid-template-columns: repeat(4, 1fr); gap: 4px; } .progress-line { display: none; } .progress-step { font-size: 0.65rem; } .step-icon { width: 36px; height: 36px; } .item-row { grid-template-columns: 42px minmax(0, 1fr); } .item-emoji { width: 42px; height: 42px; font-size: 1.35rem; } .item-row b { grid-column: 2; } }
