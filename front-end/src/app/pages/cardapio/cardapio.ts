@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 import { ProductsService } from '../../shared/services/products.service';
 import { Product, ProductCategory } from '../../shared/models/product.model';
+import { CartService } from '../../shared/services/cart.service';
+import { MatIconModule } from '@angular/material/icon';
 
 interface CategoryOption {
   value: ProductCategory | 'todos';
@@ -12,7 +14,7 @@ interface CategoryOption {
 
 @Component({
   selector: 'app-cardapio',
-  imports: [ProductCard],
+  imports: [ProductCard, MatIconModule],
   templateUrl: './cardapio.html',
   styleUrl: './cardapio.scss',
 })
@@ -29,15 +31,23 @@ export class Cardapio implements OnInit {
   filteredProducts: Product[] = [];
   activeCategory: ProductCategory | 'todos' = 'todos';
   searchTerm = '';
+  readonly cartNotice;
 
   constructor(
     private productsService: ProductsService,
     private route: ActivatedRoute,
     private router: Router,
-  ) {}
+    private cartService: CartService,
+  ) {
+    this.cartNotice = this.cartService.cartNotice;
+  }
 
   ngOnInit(): void {
     this.allProducts = this.productsService.getAllProducts();
+
+    if (this.cartNotice()) {
+      window.setTimeout(() => this.cartService.clearNotice(), 5000);
+    }
 
     this.route.queryParams.subscribe((params) => {
       this.searchTerm = params['busca'] ?? '';
@@ -52,6 +62,10 @@ export class Cardapio implements OnInit {
       queryParams: { categoria: category === 'todos' ? null : category },
       queryParamsHandling: 'merge', // preserva o "busca" que já estiver na URL
     });
+  }
+
+  dismissCartNotice(): void {
+    this.cartService.clearNotice();
   }
 
   private applyFilters(): void {

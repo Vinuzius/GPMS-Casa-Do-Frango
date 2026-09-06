@@ -18,26 +18,34 @@
           <p class="section-kicker">Pedido atual</p>
           <h2 id="order-title">Seus itens</h2>
         </div>
-        <span class="item-count">3 itens</span>
+        <span class="item-count">{{ itemCount() }} {{ itemCount() === 1 ? 'item' : 'itens' }}</span>
       </div>
 
-      <div class="order-items">
-        <article class="order-item">
-          <div class="item-image chicken-image" aria-hidden="true">&#x1f357;</div>
-          <div class="item-details"><h3>Frango assado</h3><p>Inteiro, tempero da casa</p><strong>R$ 49,99</strong></div>
-          <div class="quantity-control" aria-label="Quantidade: 1 unidade"><button type="button" aria-label="Remover uma unidade">-</button><span>1</span><button type="button" aria-label="Adicionar uma unidade">+</button></div>
-        </article>
-        <article class="order-item">
-          <div class="item-image farofa-image" aria-hidden="true">&#x1f35a;</div>
-          <div class="item-details"><h3>Farofa especial</h3><p>Porção individual</p><strong>R$ 6,00</strong></div>
-          <div class="quantity-control" aria-label="Quantidade: 1 unidade"><button type="button" aria-label="Remover uma unidade">-</button><span>1</span><button type="button" aria-label="Adicionar uma unidade">+</button></div>
-        </article>
-        <article class="order-item">
-          <div class="item-image soda-image" aria-hidden="true">&#x1f964;</div>
-          <div class="item-details"><h3>Guaraná natural</h3><p>Lata 350 ml</p><strong>R$ 4,00</strong></div>
-          <div class="quantity-control" aria-label="Quantidade: 1 unidade"><button type="button" aria-label="Remover uma unidade">-</button><span>1</span><button type="button" aria-label="Adicionar uma unidade">+</button></div>
-        </article>
-      </div>
+      @if (cartItems().length) {
+        <div class="order-items">
+          @for (item of cartItems(); track item.product.id + (item.size?.label ?? 'default'); let index = $index) {
+            <article class="order-item">
+              <img class="item-image" [src]="item.product.imageUrl" [alt]="item.product.name" />
+              <div class="item-details">
+                <h3>{{ item.product.name }}</h3>
+                <p>{{ item.size?.label ?? item.product.description }}</p>
+                <strong>R$ {{ item.unitPrice.toFixed(2) }}</strong>
+              </div>
+              <div class="quantity-control" [attr.aria-label]="'Quantidade: ' + item.quantity + ' unidades'">
+                <button type="button" aria-label="Remover uma unidade" (click)="decreaseQuantity(index)">-</button>
+                <span>{{ item.quantity }}</span>
+                <button type="button" aria-label="Adicionar uma unidade" (click)="increaseQuantity(index)">+</button>
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div class="empty-cart">
+          <mat-icon aria-hidden="true">shopping_basket</mat-icon>
+          <h3>Seu carrinho está vazio</h3>
+          <p>Escolha seus pratos favoritos no cardápio para começar.</p>
+        </div>
+      }
 
       <button class="add-item-button" type="button" routerLink="/dashboard"><mat-icon aria-hidden="true">add</mat-icon>Adicionar mais itens</button>
     </section>
@@ -56,8 +64,8 @@
         </button>
       </div>
 
-      <div class="price-summary"><div><span>Subtotal</span><strong>R$ 59,99</strong></div><div><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="total"><span>Total do pedido</span><strong>R$ 59,99</strong></div></div>
-      <button class="continue-button" type="button">Continuar<mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
+      <div class="price-summary"><div><span>Subtotal</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><div><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="total"><span>Total do pedido</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div></div>
+      <button class="continue-button" type="button" [disabled]="!cartItems().length">Continuar<mat-icon aria-hidden="true">arrow_forward</mat-icon></button>
       <p class="secure-note"><mat-icon aria-hidden="true">lock</mat-icon> Pagamento seguro</p>
     </aside>
   </div>

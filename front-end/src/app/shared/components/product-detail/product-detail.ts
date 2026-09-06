@@ -1,14 +1,15 @@
 // product-detail/product-detail.ts
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product, ProductSize } from '../../models/product.model';
 import { ProductsService } from '../../services/products.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })
@@ -22,6 +23,7 @@ export class ProductDetail implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private productsService: ProductsService,
+    private cartService: CartService,
     private location: Location, // lembrar onde tava na pagina
     private router: Router, // para navegar para outra rota
 
@@ -67,12 +69,10 @@ export class ProductDetail implements OnInit {
   }
 
   addToCart(): void {
-    // Placeholder — sem carrinho implementado ainda.
-    console.log('Adicionado ao carrinho:', {
-      product: this.product,
-      size: this.selectedSize,
-      quantity: this.quantity,
-      totalPrice: this.finalPrice * this.quantity,
-    });
+    if (!this.product || this.isUnavailable) return;
+
+    this.cartService.add(this.product, this.selectedSize, this.quantity);
+    this.cartService.showNotice(`${this.product.name} foi adicionado ao carrinho.`);
+    this.goBack();
   }
 }
