@@ -1,0 +1,10 @@
+<div class="product-card">
+  <div class="card-image" [class.drink-img]="product.isDrink">
+    <img [src]="product.imageUrl" [alt]="product.name" />
+  </div>
+  <div class="card-info">
+    <h4>{{ product.name }}</h4>
+    <div class="rating">⭐ {{ product.rating }}</div>
+    <div class="price">R$ {{ product.price.toFixed(2) }}</div>
+  </div>
+</div>
