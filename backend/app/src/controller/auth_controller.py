@@ -1,14 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends
 
-from app.src.auth import supabase_client
-from app.src.schemas.auth import LoginRequest, TokenResponse
+from app.src.auth.dependencies import get_current_user
+from app.src.schemas.auth import UsuarioAutenticado
 
 router = APIRouter()
 
 
-@router.post("/login", response_model=TokenResponse)
-def login(dados: LoginRequest):
-    try:
-        return supabase_client.sign_in_with_password(dados.email, dados.senha)
-    except supabase_client.SupabaseAuthError as erro:
-        raise HTTPException(status_code=erro.status_code, detail=erro.detail)
+@router.get("/me", response_model=UsuarioAutenticado)
+def me(usuario: dict = Depends(get_current_user)):
+    return {"id": usuario["sub"], "email": usuario.get("email")}

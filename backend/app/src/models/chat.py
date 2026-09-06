@@ -3,7 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel
 
-from backend.app.src.models.enums import RemetenteTipo
+from app.src.models.enums import RemetenteTipo
 
 
 class Conversa(BaseModel):

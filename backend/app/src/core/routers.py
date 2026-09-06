@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from backend.app.src.controller import auth_controller
+from app.src.controller import auth_controller
 
 
 def get_routers():
