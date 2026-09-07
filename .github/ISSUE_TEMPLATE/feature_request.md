@@ -15,10 +15,10 @@ Faça uma descrição direta do que se trata a feature, de forma a ser facilment
 Existe alguma solução ideal que o autor pensou?
 
 **Soluções alternativas**
-Existe outras soluções possíveis a serem feitas?
+Existem outras soluções possíveis a serem feitas?
 
 **Contexto**
-Adicione contexto de como chegar ao problema descrito, capturas de tela, relatos de reunião, etc
+Adicione contexto de como chegar ao problema descrito, capturas de tela, relatos de reunião, etc.
 
 **Critérios de Aceitação**
 Existe algum critério de aceitação a ser verificado na issue?
