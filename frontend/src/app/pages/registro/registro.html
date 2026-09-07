@@ -1,0 +1,63 @@
+<div class="auth-page">
+  @if (cadastroPendenteConfirmacao) {
+    <div class="auth-card">
+      <div class="logo">
+        <span>🐔</span>
+        <span>Casa do Frango</span>
+      </div>
+      <h1>Quase lá!</h1>
+      <p>Cadastro realizado. Verifique seu e-mail para confirmar a conta antes de entrar.</p>
+      <a routerLink="/login">Voltar para o login</a>
+    </div>
+  } @else {
+    <form class="auth-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="logo">
+        <span>🐔</span>
+        <span>Casa do Frango</span>
+      </div>
+
+      <h1>Criar conta</h1>
+
+      <label>
+        Nome
+        <input type="text" formControlName="nome" autocomplete="name" />
+      </label>
+      @if (form.controls.nome.invalid && form.controls.nome.touched) {
+        <span class="campo-erro">Informe seu nome.</span>
+      }
+
+      <label>
+        E-mail
+        <input type="email" formControlName="email" autocomplete="email" />
+      </label>
+      @if (form.controls.email.invalid && form.controls.email.touched) {
+        <span class="campo-erro">Informe um e-mail válido.</span>
+      }
+
+      <label>
+        Telefone (opcional)
+        <input type="tel" formControlName="telefone" autocomplete="tel" />
+      </label>
+
+      <label>
+        Senha
+        <input type="password" formControlName="senha" autocomplete="new-password" />
+      </label>
+      @if (form.controls.senha.invalid && form.controls.senha.touched) {
+        <span class="campo-erro">A senha precisa ter pelo menos 6 caracteres.</span>
+      }
+
+      @if (erro) {
+        <p class="erro-geral">{{ erro }}</p>
+      }
+
+      <button type="submit" [disabled]="enviando">
+        {{ enviando ? 'Criando conta...' : 'Criar conta' }}
+      </button>
+
+      <p class="rodape">
+        Já tem conta? <a routerLink="/login">Entrar</a>
+      </p>
+    </form>
+  }
+</div>

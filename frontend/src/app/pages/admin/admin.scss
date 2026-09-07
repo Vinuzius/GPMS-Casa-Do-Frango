@@ -1,0 +1,12 @@
+@use 'variables' as *;
+
+.admin-page {
+  max-width: 640px;
+  margin: 3rem auto;
+  padding: 0 1rem;
+  color: $text-dark;
+
+  p {
+    color: $text-light;
+  }
+}
