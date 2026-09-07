@@ -44,7 +44,7 @@
         aria-label="Menu do perfil"
         (click)="toggleProfileMenu($event)"
       >
-        👤
+        {{ perfilService.perfil()?.nome ?? authService.user()?.email ?? '👤' }}
       </button>
 
       @if (isProfileMenuOpen) {
@@ -52,8 +52,11 @@
           <a routerLink="/perfil" (click)="closeProfileMenu()">Meu Perfil</a>
           <a routerLink="/pedidos/historico" (click)="closeProfileMenu()">Histórico de Pedidos</a>
           <a routerLink="/enderecos" (click)="closeProfileMenu()">Endereços</a>
+          @if (perfilService.perfil()?.is_admin) {
+            <a routerLink="/admin" (click)="closeProfileMenu()">Painel Admin</a>
+          }
           <div class="dropdown-divider"></div>
-          <a href="#" (click)="closeProfileMenu()">Sair</a>
+          <button type="button" class="dropdown-sair" (click)="sair()">Sair</button>
         </div>
       }
     </div>

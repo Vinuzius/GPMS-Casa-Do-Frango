@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 
+import { AuthService } from '../../services/auth.service';
+import { PerfilService } from '../../services/perfil.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,8 +16,10 @@ export class Navbar implements AfterViewInit {
   isProfileMenuOpen = false;
 
   constructor(
-    private elementRef: ElementRef<HTMLElement>, 
-    private router: Router
+    private elementRef: ElementRef<HTMLElement>,
+    private router: Router,
+    protected authService: AuthService,
+    protected perfilService: PerfilService,
   ) {}
 
   search(term: string): void {
@@ -42,6 +46,12 @@ export class Navbar implements AfterViewInit {
 
   closeProfileMenu(): void {
     this.isProfileMenuOpen = false;
+  }
+
+  async sair(): Promise<void> {
+    this.closeProfileMenu();
+    await this.authService.signOut();
+    this.router.navigateByUrl('/login');
   }
 
   @HostListener('document:click', ['$event.target'])

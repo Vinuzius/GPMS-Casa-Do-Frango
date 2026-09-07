@@ -1,1 +1,38 @@
-<p>login works!</p>
+<div class="auth-page">
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="logo">
+      <span>🐔</span>
+      <span>Casa do Frango</span>
+    </div>
+
+    <h1>Entrar</h1>
+
+    <label>
+      E-mail
+      <input type="email" formControlName="email" autocomplete="email" />
+    </label>
+    @if (form.controls.email.invalid && form.controls.email.touched) {
+      <span class="campo-erro">Informe um e-mail válido.</span>
+    }
+
+    <label>
+      Senha
+      <input type="password" formControlName="senha" autocomplete="current-password" />
+    </label>
+    @if (form.controls.senha.invalid && form.controls.senha.touched) {
+      <span class="campo-erro">A senha precisa ter pelo menos 6 caracteres.</span>
+    }
+
+    @if (erro) {
+      <p class="erro-geral">{{ erro }}</p>
+    }
+
+    <button type="submit" [disabled]="enviando">
+      {{ enviando ? 'Entrando...' : 'Entrar' }}
+    </button>
+
+    <p class="rodape">
+      Não tem conta? <a routerLink="/registro">Criar conta</a>
+    </p>
+  </form>
+</div>
