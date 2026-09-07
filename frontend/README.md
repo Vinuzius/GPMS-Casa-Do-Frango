@@ -7,10 +7,27 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 To start a local development server, run:
 
 ```bash
-ng serve
+npm start
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+### Access from another device on the network
+
+From the `front-end` directory, install the dependencies once and start the server listening on the network:
+
+```bash
+npm install
+npm run start:network
+```
+
+Find the computer's IPv4 address with `ipconfig`, then open this address from another device on the same network, using port `4200`:
+
+```text
+http://YOUR_IPV4_ADDRESS:4200/
+```
+
+For example: `http://192.168.3.2:4200/`. If Windows Firewall asks for permission, allow Node.js on private networks. Both devices must be connected to the same network, and guest Wi-Fi may block device-to-device access.
 
 ## Code scaffolding
 

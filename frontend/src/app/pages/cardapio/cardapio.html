@@ -1,4 +1,12 @@
 <div class="cardapio-container">
+  @if (cartNotice()) {
+    <div class="cart-notice" role="status">
+      <mat-icon aria-hidden="true">check_circle</mat-icon>
+      <span>{{ cartNotice() }}</span>
+      <button type="button" aria-label="Fechar aviso" (click)="dismissCartNotice()">✕</button>
+    </div>
+  }
+
   <main class="main-content">
 
     <div class="page-header">

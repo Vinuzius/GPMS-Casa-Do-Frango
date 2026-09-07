@@ -1,0 +1,75 @@
+<main class="tracking-page">
+	@if (successNotice()) {
+		<div class="success-toast" role="status"><mat-icon aria-hidden="true">check_circle</mat-icon><span>{{ successNotice() }}</span></div>
+	}
+	@if (orders().length) {
+	<header class="tracking-heading">
+		<div>
+			<p class="eyebrow">Acompanhamento</p>
+			<h1>Status de Pedidos</h1>
+			<p>Acompanhe o status do seu pedido em tempo real.</p>
+		</div>
+		<a class="back-link" routerLink="/historico-pedidos">
+			<mat-icon aria-hidden="true">arrow_back</mat-icon>
+			Histórico de pedidos
+		</a>
+	</header>
+
+	<div class="orders-list">
+	@for (currentOrder of orders(); track currentOrder.id) {
+	<section class="tracking-card" [attr.aria-labelledby]="'order-title-' + currentOrder.id">
+		<div class="order-header">
+			<div>
+				<p class="order-number">Pedido #{{ currentOrder.id }}</p>
+				<h2 [id]="'order-title-' + currentOrder.id">Pedido recebido pela Casa do Frango</h2>
+				<p class="order-time">Realizado em {{ currentOrder.createdAt | date:'dd/MM/yyyy, HH:mm' }}</p>
+			</div>
+			<span class="status-badge"><span aria-hidden="true"></span> Em preparação</span>
+		</div>
+
+		<div class="progress-track" aria-label="Pedido em preparação">
+			<div class="progress-step complete">
+				<span class="step-icon"><mat-icon aria-hidden="true">check</mat-icon></span>
+				<strong>Recebido</strong>
+			</div>
+			<div class="progress-line active"></div>
+			<div class="progress-step current">
+				<span class="step-icon"><mat-icon aria-hidden="true">soup_kitchen</mat-icon></span>
+				<strong>Em preparação</strong>
+			</div>
+			<div class="progress-line"></div>
+			<div class="progress-step">
+				<span class="step-icon"><mat-icon aria-hidden="true">two_wheeler</mat-icon></span>
+				<strong>A caminho</strong>
+			</div>
+			<div class="progress-line"></div>
+			<div class="progress-step">
+				<span class="step-icon"><mat-icon aria-hidden="true">home</mat-icon></span>
+				<strong>Entregue</strong>
+			</div>
+		</div>
+
+		<div class="tracking-content">
+			<div class="items-section">
+				<div class="section-heading"><h3>Itens do pedido</h3><span>{{ currentOrder.items.length }} itens</span></div>
+				@for (item of currentOrder.items; track item.product.id + (item.size?.label ?? 'default')) {
+					<div class="item-row"><img class="item-emoji" [src]="item.product.imageUrl" [alt]="item.product.name" /><span><strong>{{ item.quantity }}x {{ item.product.name }}</strong><small>{{ item.size?.label ?? item.product.description }}</small></span><b>R$ {{ (item.unitPrice * item.quantity).toFixed(2) }}</b></div>
+				}
+			</div>
+
+			<aside class="delivery-summary">
+				<p class="section-kicker">Previsão</p>
+				<strong class="estimate">20:15 - 20:30</strong>
+				<p>{{ currentOrder.service === 'delivery' ? 'Entrega no endereço cadastrado' : 'Retirada no local' }}</p>
+				<div class="summary-line"><span>Subtotal</span><b>R$ {{ currentOrder.total.toFixed(2) }}</b></div>
+				<div class="summary-line"><span>Taxa de serviço</span><b>Grátis</b></div>
+				<div class="summary-line total"><span>Total</span><b>R$ {{ currentOrder.total.toFixed(2) }}</b></div>
+			</aside>
+		</div>
+	</section>
+	}
+	</div>
+	} @else {
+		<section class="empty-tracking"><mat-icon aria-hidden="true">hourglass_empty</mat-icon><h2>Nenhum pedido em andamento</h2><p>Quando você finalizar uma compra, ela aparecerá aqui.</p><a class="back-link" routerLink="/cardapio">Ir para o cardápio</a></section>
+	}
+</main>

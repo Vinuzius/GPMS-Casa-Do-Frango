@@ -27,6 +27,29 @@
     align-items: center;
     gap: 10px;
     white-space: nowrap;
+
+    a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: $white;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a:hover,
+    a:focus-visible {
+      color: $white;
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    .logo-image {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
   }
 
   .nav-links {
