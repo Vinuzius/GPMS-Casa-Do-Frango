@@ -8,8 +8,8 @@ type: Feature
 
 ---
 
-**Descreve qual o problema/feature apontada**
-Faça uma descrição direta do que se trata a feature de forma a ser facilmente identificada
+**Descreva qual o problema/feature apontado(a)**
+Faça uma descrição direta do que se trata a feature, de forma a ser facilmente identificada
 
 **Solução proposta**
 Existe alguma solução ideal que o autor pensou?
