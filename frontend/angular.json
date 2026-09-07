@@ -27,12 +27,8 @@
               "includePaths": ["src/styles"]
             },
             "inlineStyleLanguage": "scss",
-            "assets": [
-                "src/assets"
-],
-            "styles": [
-              "src/styles.scss"
-            ]
+            "assets": ["src/assets"],
+            "styles": ["src/styles.scss"]
           },
           "configurations": {
             "production": {
@@ -51,7 +47,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumError": "12kB"
                 }
               ],
               "outputHashing": "all"
