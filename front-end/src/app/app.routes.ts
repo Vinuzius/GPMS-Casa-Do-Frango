@@ -6,7 +6,7 @@ import { ProductDetail } from './shared/components/product-detail/product-detail
 import { Carrinho } from './pages/carrinho/carrinho';
 import { Perfil } from './pages/perfil/perfil';
 import { Notificacoes } from './pages/notificacoes/notificacoes';
-import { Produtos } from './pages/pedidos/produtos';
+import { HistoricoPedidos } from './pages/historico-pedidos/historico-pedidos';
 import { PedidosAndamento } from './pages/pedidos-andamento/pedidos-andamento';
 
 export const routes: Routes = [
@@ -19,6 +19,6 @@ export const routes: Routes = [
   { path: 'perfil', component: Perfil },
   { path: 'notificacoes', component: Notificacoes },
   { path: 'pedidos', component: PedidosAndamento },
-  { path: 'pedidos/historico', component: Produtos },
+  { path: 'historico-pedidos', component: HistoricoPedidos },
   { path: '**', redirectTo: '/login' }, // Rota para páginas não encontradas
 ];

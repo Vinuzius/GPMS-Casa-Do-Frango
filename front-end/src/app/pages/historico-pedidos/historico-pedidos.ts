@@ -3,12 +3,12 @@ import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
 
 @Component({
-  selector: 'app-produtos',
+  selector: 'app-historico-pedidos',
   imports: [
     ...SHARED_IMPORTS,
     ...MATERIAL_IMPORTS
   ],
-  templateUrl: './produtos.html',
-  styleUrl: './produtos.scss',
+  templateUrl: './historico-pedidos.html',
+  styleUrl: './historico-pedidos.scss',
 })
-export class Produtos {}
+export class HistoricoPedidos {}

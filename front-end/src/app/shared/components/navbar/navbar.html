@@ -54,7 +54,7 @@
       @if (isProfileMenuOpen) {
         <div class="dropdown">
           <a [routerLink]="['/perfil']" [queryParams]="{ secao: 'dados' }" (click)="closeProfileMenu()">Dados cadastrais</a>
-          <a routerLink="/pedidos/historico" (click)="closeProfileMenu()">Histórico de Pedidos</a>
+          <a routerLink="/historico-pedidos" (click)="closeProfileMenu()">Histórico de Pedidos</a>
           <a [routerLink]="['/perfil']" [queryParams]="{ secao: 'enderecos' }" (click)="closeProfileMenu()">Endereços</a>
           <div class="dropdown-divider"></div>
           <a href="#" (click)="closeProfileMenu()">Sair</a>

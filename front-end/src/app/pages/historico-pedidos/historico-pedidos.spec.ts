@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Cardapio } from '../cardapio/cardapio';
+import { HistoricoPedidos } from './historico-pedidos';
 
-describe('Cardapio', () => {
-  let component: Cardapio;
-  let fixture: ComponentFixture<Cardapio>;
+describe('HistoricoPedidos', () => {
+  let component: HistoricoPedidos;
+  let fixture: ComponentFixture<HistoricoPedidos>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cardapio],
+      imports: [HistoricoPedidos],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Cardapio);
+    fixture = TestBed.createComponent(HistoricoPedidos);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
