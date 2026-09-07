@@ -1,0 +1,49 @@
+name: Deploy Angular to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # Altere para 'master' se for a sua branch principal
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # Como o seu código Angular está dentro da pasta 'frontend':
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Build Angular Application
+        # Gera os arquivos da build configurando o caminho base para o GitHub Pages
+        run: npm run build -- --configuration production --base-href /${{ github.event.repository.name }}/
+        working-directory: ./frontend
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Versões recentes do Angular compilam em dist/<nome-do-projeto>/browser
+          # Ajuste o nome da pasta se seu angular.json usar outro nome
+          path: ./frontend/dist/GPMS-Casa-Do-Frango/browser
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
