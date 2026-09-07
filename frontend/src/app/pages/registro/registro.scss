@@ -1,0 +1,92 @@
+@use 'variables' as *;
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $bg-color;
+  padding: 1rem;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 360px;
+  background: $white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 1.25rem;
+  color: $text-dark;
+  margin: 0 0 0.5rem;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  color: $text-light;
+  margin-top: 0.5rem;
+}
+
+input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.campo-erro {
+  color: #d64545;
+  font-size: 0.8rem;
+}
+
+.erro-geral {
+  color: #d64545;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0;
+}
+
+button[type='submit'] {
+  margin-top: 1rem;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  background: $primary-color;
+  color: $white;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.rodape {
+  text-align: center;
+  font-size: 0.85rem;
+  color: $text-light;
+  margin-top: 1rem;
+
+  a {
+    color: $primary-color;
+    font-weight: 600;
+  }
+}

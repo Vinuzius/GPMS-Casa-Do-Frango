@@ -3,6 +3,8 @@ import { RouterLink, RouterLinkActive, Router } from '@angular/router';
 import { CartService } from '../../services/cart.service';
 import { NotificationsService } from '../../services/notifications.service';
 
+import { AuthService } from '../../services/auth.service';
+import { PerfilService } from '../../services/perfil.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,8 +20,10 @@ export class Navbar implements AfterViewInit {
   readonly unreadNotificationCount: Signal<number>;
 
   constructor(
-    private elementRef: ElementRef<HTMLElement>, 
+    private elementRef: ElementRef<HTMLElement>,
     private router: Router,
+    protected authService: AuthService,
+    protected perfilService: PerfilService,
     cartService: CartService,
     notificationsService: NotificationsService,
   ) {
@@ -51,6 +55,12 @@ export class Navbar implements AfterViewInit {
 
   closeProfileMenu(): void {
     this.isProfileMenuOpen = false;
+  }
+
+  async sair(): Promise<void> {
+    this.closeProfileMenu();
+    await this.authService.signOut();
+    this.router.navigateByUrl('/login');
   }
 
   @HostListener('document:click', ['$event.target'])

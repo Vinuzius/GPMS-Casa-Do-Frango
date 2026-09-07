@@ -2,7 +2,6 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardHeader, MatCardModule } from '@angular/material/card';
-import { MatDialogContent } from '@angular/material/dialog';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 export const SHARED_IMPORTS = [

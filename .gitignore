@@ -27,7 +27,8 @@ share/python-wheels/
 MANIFEST
 
 # Node.js dependencies
-/node_modules/
+node_modules/
+.angular/
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
