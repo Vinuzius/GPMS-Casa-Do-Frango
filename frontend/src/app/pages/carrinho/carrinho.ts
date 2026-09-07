@@ -8,6 +8,16 @@ import { OrdersService } from '../../shared/services/orders.service';
 type ServiceType = 'delivery' | 'pickup';
 type PaymentType = 'pix' | 'card';
 
+interface Address {
+  label: string;
+  street: string;
+  number: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
 @Component({
   selector: 'app-carrinho',
   imports: [
@@ -24,6 +34,9 @@ export class Carrinho {
   selectedService = signal<ServiceType>('delivery');
   selectedPayment = signal<PaymentType>('pix');
   checkoutStep = signal<'cart' | 'payment'>('cart');
+  readonly addresses = signal<Address[]>(this.loadAddresses());
+  selectedAddress = signal<Address>(this.addresses()[0] ?? this.defaultAddress());
+  isAddressMenuOpen = signal(false);
   coupon = '';
 
   constructor(
@@ -60,8 +73,44 @@ export class Carrinho {
     this.selectedPayment.set(payment);
   }
 
+  toggleAddressMenu(): void {
+    this.isAddressMenuOpen.update((isOpen) => !isOpen);
+  }
+
+  selectAddress(address: Address): void {
+    this.selectedAddress.set(address);
+    this.isAddressMenuOpen.set(false);
+  }
+
   finishOrder(): void {
     const order = this.ordersService.confirmOrder(this.selectedService(), this.selectedPayment());
     if (order) this.router.navigate(['/pedidos']);
+  }
+
+  private loadAddresses(): Address[] {
+    const storedAddresses = localStorage.getItem('casa-do-frango-addresses');
+
+    if (storedAddresses) {
+      try {
+        const addresses = JSON.parse(storedAddresses) as Address[];
+        if (Array.isArray(addresses) && addresses.length) return addresses;
+      } catch {
+        localStorage.removeItem('casa-do-frango-addresses');
+      }
+    }
+
+    return [this.defaultAddress()];
+  }
+
+  private defaultAddress(): Address {
+    return {
+      label: 'Casa',
+      street: 'Rua das Flores',
+      number: '123',
+      neighborhood: 'Centro',
+      city: 'São Paulo',
+      state: 'SP',
+      zipCode: '01000-000',
+    };
   }
 }

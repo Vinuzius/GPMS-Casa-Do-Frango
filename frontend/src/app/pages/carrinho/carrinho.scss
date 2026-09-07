@@ -52,7 +52,8 @@
 .coupon-field small { color: $text-light; font-size: 0.7rem; font-weight: 400; }
 .checkout-heading { margin-bottom: 30px; }
 .checkout-heading h1 { margin: 8px 0; color: #262626; font-size: clamp(2rem, 4vw, 3rem); }
-.checkout-heading .back-button { margin-bottom: 24px; }
+.checkout-heading .back-button { margin-bottom: 24px; padding: 10px 14px; border: 1px solid #eadbd6; border-radius: 10px; background: $white; color: $text-dark; cursor: pointer; box-shadow: 0 5px 14px rgba(91, 52, 38, 0.07); transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease; }
+.checkout-heading .back-button:hover { border-color: $primary-color; color: $primary-color; transform: translateX(-2px); }
 .payment-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; align-items: start; }
 .payment-panel, .finish-panel { padding: 28px; border: 1px solid rgba(51, 51, 51, 0.08); border-radius: 18px; background: $white; box-shadow: 0 14px 35px rgba(91, 52, 38, 0.08); }
 .payment-panel h2 { margin: 0; color: #262626; font-size: 1.3rem; }
@@ -62,7 +63,16 @@
 .payment-option span { display: grid; gap: 4px; color: #262626; } .payment-option small { color: $text-light; } .payment-check { color: #e5d5d0; } .payment-option.selected .payment-check { color: $primary-color; }
 .address-title { padding-top: 25px; border-top: 1px solid #f0e9e6; }
 .address-card { display: flex; align-items: center; gap: 12px; margin-top: 18px; padding: 15px; border-radius: 12px; background: #fff7f4; color: $primary-color; }
-.address-card div { display: grid; flex: 1; gap: 4px; color: #262626; } .address-card span { color: $text-light; font-size: 0.8rem; } .address-card button { border: 0; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.78rem; font-weight: 800; }
+.address-card div { display: grid; flex: 1; gap: 4px; color: #262626; } .address-card span { color: $text-light; font-size: 0.8rem; }
+.change-address-button { display: inline-flex; align-items: center; gap: 2px; border: 0; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.78rem; font-weight: 800; }
+.change-address-button .mat-icon { width: 16px; height: 16px; font-size: 16px; }
+.address-selector { position: relative; }
+.address-options { position: absolute; z-index: 2; right: 0; left: 0; display: grid; gap: 6px; margin-top: 8px; padding: 8px; border: 1px solid #eadbd6; border-radius: 12px; background: $white; box-shadow: 0 14px 28px rgba(91, 52, 38, 0.14); }
+.address-option { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 11px 12px; border: 1px solid transparent; border-radius: 8px; background: $white; color: #262626; cursor: pointer; text-align: left; }
+.address-option:hover, .address-option.selected { border-color: #f5c1b5; background: #fff7f4; }
+.address-option span { display: grid; gap: 3px; }
+.address-option small { color: $text-light; font-size: 0.75rem; }
+.address-option .mat-icon { color: $primary-color; }
 .finish-panel { position: sticky; top: calc(var(--topbar-height, 90px) + 24px); }
 .finish-line, .finish-total { display: flex; justify-content: space-between; color: $text-light; font-size: 0.85rem; }
 .finish-line { margin-top: 18px; } .finish-line strong { color: #262626; }
