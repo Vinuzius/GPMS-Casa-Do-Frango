@@ -1,0 +1,97 @@
+@use 'variables' as *;
+
+.admin-page {
+  padding-top: var(--topbar-height, 90px);
+  max-width: 900px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.back-link {
+  display: inline-block;
+  margin: 25px 0;
+  color: $text-dark;
+  opacity: 0.7;
+  text-decoration: none;
+
+  &:hover { opacity: 1; }
+}
+
+.show-content {
+  display: flex;
+  gap: 35px;
+  background: $white;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.show-image {
+  flex: 0 0 280px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.show-info {
+  flex: 1;
+
+  .show-category {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 700;
+    color: $primary-color;
+  }
+
+  h2 { margin: 8px 0 12px; color: $text-dark; }
+
+  .show-description {
+    opacity: 0.75;
+    margin-bottom: 15px;
+  }
+
+  .show-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: $primary-color;
+    margin-bottom: 12px;
+  }
+}
+
+.show-sizes {
+  margin-top: 20px;
+
+  h4 { font-size: 14px; margin-bottom: 8px; }
+  .size-item { font-size: 14px; opacity: 0.8; margin-bottom: 4px; }
+}
+
+.show-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 25px;
+
+  .edit-btn, .delete-btn {
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .edit-btn {
+    background: $primary-color;
+    color: $white;
+  }
+
+  .delete-btn {
+    background: #fdecea;
+    color: #c0392b;
+  }
+}
+
+@media (max-width: 700px) {
+  .show-content { flex-direction: column; }
+  .show-image { flex-basis: auto; height: 200px; }
+}

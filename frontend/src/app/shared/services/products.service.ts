@@ -831,6 +831,33 @@ const MOCK_PRODUCTS: Product[] = [
 
 @Injectable({ providedIn: 'root' })
 export class ProductsService {
+
+  // shared/services/products.service.ts — adicionar dentro da classe ProductsService
+
+  private generateId(): string {
+    return 'prod-' + Date.now();
+  }
+
+  createProduct(data: Omit<Product, 'id'>): Product {
+    const newProduct: Product = { id: this.generateId(), ...data };
+    MOCK_PRODUCTS.push(newProduct);
+    return newProduct;
+  }
+
+  updateProduct(id: string, changes: Omit<Product, 'id'>): void {
+    const index = MOCK_PRODUCTS.findIndex((p) => p.id === id);
+    if (index !== -1) {
+      MOCK_PRODUCTS[index] = { id, ...changes };
+    }
+  }
+
+  deleteProduct(id: string): void {
+    const index = MOCK_PRODUCTS.findIndex((p) => p.id === id);
+    if (index !== -1) {
+      MOCK_PRODUCTS.splice(index, 1);
+    }
+  }
+  
   getAllProducts(): Product[] {
     return MOCK_PRODUCTS;
   }

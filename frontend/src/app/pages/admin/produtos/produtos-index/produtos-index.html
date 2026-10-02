@@ -1,0 +1,69 @@
+<div class="admin-page">
+  <div class="admin-header">
+    <h2>Produtos</h2>
+    <a routerLink="/admin/produtos/novo" class="new-btn">+ Novo Produto</a>
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar por nome..."
+      [(ngModel)]="searchTerm"
+      (ngModelChange)="applyFilter()"
+    />
+  </div>
+
+  <table class="products-table">
+    <thead>
+      <tr>
+        <th>Imagem</th>
+        <th>Nome</th>
+        <th>Categoria</th>
+        <th>Preço</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of paginatedProducts; track product.id) {
+        <tr>
+          <td><img [src]="product.imageUrl" [alt]="product.name" class="row-thumb" /></td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.category }}</td>
+          <td>R$ {{ product.price.toFixed(2) }}</td>
+          <td>
+            <span class="status-badge" [class.inactive]="product.available === false">
+              {{ product.available === false ? 'Indisponível' : 'Disponível' }}
+            </span>
+          </td>
+          <td>
+            <a [routerLink]="['/admin/produtos', product.id]" class="view-btn">Ver</a>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" class="empty-row">Nenhum produto encontrado.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  @if (filteredProducts.length > 0) {
+    <div class="pagination">
+      <button type="button" (click)="previousPage()" [disabled]="currentPage === 1">‹ Anterior</button>
+
+      @for (page of pageNumbers; track page) {
+        <button
+          type="button"
+          class="page-btn"
+          [class.active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      }
+
+      <button type="button" (click)="nextPage()" [disabled]="currentPage === totalPages">Próximo ›</button>
+    </div>
+  }
+</div>

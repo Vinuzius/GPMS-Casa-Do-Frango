@@ -1,0 +1,136 @@
+@use 'variables' as *;
+
+.admin-page {
+  padding-top: var(--topbar-height, 90px);
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0 25px;
+
+  h2 {
+    color: $text-dark;
+  }
+
+  .new-btn {
+    background: $primary-color;
+    color: $white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+}
+
+.search-bar {
+  margin-bottom: 20px;
+
+  input {
+    width: 100%;
+    max-width: 320px;
+    padding: 10px 15px;
+    border: 2px solid #eadbd6;
+    border-radius: 10px;
+    font: inherit;
+    outline: none;
+
+    &:focus {
+      border-color: $primary-color;
+    }
+  }
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f0e9e6;
+  }
+
+  th {
+    background: $bg-color;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: $text-dark;
+    opacity: 0.6;
+  }
+
+  .row-thumb {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .view-btn {
+    color: $primary-color;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .empty-row {
+    text-align: center;
+    padding: 40px;
+    opacity: 0.6;
+  }
+}
+
+.status-badge {
+  background: #e3f5e9;
+  color: #2d8a4e;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+
+  &.inactive {
+    background: #f5e3e3;
+    color: #c0392b;
+  }
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 25px;
+  flex-wrap: wrap;
+
+  button {
+    padding: 8px 14px;
+    border: 2px solid #eadbd6;
+    border-radius: 8px;
+    background: $white;
+    color: $text-dark;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover:not(:disabled) {
+      border-color: $primary-color;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  .page-btn.active {
+    background: $primary-color;
+    border-color: $primary-color;
+    color: $white;
+  }
+}

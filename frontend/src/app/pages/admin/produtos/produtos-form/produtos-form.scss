@@ -1,0 +1,145 @@
+@use 'variables' as *;
+
+.form-page {
+  padding-top: var(--topbar-height, 90px);
+  min-height: 100vh;
+  background: $bg-color;
+}
+
+.form-container {
+  max-width: 650px;
+  margin: 30px auto;
+  background: $white;
+  border-radius: 18px;
+  padding: 35px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  h2 { margin-bottom: 25px; color: $text-dark; }
+}
+
+.field, .field-row > .field {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 6px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 2px solid #eadbd6;
+    border-radius: 10px;
+    font: inherit;
+    outline: none;
+
+    &:focus { border-color: $primary-color; }
+  }
+}
+
+.field-row {
+  display: flex;
+  gap: 18px;
+
+  .field { flex: 1; }
+}
+
+.field-checkboxes {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 20px;
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+}
+
+.sizes-section {
+  margin-bottom: 25px;
+
+  .sizes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    h4 { font-size: 14px; margin: 0; }
+  }
+
+  .add-size-btn {
+    background: none;
+    border: none;
+    color: $primary-color;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 13px;
+  }
+
+  .size-row {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    input {
+      flex: 1;
+      min-width: 0; // evita inputs empurrando o layout quando o texto é longo
+      padding: 10px 12px;
+      border: 2px solid #eadbd6;
+      border-radius: 10px;
+      font: inherit;
+      outline: none;
+
+      &:focus { border-color: $primary-color; }
+    }
+
+    .remove-size-btn {
+      flex: 0 0 40px;
+      border: none;
+      border-radius: 10px;
+      background: #fdecea;
+      color: #c0392b;
+      font-size: 16px;
+      cursor: pointer;
+
+      &:hover { background: #f9d4d0; }
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+
+  button {
+    flex: 1;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .cancel-btn {
+    background: $bg-color;
+    color: $text-dark;
+  }
+
+  .submit-btn {
+    background: $primary-color;
+    color: $white;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
