@@ -55,6 +55,7 @@
   .nav-links {
     display: flex;
     gap: 25px;
+    align-items: center; // necessário pra alinhar o botão do dropdown com os links <a>
 
     a {
       color: $white;
@@ -68,6 +69,76 @@
       &:hover,
       &.active {
         opacity: 1;
+      }
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-trigger {
+      // reset de estilos padrão de <button>
+      border: none;
+      outline: none;
+      background: none;
+      font-family: inherit;
+      appearance: none;
+      padding: 0;
+
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: $white;
+      font-weight: 500;
+      font-size: 15px;
+      opacity: 0.8;
+      cursor: pointer;
+      transition: 0.3s;
+
+      &:hover,
+      &.active {
+        opacity: 1;
+      }
+
+      .chevron {
+        font-size: 11px;
+        transition: transform 0.2s;
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 0;
+      background: $white;
+      color: $text-dark;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      min-width: 180px;
+      padding: 8px 0;
+      z-index: 100;
+
+      a {
+        display: block;
+        padding: 10px 18px;
+        color: $text-dark;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 1; // sobrescreve o opacity: 0.8 herdado da regra genérica "a" do .nav-links
+
+        &:hover {
+          background: $bg-color;
+        }
+
+        &.active {
+          color: $primary-color;
+          font-weight: 700;
+        }
       }
     }
   }
