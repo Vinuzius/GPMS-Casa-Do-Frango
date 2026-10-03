@@ -1,16 +1,12 @@
-// cardapio.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 import { ProductsService } from '../../shared/services/products.service';
-import { Product, ProductCategory } from '../../shared/models/product.model';
+import { CategoriesService } from '../../shared/services/categories.service';
 import { CartService } from '../../shared/services/cart.service';
-import { MatIconModule } from '@angular/material/icon';
-
-interface CategoryOption {
-  value: ProductCategory | 'todos';
-  label: string;
-}
+import { Product } from '../../shared/models/product.model';
+import { Category } from '../../shared/models/category.model';
 
 @Component({
   selector: 'app-cardapio',
@@ -19,48 +15,42 @@ interface CategoryOption {
   styleUrl: './cardapio.scss',
 })
 export class Cardapio implements OnInit {
-  categories: CategoryOption[] = [
-    { value: 'todos', label: 'Todos' },
-    { value: 'refeicoes', label: 'Refeições' },
-    { value: 'bebidas', label: 'Bebidas' },
-    { value: 'aperitivos', label: 'Aperitivos' },
-    { value: 'sobremesas', label: 'Sobremesas' },
-  ];
+  categories: Category[] = [];
 
   allProducts: Product[] = [];
   filteredProducts: Product[] = [];
-  activeCategory: ProductCategory | 'todos' = 'todos';
+  activeCategory = 'todos';
   searchTerm = '';
-  readonly cartNotice;
+
+  readonly cartNotice: Signal<string | null>;
 
   constructor(
     private productsService: ProductsService,
+    private categoriesService: CategoriesService,
+    private cartService: CartService,
     private route: ActivatedRoute,
     private router: Router,
-    private cartService: CartService,
   ) {
     this.cartNotice = this.cartService.cartNotice;
+    if (this.cartNotice()) window.setTimeout(() => this.cartService.clearNotice(), 5000);
   }
 
   ngOnInit(): void {
     this.allProducts = this.productsService.getAllProducts();
-
-    if (this.cartNotice()) {
-      window.setTimeout(() => this.cartService.clearNotice(), 5000);
-    }
+    this.categories = this.categoriesService.getAllCategories();
 
     this.route.queryParams.subscribe((params) => {
       this.searchTerm = params['busca'] ?? '';
-      this.activeCategory = (params['categoria'] as ProductCategory) ?? 'todos';
+      this.activeCategory = params['categoria'] ?? 'todos';
       this.applyFilters();
     });
   }
 
-  selectCategory(category: ProductCategory | 'todos'): void {
+  selectCategory(categoryId: string): void {
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { categoria: category === 'todos' ? null : category },
-      queryParamsHandling: 'merge', // preserva o "busca" que já estiver na URL
+      queryParams: { categoria: categoryId === 'todos' ? null : categoryId },
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -72,7 +62,7 @@ export class Cardapio implements OnInit {
     let result = this.allProducts;
 
     if (this.activeCategory !== 'todos') {
-      result = result.filter((p) => p.category === this.activeCategory);
+      result = result.filter((p) => p.categoryIds.includes(this.activeCategory));
     }
 
     if (this.searchTerm) {

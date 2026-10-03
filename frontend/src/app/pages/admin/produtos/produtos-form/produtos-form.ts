@@ -2,25 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../../../shared/services/products.service';
-import { Product, ProductCategory } from '../../../../shared/models/product.model';
+import { Product } from '../../../../shared/models/product.model';
+import { CategoriesService } from '../../../../shared/services/categories.service';
+import { Category } from '../../../../shared/models/category.model';
+import { TagSelect } from '../../../../shared/components/tag-select/tag-select';
 
 @Component({
   selector: 'app-produto-form',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TagSelect],
   templateUrl: './produtos-form.html',
   styleUrl: './produtos-form.scss',
 })
 export class ProdutoForm implements OnInit {
   isEditMode = false;
   productId: string | null = null;
-
-  categories: ProductCategory[] = ['refeicoes', 'bebidas', 'aperitivos', 'sobremesas'];
+  categories: Category[] = [];
 
   formData: Omit<Product, 'id'> = {
     name: '',
     description: '',
-    category: 'refeicoes',
+    categoryIds: [],
     price: 0,
     rating: 5,
     imageUrl: '',
@@ -33,11 +35,13 @@ export class ProdutoForm implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productsService: ProductsService,
+    private categoriesService: CategoriesService,
   ) {}
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.productId;
+    this.categories = this.categoriesService.getAllCategories();
 
     if (this.isEditMode && this.productId) {
       const existing = this.productsService.getProductById(this.productId);
@@ -62,7 +66,7 @@ export class ProdutoForm implements OnInit {
     } else {
       this.productsService.createProduct(this.formData);
     }
-    this.router.navigate(['/admin/produtos']); // sempre Index
+    this.router.navigate(['/admin/produtos']);
   }
 
   cancel(): void {

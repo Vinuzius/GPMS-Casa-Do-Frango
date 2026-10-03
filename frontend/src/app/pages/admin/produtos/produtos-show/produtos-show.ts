@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductsService } from '../../../../shared/services/products.service';
 import { Product } from '../../../../shared/models/product.model';
+import { CategoriesService } from '../../../../shared/services/categories.service';
+
 
 @Component({
   selector: 'app-produto-show',
@@ -18,8 +20,16 @@ export class ProdutoShow implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productsService: ProductsService,
-  ) {}
+    private categoriesService: CategoriesService,
 
+  ) {}
+  
+  get categoryNames(): string {
+    if (!this.product) return '';
+    return this.product.categoryIds
+      .map((id) => this.categoriesService.getCategoryById(id)?.name ?? id)
+      .join(', ');
+  }
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.product = id ? this.productsService.getProductById(id) : undefined;

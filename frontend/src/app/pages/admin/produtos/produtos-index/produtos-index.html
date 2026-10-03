@@ -29,7 +29,7 @@
         <tr>
           <td><img [src]="product.imageUrl" [alt]="product.name" class="row-thumb" /></td>
           <td>{{ product.name }}</td>
-          <td>{{ product.category }}</td>
+          <td>{{ getCategoryNames(product) }}</td>
           <td>R$ {{ product.price.toFixed(2) }}</td>
           <td>
             <span class="status-badge" [class.inactive]="product.available === false">

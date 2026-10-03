@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../../../shared/services/products.service';
 import { Product } from '../../../../shared/models/product.model';
+import { CategoriesService } from '../../../../shared/services/categories.service';
 
 @Component({
   selector: 'app-produtos-index',
@@ -19,7 +20,10 @@ export class ProdutosIndex implements OnInit {
   currentPage = 1;
   itemsPerPage = 8;
 
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private categoriesService: CategoriesService,
+  ) {}
 
   ngOnInit(): void {
     this.allProducts = this.productsService.getAllProducts();
@@ -47,6 +51,12 @@ export class ProdutosIndex implements OnInit {
 
   get pageNumbers(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  getCategoryNames(product: Product): string {
+    return product.categoryIds
+      .map((id) => this.categoriesService.getCategoryById(id)?.name ?? id)
+      .join(', ');
   }
 
   goToPage(page: number): void {

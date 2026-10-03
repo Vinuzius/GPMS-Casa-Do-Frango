@@ -1,0 +1,24 @@
+<div class="form-page">
+  <div class="form-container">
+    <h2>{{ isEditMode ? 'Editar Categoria' : 'Nova Categoria' }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <div class="field">
+        <label for="name">Nome</label>
+        <input id="name" type="text" name="name" [(ngModel)]="formData.name" required />
+      </div>
+
+      <div class="field">
+        <label for="description">Descrição (opcional)</label>
+        <textarea id="description" name="description" [(ngModel)]="formData.description" rows="2"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancelar</button>
+        <button type="submit" class="submit-btn" [disabled]="form.invalid">
+          {{ isEditMode ? 'Salvar Alterações' : 'Criar Categoria' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

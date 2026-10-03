@@ -15,20 +15,32 @@ import { Perfil }           from './pages/perfil/perfil';
 import { ProdutosIndex }    from './pages/admin/produtos/produtos-index/produtos-index';
 import { ProdutoShow }      from './pages/admin/produtos/produtos-show/produtos-show';
 import { ProdutoForm }      from './pages/admin/produtos/produtos-form/produtos-form';
+import { CategoriasIndex }  from './pages/admin/categorias/categorias-index/categorias-index';
+import { CategoriaForm }    from './pages/admin/categorias/categorias-form/categorias-form';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Rota padrão
-  { path: 'login',                component: Login },
-  { path: 'registro',             component: Registro },
-  { path: 'dashboard',            component: Dashboard,        canActivate: [authGuard] },
-  { path: 'cardapio',             component: Cardapio,         canActivate: [authGuard] }, // Rota para a página de cardápio
-  { path: 'cardapio/produto/:id', component: ProductDetail,    canActivate: [authGuard] }, // Rota para a página de detalhes do produto
-  { path: 'admin',                component: Admin,            canActivate: [authGuard] },
-  { path: 'carrinho',             component: Carrinho,         canActivate: [authGuard] },
-  { path: 'perfil',               component: Perfil,           canActivate: [authGuard] },
-  { path: 'notificacoes',         component: Notificacoes,     canActivate: [authGuard] },
-  { path: 'pedidos',              component: PedidosAndamento, canActivate: [authGuard] },
-  { path: 'historico-pedidos',    component: HistoricoPedidos, canActivate: [authGuard] },
+  
+  // Rotas públicas (fora do guard)
+  { path: 'login',    component: Login },
+  { path: 'registro', component: Registro },
+
+  // Rotas protegidas: um guard só para o grupo
+  {
+    path: '',
+    canActivate: [authGuard],
+    children: [
+      { path: 'dashboard',            component: Dashboard },
+      { path: 'cardapio',             component: Cardapio },
+      { path: 'cardapio/produto/:id', component: ProductDetail },
+      { path: 'admin',                component: Admin },
+      { path: 'carrinho',             component: Carrinho },
+      { path: 'perfil',               component: Perfil },
+      { path: 'notificacoes',         component: Notificacoes },
+      { path: 'pedidos',              component: PedidosAndamento },
+      { path: 'historico-pedidos',    component: HistoricoPedidos },
+    ],
+  },
   {
     path: 'admin/produtos',
     canActivate: [authGuard],
@@ -37,6 +49,15 @@ export const routes: Routes = [
       { path: 'novo',             component: ProdutoForm },      // precisa vir ANTES de ':id'
       { path: ':id',              component: ProdutoShow },
       { path: ':id/editar',       component: ProdutoForm },
+    ],
+  },
+  {
+    path: 'admin/categorias',
+    canActivate: [authGuard],
+    children: [
+      { path: '', component: CategoriasIndex },
+      { path: 'nova', component: CategoriaForm },
+      { path: ':id/editar', component: CategoriaForm },
     ],
   },
   { path: '**', redirectTo: '/login' } // Rota para páginas não encontradas

@@ -143,3 +143,36 @@
     }
   }
 }
+
+.multiselect {
+  width: 100%;
+  min-height: 130px;
+  padding: 8px;
+  border: 2px solid #eadbd6;
+  border-radius: 10px;
+  font: inherit;
+  outline: none;
+  background: $white;
+
+  &:focus {
+    border-color: $primary-color;
+  }
+
+  option {
+    padding: 8px 10px;
+    border-radius: 6px;
+
+    &:checked {
+      background: $primary-color;
+      color: $white;
+    }
+  }
+}
+
+.field-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: $text-dark;
+  opacity: 0.6;
+}

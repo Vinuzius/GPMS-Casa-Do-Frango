@@ -1,0 +1,33 @@
+<div class="tag-select">
+  <div class="tag-select-control" (click)="openDropdown()">
+    @for (option of selectedOptions; track option.id) {
+      <span class="tag-chip">
+        {{ option.name }}
+        <button type="button" (click)="removeOption(option.id, $event)" aria-label="Remover">✕</button>
+      </span>
+    }
+
+    <input
+      type="text"
+      [placeholder]="selectedOptions.length ? '' : placeholder"
+      [(ngModel)]="searchTerm"
+      (focus)="openDropdown()"
+    />
+  </div>
+
+  @if (isOpen && filteredOptions.length > 0) {
+    <div class="tag-select-dropdown">
+      @for (option of filteredOptions; track option.id) {
+        <button type="button" class="tag-option" (click)="selectOption(option)">
+          {{ option.name }}
+        </button>
+      }
+    </div>
+  }
+
+  @if (isOpen && filteredOptions.length === 0 && searchTerm) {
+    <div class="tag-select-dropdown">
+      <span class="tag-empty">Nenhum resultado para "{{ searchTerm }}"</span>
+    </div>
+  }
+</div>

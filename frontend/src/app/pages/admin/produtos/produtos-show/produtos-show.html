@@ -11,7 +11,7 @@
       <img [src]="product.imageUrl" [alt]="product.name" class="show-image" />
 
       <div class="show-info">
-        <span class="show-category">{{ product.category }}</span>
+        <span class="show-category">{{ categoryNames }}</span>
         <h2>{{ product.name }}</h2>
         <p class="show-description">{{ product.description }}</p>
         <div class="show-price">R$ {{ product.price.toFixed(2) }}</div>
