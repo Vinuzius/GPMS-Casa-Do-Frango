@@ -41,16 +41,41 @@
 					</article>
 				}
 				@if (isAddressFormOpen()) {
-					<form class="address-form">
-						<h3>{{ editingAddressIndex() === null ? 'Novo endereço' : 'Editar endereço' }}</h3>
-						<label>Rua<input name="street" [(ngModel)]="addressDraft.street" placeholder="Nome da rua" /></label>
-						<label>Número<input name="number" [(ngModel)]="addressDraft.number" placeholder="Número" /></label>
-						<label>Bairro<input name="neighborhood" [(ngModel)]="addressDraft.neighborhood" placeholder="Bairro" /></label>
-						<label>Cidade<input name="city" [(ngModel)]="addressDraft.city" placeholder="Cidade" /></label>
-						<label>Estado<input name="state" [(ngModel)]="addressDraft.state" placeholder="UF" /></label>
-						<label>CEP<input name="zipCode" [(ngModel)]="addressDraft.zipCode" placeholder="00000-000" /></label>
-						<div class="address-form-actions"><button type="button" class="cancel-button" (click)="cancelAddressForm()">Cancelar</button><button type="button" class="save-address-button" (click)="saveAddress()">Salvar endereço</button></div>
-					</form>
+					<div class="dialog-backdrop" (click)="cancelAddressForm()">
+						<section class="address-dialog" role="dialog" aria-modal="true" aria-labelledby="address-dialog-title" (click)="$event.stopPropagation()">
+							<div class="dialog-heading">
+								<div>
+									<p class="section-kicker">{{ editingAddressIndex() === null ? 'Novo endereço' : 'Editar endereço' }}</p>
+									<h3 id="address-dialog-title">{{ editingAddressIndex() === null ? 'Adicionar endereço' : 'Editar endereço' }}</h3>
+								</div>
+								<button class="dialog-close" type="button" aria-label="Fechar diálogo" (click)="cancelAddressForm()">
+									<mat-icon aria-hidden="true">close</mat-icon>
+								</button>
+							</div>
+							<form class="address-form" (submit)="$event.preventDefault(); saveAddress()">
+								<label class="address-label-field">Nome do endereço
+									<input name="label" [(ngModel)]="addressDraft.label" list="address-label-options" placeholder="Ex.: Casa, Trabalho" />
+								</label>
+								<datalist id="address-label-options">
+									<option value="Casa"></option>
+									<option value="Trabalho"></option>
+								</datalist>
+								<label>Rua<input name="street" [(ngModel)]="addressDraft.street" placeholder="Nome da rua" /></label>
+								<label>Número<input name="number" [(ngModel)]="addressDraft.number" placeholder="Número" /></label>
+								<label>Bairro<input name="neighborhood" [(ngModel)]="addressDraft.neighborhood" placeholder="Bairro" /></label>
+								<label>Cidade<input name="city" [(ngModel)]="addressDraft.city" placeholder="Cidade" /></label>
+								<label>Estado<input name="state" [(ngModel)]="addressDraft.state" placeholder="UF" /></label>
+								<label>CEP<input name="zipCode" [(ngModel)]="addressDraft.zipCode" placeholder="00000-000" /></label>
+								<div class="address-form-actions">
+									<button type="button" class="cancel-button" (click)="cancelAddressForm()">Cancelar</button>
+									@if (editingAddressIndex() !== null) {
+										<button type="button" class="delete-address-button" (click)="deleteAddress()">Excluir endereço</button>
+									}
+									<button type="submit" class="save-address-button">Salvar endereço</button>
+								</div>
+							</form>
+						</section>
+					</div>
 				}
 				<button class="add-address-button" type="button" (click)="addAddress()"><mat-icon aria-hidden="true">add</mat-icon> Adicionar novo endereço</button>
 			}

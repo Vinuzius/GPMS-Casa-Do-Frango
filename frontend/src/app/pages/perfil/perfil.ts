@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, HostListener, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
@@ -69,16 +69,38 @@ export class Perfil implements OnInit {
     this.isAddressFormOpen.set(false);
   }
 
+  deleteAddress(): void {
+    const index = this.editingAddressIndex();
+    if (index === null) return;
+
+    const address = this.addresses()[index];
+    if (!address || !window.confirm(`Excluir o endereço "${address.label || 'selecionado'}"?`)) return;
+
+    this.addresses.update((addresses) => addresses.filter((_, addressIndex) => addressIndex !== index));
+    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
+    this.isAddressFormOpen.set(false);
+  }
+
   saveAddress(): void {
     if (!this.addressDraft.street.trim() || !this.addressDraft.number.trim()) return;
 
     const newAddress: Address = {
       ...this.addressDraft,
-      label: `Endereço ${this.addresses().length + 1}`,
+      label: this.addressDraft.label.trim() || `Endereço ${this.addresses().length + 1}`,
     };
-    this.addresses.update((addresses) => [...addresses, newAddress]);
+    const index = this.editingAddressIndex();
+    this.addresses.update((addresses) => {
+      if (index === null) return [...addresses, newAddress];
+
+      return addresses.map((address, addressIndex) => addressIndex === index ? newAddress : address);
+    });
     localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
     this.isAddressFormOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  closeAddressDialogWithEscape(): void {
+    if (this.isAddressFormOpen()) this.cancelAddressForm();
   }
 
   private emptyAddress(): Address {
