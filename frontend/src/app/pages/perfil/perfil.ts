@@ -1,7 +1,8 @@
-import { Component, HostListener, OnInit, signal } from '@angular/core';
+import { Component, HostListener, OnInit, Signal, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
+import { CartService } from '../../shared/services/cart.service';
 
 type ProfileSection = 'details' | 'addresses';
 
@@ -27,8 +28,14 @@ export class Perfil implements OnInit {
   isAddressFormOpen = signal(false);
   editingAddressIndex = signal<number | null>(null);
   addressDraft: Address = this.emptyAddress();
+  readonly cartNotice: Signal<string | null>;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cartService: CartService,
+  ) {
+    this.cartNotice = this.cartService.cartNotice;
+  }
 
   ngOnInit(): void {
     this.route.queryParamMap.subscribe((params) => {
@@ -79,6 +86,7 @@ export class Perfil implements OnInit {
     this.addresses.update((addresses) => addresses.filter((_, addressIndex) => addressIndex !== index));
     localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
     this.isAddressFormOpen.set(false);
+    this.showNotice('Endereço excluído com sucesso.');
   }
 
   saveAddress(): void {
@@ -96,6 +104,11 @@ export class Perfil implements OnInit {
     });
     localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
     this.isAddressFormOpen.set(false);
+    this.showNotice(index === null ? 'Endereço salvo com sucesso.' : 'Endereço atualizado com sucesso.');
+  }
+
+  dismissCartNotice(): void {
+    this.cartService.clearNotice();
   }
 
   @HostListener('document:keydown.escape')
@@ -105,6 +118,13 @@ export class Perfil implements OnInit {
 
   private emptyAddress(): Address {
     return { label: '', street: '', number: '', neighborhood: '', city: '', state: '', zipCode: '' };
+  }
+
+  private showNotice(message: string): void {
+    this.cartService.showNotice(message);
+    window.setTimeout(() => {
+      if (this.cartNotice() === message) this.cartService.clearNotice();
+    }, 5000);
   }
 
   private loadAddresses(): Address[] {
