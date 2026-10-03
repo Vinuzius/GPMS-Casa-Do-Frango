@@ -1,9 +1,8 @@
 <div class="auth-page">
   @if (cadastroPendenteConfirmacao) {
     <div class="auth-card">
-      <div class="logo">
-        <span>🐔</span>
-        <span>Casa do Frango</span>
+      <div class="auth-brand">
+        <img src="assets/logo.png" alt="Casa do Frango" />
       </div>
       <h1>Quase lá!</h1>
       <p>Cadastro realizado. Verifique seu e-mail para confirmar a conta antes de entrar.</p>
@@ -11,9 +10,8 @@
     </div>
   } @else {
     <form class="auth-card" [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="logo">
-        <span>🐔</span>
-        <span>Casa do Frango</span>
+      <div class="auth-brand">
+        <img src="assets/logo.png" alt="Casa do Frango" />
       </div>
 
       <h1>Criar conta</h1>

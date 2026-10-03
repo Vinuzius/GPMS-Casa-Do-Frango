@@ -13,27 +13,38 @@
   width: 100%;
   max-width: 360px;
   background: $white;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-radius: 16px;
+  padding: 2.25rem 2rem 2rem;
+  box-shadow: 0 12px 30px rgba(91, 52, 38, 0.1);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.logo {
+.auth-brand {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.65rem;
   font-weight: 700;
   color: $text-dark;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.01em;
+}
+
+.auth-brand img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  border-radius: 14px;
 }
 
 h1 {
   font-size: 1.25rem;
   color: $text-dark;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.65rem;
+  text-align: center;
 }
 
 label {
