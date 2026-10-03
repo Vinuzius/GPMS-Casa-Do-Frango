@@ -4,7 +4,7 @@ import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
 import { CartService } from '../../shared/services/cart.service';
 
-type ProfileSection = 'details' | 'addresses';
+type ProfileSection = 'details' | 'addresses' | 'password';
 
 interface Address {
   label: string;
@@ -24,6 +24,12 @@ interface UserProfile {
   phone: string;
 }
 
+interface PasswordDraft {
+  current: string;
+  next: string;
+  confirmation: string;
+}
+
 @Component({
   selector: 'app-perfil',
   imports: [...SHARED_IMPORTS, ...MATERIAL_IMPORTS],
@@ -38,6 +44,7 @@ export class Perfil implements OnInit {
   editingAddressIndex = signal<number | null>(null);
   addressDraft: Address = this.emptyAddress();
   profileDraft: UserProfile = { ...this.profile() };
+  passwordDraft: PasswordDraft = this.emptyPasswordDraft();
   readonly cartNotice: Signal<string | null>;
 
   constructor(
@@ -55,6 +62,8 @@ export class Perfil implements OnInit {
         this.showAddresses();
       } else if (section === 'dados') {
         this.showDetails();
+      } else if (section === 'senha') {
+        this.showPassword();
       }
     });
   }
@@ -65,6 +74,38 @@ export class Perfil implements OnInit {
 
   showAddresses(): void {
     this.activeSection.set('addresses');
+  }
+
+  showPassword(): void {
+    this.activeSection.set('password');
+    this.passwordDraft = this.emptyPasswordDraft();
+  }
+
+  savePassword(): void {
+    const { current, next, confirmation } = this.passwordDraft;
+    if (!current || !next || !confirmation) return;
+
+    const storedPassword = localStorage.getItem('casa-do-frango-mock-password') ?? '123456';
+    if (current !== storedPassword) {
+      this.showNotice('A senha atual está incorreta.');
+      return;
+    }
+    if (next.length < 6) {
+      this.showNotice('A nova senha precisa ter pelo menos 6 caracteres.');
+      return;
+    }
+    if (next !== confirmation) {
+      this.showNotice('A confirmação da nova senha não confere.');
+      return;
+    }
+    if (next === current) {
+      this.showNotice('A nova senha deve ser diferente da senha atual.');
+      return;
+    }
+
+    localStorage.setItem('casa-do-frango-mock-password', next);
+    this.passwordDraft = this.emptyPasswordDraft();
+    this.showNotice('Senha alterada com sucesso.');
   }
 
   hasProfileChanges(): boolean {
@@ -147,6 +188,10 @@ export class Perfil implements OnInit {
 
   private emptyAddress(): Address {
     return { label: '', street: '', number: '', neighborhood: '', city: '', state: '', zipCode: '' };
+  }
+
+  private emptyPasswordDraft(): PasswordDraft {
+    return { current: '', next: '', confirmation: '' };
   }
 
   private loadProfile(): UserProfile {
