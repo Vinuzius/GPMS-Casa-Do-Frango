@@ -16,6 +16,14 @@ interface Address {
   zipCode: string;
 }
 
+interface UserProfile {
+  name: string;
+  email: string;
+  birthDate: string;
+  gender: string;
+  phone: string;
+}
+
 @Component({
   selector: 'app-perfil',
   imports: [...SHARED_IMPORTS, ...MATERIAL_IMPORTS],
@@ -24,10 +32,12 @@ interface Address {
 })
 export class Perfil implements OnInit {
   activeSection = signal<ProfileSection>('details');
+  profile = signal<UserProfile>(this.loadProfile());
   addresses = signal<Address[]>(this.loadAddresses());
   isAddressFormOpen = signal(false);
   editingAddressIndex = signal<number | null>(null);
   addressDraft: Address = this.emptyAddress();
+  profileDraft: UserProfile = { ...this.profile() };
   readonly cartNotice: Signal<string | null>;
 
   constructor(
@@ -55,6 +65,25 @@ export class Perfil implements OnInit {
 
   showAddresses(): void {
     this.activeSection.set('addresses');
+  }
+
+  hasProfileChanges(): boolean {
+    return JSON.stringify(this.profileDraft) !== JSON.stringify(this.profile());
+  }
+
+  saveProfile(): void {
+    if (!this.profileDraft.name.trim() || !this.profileDraft.email.trim()) return;
+
+    const updatedProfile: UserProfile = {
+      ...this.profileDraft,
+      name: this.profileDraft.name.trim(),
+      email: this.profileDraft.email.trim(),
+      phone: this.profileDraft.phone.trim(),
+    };
+    this.profile.set(updatedProfile);
+    this.profileDraft = { ...updatedProfile };
+    localStorage.setItem('casa-do-frango-profile', JSON.stringify(updatedProfile));
+    this.showNotice('Dados cadastrais salvos com sucesso.');
   }
 
   editAddress(index: number): void {
@@ -118,6 +147,29 @@ export class Perfil implements OnInit {
 
   private emptyAddress(): Address {
     return { label: '', street: '', number: '', neighborhood: '', city: '', state: '', zipCode: '' };
+  }
+
+  private loadProfile(): UserProfile {
+    const storedProfile = localStorage.getItem('casa-do-frango-profile');
+    if (storedProfile) {
+      try {
+        return { ...this.defaultProfile(), ...JSON.parse(storedProfile) } as UserProfile;
+      } catch {
+        localStorage.removeItem('casa-do-frango-profile');
+      }
+    }
+
+    return this.defaultProfile();
+  }
+
+  private defaultProfile(): UserProfile {
+    return {
+      name: 'Paulo Henrique Ganso',
+      email: 'phgansolu@gmail.com',
+      birthDate: '1989-10-12',
+      gender: 'Homem',
+      phone: '(21) 9 4002 8922',
+    };
   }
 
   private showNotice(message: string): void {

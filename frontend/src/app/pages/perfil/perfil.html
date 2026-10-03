@@ -18,8 +18,8 @@
 	<div class="profile-layout">
 		<aside class="profile-menu" aria-label="Opções do perfil">
 			<div class="profile-avatar" aria-hidden="true">👤</div>
-			<strong>Paulo Henrique Ganso</strong>
-			<span>phgansolu@gmail.com</span>
+			<strong>{{ profile().name }}</strong>
+			<span>{{ profile().email }}</span>
 
 			<nav>
 				<button type="button" [class.active]="activeSection() === 'details'" (click)="showDetails()"><mat-icon aria-hidden="true">person_outline</mat-icon> Dados cadastrais</button>
@@ -30,13 +30,13 @@
 		<section class="profile-content" aria-live="polite">
 			@if (activeSection() === 'details') {
 				<div class="content-heading"><p class="section-kicker">Minha conta</p><h2>Dados cadastrais</h2><p>Confira e mantenha seus dados sempre atualizados.</p></div>
-				<form class="details-form">
-					<label>Nome completo<input type="text" value="Paulo Henrique Ganso" /></label>
-					<label>Email<input type="email" value="phgansolu@gmail.com" /></label>
-					<label>Data de nascimento<input type="date" value="1989-10-12" /></label>
-					<label>Gênero<select><option selected>Homem</option><option>Mulher</option><option>Prefiro não informar</option></select></label>
-					<label>Número de telefone<input type="tel" value="(21) 9 4002 8922" /></label>
-					<button class="save-button" type="button" disabled>Salvar alterações</button>
+				<form class="details-form" (submit)="$event.preventDefault(); saveProfile()">
+					<label>Nome completo<input name="name" type="text" [(ngModel)]="profileDraft.name" /></label>
+					<label>Email<input name="email" type="email" [(ngModel)]="profileDraft.email" /></label>
+					<label>Data de nascimento<input name="birthDate" type="date" [(ngModel)]="profileDraft.birthDate" /></label>
+					<label>Gênero<select name="gender" [(ngModel)]="profileDraft.gender"><option value="Homem">Homem</option><option value="Mulher">Mulher</option><option value="Prefiro não informar">Prefiro não informar</option></select></label>
+					<label>Número de telefone<input name="phone" type="tel" [(ngModel)]="profileDraft.phone" /></label>
+					<button class="save-button" type="submit" [disabled]="!hasProfileChanges() || !profileDraft.name.trim() || !profileDraft.email.trim()">Salvar alterações</button>
 				</form>
 			} @else {
 				<div class="content-heading"><p class="section-kicker">Onde receber</p><h2>Meus endereços</h2><p>Escolha onde deseja receber seus próximos pedidos.</p></div>

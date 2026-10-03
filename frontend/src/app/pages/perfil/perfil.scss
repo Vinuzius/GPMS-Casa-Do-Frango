@@ -24,7 +24,8 @@
 .details-form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 28px; }
 .details-form label { display: grid; gap: 7px; color: #262626; font-size: 0.8rem; font-weight: 800; }
 .details-form input, .details-form select { width: 100%; padding: 12px; border: 1px solid #eadbd6; border-radius: 8px; outline: none; background: $white; font: inherit; font-weight: 400; } .details-form input:focus, .details-form select:focus { border-color: $primary-color; }
-.save-button { grid-column: 1 / -1; width: 100%; margin-top: 8px; padding: 13px; border: 0; border-radius: 9px; background: #f6c9bf; color: $white; cursor: not-allowed; font-weight: 800; }
+.save-button { grid-column: 1 / -1; width: 100%; margin-top: 8px; padding: 13px; border: 0; border-radius: 9px; background: $primary-color; color: $white; cursor: pointer; font-weight: 800; }
+.save-button:disabled { background: #f6c9bf; cursor: not-allowed; }
 .address-card { display: flex; align-items: flex-start; gap: 15px; margin-top: 28px; padding: 20px; border: 1px solid #eadbd6; border-radius: 13px; background: #fff7f4; }
 .address-card + .address-card { margin-top: 12px; }
 .address-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 10px; background: #ffe8e1; color: $primary-color; } .address-copy { flex: 1; } .address-copy > div { display: flex; align-items: center; gap: 8px; } .address-copy strong { color: #262626; } .address-copy p { margin: 9px 0 0; color: $text-light; font-size: 0.82rem; line-height: 1.6; }
