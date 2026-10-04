@@ -8,6 +8,7 @@ type ProfileSection = 'details' | 'addresses' | 'password';
 
 interface Address {
   label: string;
+  isPrimary: boolean;
   street: string;
   number: string;
   neighborhood: string;
@@ -153,7 +154,13 @@ export class Perfil implements OnInit {
     const address = this.addresses()[index];
     if (!address || !window.confirm(`Excluir o endereço "${address.label || 'selecionado'}"?`)) return;
 
-    this.addresses.update((addresses) => addresses.filter((_, addressIndex) => addressIndex !== index));
+    this.addresses.update((addresses) => {
+      const remainingAddresses = addresses.filter((_, addressIndex) => addressIndex !== index);
+      if (address?.isPrimary && remainingAddresses.length > 0) {
+        remainingAddresses[0] = { ...remainingAddresses[0], isPrimary: true };
+      }
+      return remainingAddresses;
+    });
     localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
     this.isAddressFormOpen.set(false);
     this.showNotice('Endereço excluído com sucesso.');
@@ -177,6 +184,18 @@ export class Perfil implements OnInit {
     this.showNotice(index === null ? 'Endereço salvo com sucesso.' : 'Endereço atualizado com sucesso.');
   }
 
+  makeAddressPrimary(index: number): void {
+    if (this.addresses()[index]?.isPrimary) return;
+
+    this.addresses.update((addresses) => addresses.map((address, addressIndex) => ({
+      ...address,
+      isPrimary: addressIndex === index,
+    })));
+    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
+    this.isAddressFormOpen.set(false);
+    this.showNotice('Endereço principal atualizado com sucesso.');
+  }
+
   dismissCartNotice(): void {
     this.cartService.clearNotice();
   }
@@ -187,7 +206,7 @@ export class Perfil implements OnInit {
   }
 
   private emptyAddress(): Address {
-    return { label: '', street: '', number: '', neighborhood: '', city: '', state: '', zipCode: '' };
+    return { label: '', isPrimary: false, street: '', number: '', neighborhood: '', city: '', state: '', zipCode: '' };
   }
 
   private emptyPasswordDraft(): PasswordDraft {
@@ -228,12 +247,16 @@ export class Perfil implements OnInit {
     const storedAddresses = localStorage.getItem('casa-do-frango-addresses');
     if (storedAddresses) {
       try {
-        return JSON.parse(storedAddresses) as Address[];
+        const parsedAddresses = JSON.parse(storedAddresses) as Partial<Address>[];
+        return parsedAddresses.map((address, index) => ({
+          ...address,
+          isPrimary: address.isPrimary ?? index === 0,
+        })) as Address[];
       } catch {
         localStorage.removeItem('casa-do-frango-addresses');
       }
     }
 
-    return [{ label: 'Casa', street: 'Rua das Flores', number: '123', neighborhood: 'Centro', city: 'São Paulo', state: 'SP', zipCode: '01000-000' }];
+    return [{ label: 'Casa', isPrimary: true, street: 'Rua das Flores', number: '123', neighborhood: 'Centro', city: 'São Paulo', state: 'SP', zipCode: '01000-000' }];
   }
 }

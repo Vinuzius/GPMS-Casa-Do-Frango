@@ -34,7 +34,11 @@
 .address-card { display: flex; align-items: flex-start; gap: 15px; margin-top: 28px; padding: 20px; border: 1px solid #eadbd6; border-radius: 13px; background: #fff7f4; }
 .address-card + .address-card { margin-top: 12px; }
 .address-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 10px; background: #ffe8e1; color: $primary-color; } .address-copy { flex: 1; } .address-copy > div { display: flex; align-items: center; gap: 8px; } .address-copy strong { color: #262626; } .address-copy p { margin: 9px 0 0; color: $text-light; font-size: 0.82rem; line-height: 1.6; }
-.default-label { border-radius: 999px; background: #e6f7ed; color: #25804b; padding: 4px 8px; font-size: 0.65rem; font-weight: 800; } .edit-button, .add-address-button { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.78rem; font-weight: 800; } .edit-button .mat-icon, .add-address-button .mat-icon { width: 17px; height: 17px; font-size: 17px; }
+.default-label { border-radius: 999px; background: #e6f7ed; color: #25804b; padding: 4px 8px; font-size: 0.65rem; font-weight: 800; } .edit-button, .primary-address-button, .add-address-button { display: inline-flex; align-items: center; gap: 5px; border: 0; border-radius: 7px; background: transparent; color: $primary-color; cursor: pointer; font-size: 0.72rem; font-weight: 800; line-height: 1; white-space: nowrap; } .edit-button, .primary-address-button { padding: 7px 9px; } .edit-button .mat-icon, .add-address-button .mat-icon { width: 17px; height: 17px; font-size: 17px; }
+.address-actions { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.primary-address-button { border: 1px solid #b9dcca; background: #f1fbf5; color: #257b49; }
+.primary-address-button:hover { background: #e6f7ed; }
+.edit-button:hover { background: #fff0ec; }
 .add-address-button { margin-top: 22px; padding: 0; }
 .dialog-backdrop { position: fixed; z-index: 1000; inset: 0; display: grid; padding: 24px; place-items: center; background: rgba(38, 38, 38, 0.5); }
 .address-dialog { width: min(100%, 620px); max-height: min(90vh, 720px); overflow-y: auto; padding: 26px; border: 1px solid #eadbd6; border-radius: 18px; background: $white; box-shadow: 0 22px 60px rgba(38, 38, 38, 0.2); }
@@ -48,11 +52,11 @@
 .address-form input { width: 100%; padding: 10px 11px; border: 1px solid #eadbd6; border-radius: 7px; outline: none; font: inherit; font-weight: 400; }
 .address-form input:focus { border-color: $primary-color; }
 .address-form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 10px; margin-top: 5px; }
-.cancel-button, .delete-address-button, .save-address-button { padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; }
+.cancel-button, .delete-address-button, .primary-address-button, .save-address-button { padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight: 800; }
 .cancel-button { border: 1px solid #eadbd6; background: $white; color: $text-light; }
 .delete-address-button { border: 1px solid #f2b8ae; background: #fff5f3; color: #b33d2d; }
 .save-address-button { border: 0; background: $primary-color; color: $white; }
 @media (max-width: 720px) { .profile-page { padding: 28px 18px 48px; } .profile-heading { align-items: flex-start; flex-direction: column; } .profile-layout { grid-template-columns: 1fr; } .profile-menu { text-align: left; } .profile-avatar { margin-left: 0; } .profile-menu nav { grid-template-columns: 1fr 1fr; } .details-form { grid-template-columns: 1fr; } .save-button { grid-column: auto; } }
-@media (max-width: 480px) { .profile-content { padding: 22px; } .profile-menu nav { grid-template-columns: 1fr; } .address-card { flex-wrap: wrap; } .edit-button { margin-left: 57px; } .address-dialog { padding: 22px; } .address-form { grid-template-columns: 1fr; } .address-form .address-label-field, .address-form-actions { grid-column: auto; } .address-form-actions { justify-content: stretch; } .address-form-actions button { flex: 1; } }
+@media (max-width: 480px) { .profile-content { padding: 22px; } .profile-menu nav { grid-template-columns: 1fr; } .address-card { flex-wrap: wrap; } .address-actions { width: 100%; margin-left: 57px; } .address-dialog { padding: 22px; } .address-form { grid-template-columns: 1fr; } .address-form .address-label-field, .address-form-actions { grid-column: auto; } .address-form-actions { justify-content: stretch; } .address-form-actions button { flex: 1; } }
 @media (max-width: 700px) { .cart-notice { top: calc(var(--topbar-height, 90px) + 8px); right: 18px; width: calc(100vw - 36px); } }
 @keyframes notice-enter { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }

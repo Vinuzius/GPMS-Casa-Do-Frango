@@ -44,8 +44,13 @@
 				@for (address of addresses(); track $index; let index = $index) {
 					<article class="address-card">
 						<div class="address-icon"><mat-icon aria-hidden="true">home</mat-icon></div>
-						<div class="address-copy"><div><strong>{{ address.label }}</strong>@if (index === 0) { <span class="default-label">Principal</span> }</div><p>{{ address.street }}, {{ address.number }}<br>{{ address.neighborhood }}, {{ address.city }} - {{ address.state }}<br>CEP {{ address.zipCode }}</p></div>
-						<button class="edit-button" type="button" (click)="editAddress(index)"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
+						<div class="address-copy"><div><strong>{{ address.label }}</strong>@if (address.isPrimary) { <span class="default-label">Principal</span> }</div><p>{{ address.street }}, {{ address.number }}<br>{{ address.neighborhood }}, {{ address.city }} - {{ address.state }}<br>CEP {{ address.zipCode }}</p></div>
+						<div class="address-actions">
+							@if (!address.isPrimary) {
+								<button class="primary-address-button" type="button" (click)="makeAddressPrimary(index)">Tornar principal</button>
+							}
+							<button class="edit-button" type="button" (click)="editAddress(index)"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
+						</div>
 					</article>
 				}
 				@if (isAddressFormOpen()) {
