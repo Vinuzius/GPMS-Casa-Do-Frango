@@ -15,10 +15,6 @@ import { Category } from '../../shared/models/category.model';
   styleUrl: './cardapio.scss',
 })
 export class Cardapio implements OnInit {
-  categories: Category[] = [];
-
-  allProducts: Product[] = [];
-  filteredProducts: Product[] = [];
   activeCategory = 'todos';
   searchTerm = '';
 
@@ -36,14 +32,37 @@ export class Cardapio implements OnInit {
   }
 
   ngOnInit(): void {
-    this.allProducts = this.productsService.getAllProducts();
-    this.categories = this.categoriesService.getAllCategories();
-
     this.route.queryParams.subscribe((params) => {
       this.searchTerm = params['busca'] ?? '';
       this.activeCategory = params['categoria'] ?? 'todos';
-      this.applyFilters();
     });
+  }
+
+  get categories(): Category[] {
+    return this.categoriesService.getAllCategories();
+  }
+
+  get loading(): boolean {
+    return !this.productsService.loaded();
+  }
+
+  get loadFailed(): boolean {
+    return this.productsService.loadFailed();
+  }
+
+  get filteredProducts(): Product[] {
+    let result = this.productsService.getAllProducts();
+
+    if (this.activeCategory !== 'todos') {
+      result = result.filter((p) => p.categoryIds.includes(this.activeCategory));
+    }
+
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase();
+      result = result.filter((p) => p.name.toLowerCase().includes(term));
+    }
+
+    return result;
   }
 
   selectCategory(categoryId: string): void {
@@ -56,20 +75,5 @@ export class Cardapio implements OnInit {
 
   dismissCartNotice(): void {
     this.cartService.clearNotice();
-  }
-
-  private applyFilters(): void {
-    let result = this.allProducts;
-
-    if (this.activeCategory !== 'todos') {
-      result = result.filter((p) => p.categoryIds.includes(this.activeCategory));
-    }
-
-    if (this.searchTerm) {
-      const term = this.searchTerm.toLowerCase();
-      result = result.filter((p) => p.name.toLowerCase().includes(term));
-    }
-
-    this.filteredProducts = result;
   }
 }

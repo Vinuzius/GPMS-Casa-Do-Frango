@@ -39,9 +39,9 @@ export class Login {
     confirmPassword: ['', [Validators.required]],
   });
 
-  enviando = false;
-  erro: string | null = null;
-  aviso: string | null = null;
+  readonly enviando = signal(false);
+  readonly erro = signal<string | null>(null);
+  readonly aviso = signal<string | null>(null);
   private recoveryCode = '';
 
   constructor(
@@ -56,15 +56,15 @@ export class Login {
     }
 
     const { email, senha } = this.form.getRawValue();
-    this.enviando = true;
-    this.erro = null;
+    this.enviando.set(true);
+    this.erro.set(null);
 
     const { error } = await this.authService.signIn(email!, senha!);
 
-    this.enviando = false;
+    this.enviando.set(false);
 
     if (error) {
-      this.erro = traduzirErro(error.message);
+      this.erro.set(traduzirErro(error.message));
       return;
     }
 
@@ -73,15 +73,15 @@ export class Login {
 
   showRecovery(): void {
     this.view.set('request');
-    this.erro = null;
-    this.aviso = null;
+    this.erro.set(null);
+    this.aviso.set(null);
     this.recoveryForm.reset();
   }
 
   backToLogin(): void {
     this.view.set('login');
-    this.erro = null;
-    this.aviso = null;
+    this.erro.set(null);
+    this.aviso.set(null);
   }
 
   sendRecoveryCode(): void {
@@ -92,7 +92,7 @@ export class Login {
 
     this.recoveryCode = '123456';
     this.view.set('code');
-    this.erro = null;
+    this.erro.set(null);
     this.codeForm.reset();
   }
 
@@ -104,19 +104,19 @@ export class Login {
 
     const { code, newPassword, confirmPassword } = this.codeForm.getRawValue();
     if (code !== this.recoveryCode) {
-      this.erro = 'Código inválido. Use o código enviado para o seu e-mail.';
+      this.erro.set('Código inválido. Use o código enviado para o seu e-mail.');
       return;
     }
     if (newPassword !== confirmPassword) {
-      this.erro = 'As senhas não conferem.';
+      this.erro.set('As senhas não conferem.');
       return;
     }
 
     localStorage.setItem('casa-do-frango-mock-password', newPassword!);
     this.view.set('login');
     this.form.patchValue({ email: this.recoveryForm.controls.email.value, senha: '' });
-    this.erro = null;
-    this.aviso = 'Senha redefinida com sucesso. Você já pode entrar.';
+    this.erro.set(null);
+    this.aviso.set('Senha redefinida com sucesso. Você já pode entrar.');
     this.codeForm.reset();
   }
 }

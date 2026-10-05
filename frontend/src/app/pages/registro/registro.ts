@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -20,9 +20,9 @@ export class Registro {
     senha: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  enviando = false;
-  erro: string | null = null;
-  cadastroPendenteConfirmacao = false;
+  readonly enviando = signal(false);
+  readonly erro = signal<string | null>(null);
+  readonly cadastroPendenteConfirmacao = signal(false);
 
   constructor(
     private authService: AuthService,
@@ -36,22 +36,22 @@ export class Registro {
     }
 
     const { nome, email, telefone, senha } = this.form.getRawValue();
-    this.enviando = true;
-    this.erro = null;
+    this.enviando.set(true);
+    this.erro.set(null);
 
     const { data, error } = await this.authService.signUp(email!, senha!, nome!, telefone || undefined);
 
-    this.enviando = false;
+    this.enviando.set(false);
 
     if (error) {
-      this.erro = 'Não foi possível criar a conta. Verifique os dados e tente novamente.';
+      this.erro.set('Não foi possível criar a conta. Verifique os dados e tente novamente.');
       return;
     }
 
     if (data.session) {
       this.router.navigateByUrl('/dashboard');
     } else {
-      this.cadastroPendenteConfirmacao = true;
+      this.cadastroPendenteConfirmacao.set(true);
     }
   }
 }

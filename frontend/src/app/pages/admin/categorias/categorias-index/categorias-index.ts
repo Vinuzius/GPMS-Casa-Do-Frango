@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CategoriesService } from '../../../../shared/services/categories.service';
 import { Category } from '../../../../shared/models/category.model';
+import { mensagemDeErro } from '../../../../shared/utils/http-error';
 
 @Component({
   selector: 'app-categorias-index',
@@ -10,22 +11,23 @@ import { Category } from '../../../../shared/models/category.model';
   templateUrl: './categorias-index.html',
   styleUrl: './categorias-index.scss',
 })
-export class CategoriasIndex implements OnInit {
-  categories: Category[] = [];
-
+export class CategoriasIndex {
   constructor(private categoriesService: CategoriesService) {}
 
-  ngOnInit(): void {
-    this.categories = this.categoriesService.getAllCategories();
+  get categories(): Category[] {
+    return this.categoriesService.getAllCategories();
   }
 
-  deleteCategory(category: Category): void {
+  async deleteCategory(category: Category): Promise<void> {
     const confirmed = confirm(
       `Excluir "${category.name}"? Produtos associados não serão excluídos, apenas perderão essa categoria.`,
     );
-    if (confirmed) {
-      this.categoriesService.deleteCategory(category.id);
-      this.categories = this.categoriesService.getAllCategories();
+    if (!confirmed) return;
+
+    try {
+      await this.categoriesService.deleteCategory(category.id);
+    } catch (erro) {
+      alert(mensagemDeErro(erro, 'Não foi possível excluir a categoria.'));
     }
   }
 }

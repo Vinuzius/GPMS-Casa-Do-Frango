@@ -29,16 +29,9 @@
         </div>
       </div>
 
-      <div class="field-row">
-        <div class="field">
-          <label for="rating">Avaliação</label>
-          <input id="rating" type="number" name="rating" [(ngModel)]="formData.rating" required min="0" max="5" step="0.1" />
-        </div>
-
-        <div class="field">
-          <label for="imageUrl">URL da Imagem</label>
-          <input id="imageUrl" type="text" name="imageUrl" [(ngModel)]="formData.imageUrl" required />
-        </div>
+      <div class="field">
+        <label for="imageUrl">URL da Imagem</label>
+        <input id="imageUrl" type="text" name="imageUrl" [(ngModel)]="formData.imageUrl" required />
       </div>
 
       <div class="field-checkboxes">
@@ -73,6 +66,10 @@
           </div>
         }
       </div>
+
+      @if (erro()) {
+        <p class="form-error" role="alert">{{ erro() }}</p>
+      }
 
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancel()">Cancelar</button>

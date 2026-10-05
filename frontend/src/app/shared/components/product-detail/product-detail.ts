@@ -15,10 +15,8 @@ import { CategoriesService } from '../../services/categories.service';
   styleUrl: './product-detail.scss',
 })
 export class ProductDetail implements OnInit {
-  product: Product | undefined;
-  notFound = false;
-
-  selectedSize: ProductSize | undefined;
+  private productId: string | null = null;
+  private chosenSize: ProductSize | undefined;
   quantity = 1;
 
   constructor(
@@ -33,13 +31,20 @@ export class ProductDetail implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.product = id ? this.productsService.getProductById(id) : undefined;
-    this.notFound = !this.product;
+    this.productId = this.route.snapshot.paramMap.get('id');
+  }
 
-    if (this.product?.sizes?.length) {
-      this.selectedSize = this.product.sizes[0];
-    }
+  get product(): Product | undefined {
+    return this.productId ? this.productsService.getProductById(this.productId) : undefined;
+  }
+
+  // só é "não encontrado" depois que o cardápio terminou de carregar
+  get notFound(): boolean {
+    return this.productsService.loaded() && !this.product;
+  }
+
+  get selectedSize(): ProductSize | undefined {
+    return this.chosenSize ?? this.product?.sizes?.[0];
   }
 
   get isUnavailable(): boolean {
@@ -59,7 +64,7 @@ export class ProductDetail implements OnInit {
 }
 
   selectSize(size: ProductSize): void {
-    this.selectedSize = size;
+    this.chosenSize = size;
   }
 
   increaseQuantity(): void {

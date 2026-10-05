@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '../../../../shared/services/categories.service';
 import { Category } from '../../../../shared/models/category.model';
+import { mensagemDeErro } from '../../../../shared/utils/http-error';
 
 @Component({
   selector: 'app-categoria-form',
@@ -14,6 +15,7 @@ import { Category } from '../../../../shared/models/category.model';
 export class CategoriaForm implements OnInit {
   isEditMode = false;
   categoryId: string | null = null;
+  readonly erro = signal<string | null>(null);
 
   formData: Omit<Category, 'id'> = {
     name: '',
@@ -39,13 +41,19 @@ export class CategoriaForm implements OnInit {
     }
   }
 
-  onSubmit(): void {
-    if (this.isEditMode && this.categoryId) {
-      this.categoriesService.updateCategory(this.categoryId, this.formData);
-    } else {
-      this.categoriesService.createCategory(this.formData);
+  async onSubmit(): Promise<void> {
+    this.erro.set(null);
+
+    try {
+      if (this.isEditMode && this.categoryId) {
+        await this.categoriesService.updateCategory(this.categoryId, this.formData);
+      } else {
+        await this.categoriesService.createCategory(this.formData);
+      }
+      this.router.navigate(['/admin/categorias']);
+    } catch (erro) {
+      this.erro.set(mensagemDeErro(erro, 'Não foi possível salvar a categoria.'));
     }
-    this.router.navigate(['/admin/categorias']);
   }
 
   cancel(): void {
