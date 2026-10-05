@@ -53,3 +53,13 @@ def test_perfil_me_rejeita_token_invalido():
     )
 
     assert resposta.status_code == 401
+
+
+def test_cors_libera_o_front_publicado_e_recusa_outras_origens():
+    client = TestClient(api)
+
+    publicado = client.get("/health", headers={"Origin": "https://vinuzius.github.io"})
+    desconhecido = client.get("/health", headers={"Origin": "https://site-qualquer.com"})
+
+    assert publicado.headers["access-control-allow-origin"] == "https://vinuzius.github.io"
+    assert "access-control-allow-origin" not in desconhecido.headers

@@ -49,7 +49,9 @@
     } @else {
       <div class="empty-state">
         <span class="empty-icon">🔍</span>
-        @if (loadFailed) {
+        @if (loading) {
+          <p>Carregando o cardápio...</p>
+        } @else if (loadFailed) {
           <p>Não foi possível carregar o cardápio. Tente novamente em instantes.</p>
         } @else {
           <p>Nenhum produto encontrado.</p>

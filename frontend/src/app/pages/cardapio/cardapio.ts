@@ -42,6 +42,10 @@ export class Cardapio implements OnInit {
     return this.categoriesService.getAllCategories();
   }
 
+  get loading(): boolean {
+    return !this.productsService.loaded();
+  }
+
   get loadFailed(): boolean {
     return this.productsService.loadFailed();
   }
