@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.src.core.config import settings
+from app.src.core.exceptions import registrar_handlers
 from app.src.core.openapi import LICENSE_INFO, TAGS_METADATA
 from app.src.core.routers import get_routers
 
@@ -22,6 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+registrar_handlers(app)
 app.include_router(get_routers())
 
 

@@ -66,3 +66,9 @@
     &:disabled { opacity: 0.5; cursor: not-allowed; }
   }
 }
+
+.form-error {
+  color: #d64545;
+  font-size: 14px;
+  margin: 0 0 12px;
+}

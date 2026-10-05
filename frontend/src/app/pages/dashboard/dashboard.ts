@@ -21,8 +21,6 @@ interface PromoBanner {
 })
 
 export class Dashboard {
-  meals: Product[] = [];
-  drinks: Product[] = [];
   readonly cartNotice: Signal<string | null>;
 
   promos: PromoBanner[] = [
@@ -66,15 +64,13 @@ export class Dashboard {
     if (this.cartNotice()) window.setTimeout(() => this.cartService.clearNotice(), 5000);
   }
 
-  ngOnInit(): void {
-    this.meals = this.productsService
-    // nao mostra quem é false
-      .getProductsByCategory('refeicoes')
-      .filter((p) => p.available !== false);  
+  // não mostra produtos indisponíveis
+  get meals(): Product[] {
+    return this.productsService.getProductsByCategory('refeicoes').filter((p) => p.available !== false);
+  }
 
-    this.drinks = this.productsService
-      .getProductsByCategory('bebidas')
-      .filter((p) => p.available !== false);
+  get drinks(): Product[] {
+    return this.productsService.getProductsByCategory('bebidas').filter((p) => p.available !== false);
   }
 
   moveCarousel(direction: number, track: HTMLElement): void {

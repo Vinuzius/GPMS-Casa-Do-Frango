@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProductsService } from '../../../../shared/services/products.service';
@@ -12,10 +12,7 @@ import { CategoriesService } from '../../../../shared/services/categories.servic
   templateUrl: './produtos-index.html',
   styleUrl: './produtos-index.scss',
 })
-export class ProdutosIndex implements OnInit {
-  allProducts: Product[] = [];
-  filteredProducts: Product[] = [];
-
+export class ProdutosIndex {
   searchTerm = '';
   currentPage = 1;
   itemsPerPage = 8;
@@ -25,18 +22,14 @@ export class ProdutosIndex implements OnInit {
     private categoriesService: CategoriesService,
   ) {}
 
-  ngOnInit(): void {
-    this.allProducts = this.productsService.getAllProducts();
-    this.applyFilter();
+  get filteredProducts(): Product[] {
+    const allProducts = this.productsService.getAllProducts();
+    const term = this.searchTerm.trim().toLowerCase();
+
+    return term ? allProducts.filter((p) => p.name.toLowerCase().includes(term)) : allProducts;
   }
 
   applyFilter(): void {
-    const term = this.searchTerm.trim().toLowerCase();
-
-    this.filteredProducts = term
-      ? this.allProducts.filter((p) => p.name.toLowerCase().includes(term))
-      : this.allProducts;
-
     this.currentPage = 1; // sempre volta pra primeira página ao mudar a busca
   }
 

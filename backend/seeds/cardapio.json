@@ -1,0 +1,988 @@
+{
+  "categorias": [
+    {
+      "slug": "refeicoes",
+      "nome": "Refeições",
+      "ordem": 1
+    },
+    {
+      "slug": "bebidas",
+      "nome": "Bebidas",
+      "ordem": 2
+    },
+    {
+      "slug": "aperitivos",
+      "nome": "Aperitivos",
+      "ordem": 3
+    },
+    {
+      "slug": "sobremesas",
+      "nome": "Sobremesas",
+      "ordem": 4
+    }
+  ],
+  "produtos": [
+    {
+      "nome": "Combo Frango + Linguiça",
+      "descricao": "Um combo perfeito combinando suculentos pedaços de frango e linguiça artesanal.",
+      "preco": "49.99",
+      "imagem_url": "https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": [
+        {
+          "rotulo": "Padrão (2 Pessoas)",
+          "acrescimo": "0.00"
+        },
+        {
+          "rotulo": "Família (4 Pessoas)",
+          "acrescimo": "25.00"
+        }
+      ]
+    },
+    {
+      "nome": "Frango Grelhado com Salada",
+      "descricao": "Opção leve e saudável: filé de frango grelhado acompanhado de salada fresca.",
+      "preco": "49.99",
+      "imagem_url": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Asas de Frango Crocantes",
+      "descricao": "Asinhas fritas com uma casquinha super crocante e tempero da casa.",
+      "preco": "59.99",
+      "imagem_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7jVOvIhWO0VD4tQ8S338n8Ute1CwX0kvwwqL-CBiufEGwyZh71wVrgWk&s=10",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango à Passarinho",
+      "descricao": "Tradicional frango à passarinho, frito na hora com bastante alho.",
+      "preco": "44.99",
+      "imagem_url": "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango à Parmegiana",
+      "descricao": "Filé de frango empanado, coberto com molho de tomate artesanal e queijo derretido.",
+      "preco": "47.99",
+      "imagem_url": "https://www.receitasja.com.br/wp-content/uploads/2024/10/file-parmegiana-e1728685958140.webp",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Coxinha da Asa ao Molho Barbecue",
+      "descricao": "Drumets de frango suculentos envoltos em um delicioso molho barbecue.",
+      "preco": "42.99",
+      "imagem_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZ35TB5AUqAN122lOrl9nnzfH77eC8qKOuGqbC4ldnilTUJs33mDpVE85P&s=10",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Peito de Frango Recheado",
+      "descricao": "Peito de frango assado e recheado com queijo e presunto.",
+      "preco": "46.99",
+      "imagem_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6b2Jqfvh3sHjvIw1iul8tta-P_530RKfza71igLVEyGHvuFncIDiTLpYh&s=10",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Sobrecoxa Assada com Batatas",
+      "descricao": "Sobrecoxas de frango assadas no forno acompanhadas de batatas rústicas.",
+      "preco": "41.99",
+      "imagem_url": "https://guiadacozinha.com.br/wp-content/uploads/2019/10/coxa-e-sobrecoxa-assada-47429.jpg",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Strogonoff de Frango",
+      "descricao": "Clássico strogonoff cremoso de frango, servido com batata palha.",
+      "preco": "43.99",
+      "imagem_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfTnizun1XcSmLrQ7lwGwa7jwMwpOarSZ2MG5pct4mYJpv9F-_0x0tSnW&s=10",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Xadrez",
+      "descricao": "Cubos de frango com pimentões, cebola e amendoim ao molho shoyu.",
+      "preco": "45.99",
+      "imagem_url": "https://edge.osuper.com.br/XgORjkiFU8JM6wgQAfflEwdSk0s=/0x600/smart/https://osuper-ecommerce-cotrifacil.s3.sa-east-1.amazonaws.com/536af8d0-086f15bbgchinagarden9f7cf4724f.jpg",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Filé de Frango Grelhado",
+      "descricao": "O tradicional filé de frango grelhado na chapa, simples e saboroso.",
+      "preco": "38.99",
+      "imagem_url": "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Crocante com Fritas",
+      "descricao": "Pedaços de frango empanado acompanhados de batatas fritas sequinhas.",
+      "preco": "39.99",
+      "imagem_url": "https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Grelhado com Arroz e Feijão",
+      "descricao": "O verdadeiro prato feito brasileiro com frango, arroz e feijão.",
+      "preco": "36.99",
+      "imagem_url": "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Parmegiana de Frango com Fritas",
+      "descricao": "Deliciosa parmegiana servida com uma porção de batatas fritas.",
+      "preco": "52.99",
+      "imagem_url": "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Cremoso com Queijo",
+      "descricao": "Frango desfiado envolto em um creme rico de queijos selecionados.",
+      "preco": "48.99",
+      "imagem_url": "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Filé de Frango ao Molho de Mostarda",
+      "descricao": "Filé de frango grelhado regado com molho de mostarda e mel.",
+      "preco": "45.99",
+      "imagem_url": "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Assado com Farofa",
+      "descricao": "Pedaços de frango assado servidos com uma farofa especial da casa.",
+      "preco": "42.99",
+      "imagem_url": "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango ao Molho de Alho",
+      "descricao": "Frango refogado lentamente em um perfumado molho de alho.",
+      "preco": "44.99",
+      "imagem_url": "https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango com Creme de Milho",
+      "descricao": "Filé de frango acompanhado de um creme de milho aveludado.",
+      "preco": "46.99",
+      "imagem_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80",
+      "ativo": false,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Empanado com Arroz Cremoso",
+      "descricao": "Frango crocante servido ao lado de um arroz cremoso cheio de sabor.",
+      "preco": "43.99",
+      "imagem_url": "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Desfiado com Purê de Batata",
+      "descricao": "Comfort food clássica: frango desfiado temperado com purê de batatas.",
+      "preco": "39.99",
+      "imagem_url": "https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Coxa e Sobrecoxa Assadas",
+      "descricao": "Cortes suculentos de coxa e sobrecoxa assados até dourarem.",
+      "preco": "43.99",
+      "imagem_url": "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango ao Molho de Ervas",
+      "descricao": "Frango preparado com um mix de ervas finas e especiarias.",
+      "preco": "44.99",
+      "imagem_url": "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Combo Frango Crocante + Fritas",
+      "descricao": "Tiras de frango frito extra crocantes servidas com batatas fritas.",
+      "preco": "54.99",
+      "imagem_url": "https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Grelhado com Legumes",
+      "descricao": "Opção nutritiva de filé de frango grelhado com seleção de legumes.",
+      "preco": "47.99",
+      "imagem_url": "https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "refeicoes"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Asinhas de Frango Barbecue",
+      "descricao": "Asinhas empanadas mergulhadas em molho barbecue defumado.",
+      "preco": "29.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": [
+        {
+          "rotulo": "Meia Porção",
+          "acrescimo": "0.00"
+        },
+        {
+          "rotulo": "Porção Inteira",
+          "acrescimo": "15.00"
+        }
+      ]
+    },
+    {
+      "nome": "Asinhas de Frango Picantes",
+      "descricao": "Asinhas fritas ao molho picante estilo buffalo.",
+      "preco": "31.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Tiras de Frango Crocantes",
+      "descricao": "Fingers de frango empanados perfeitos para compartilhar.",
+      "preco": "27.99",
+      "imagem_url": "https://images.unsplash.com/photo-1562967914-608f82629710?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Nuggets Artesanais de Frango",
+      "descricao": "Nuggets de frango de verdade, feitos artesanalmente.",
+      "preco": "24.99",
+      "imagem_url": "https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Coxinha da Asa Crocante",
+      "descricao": "Drumets de frango fritos, dourados e muito crocantes.",
+      "preco": "28.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Iscas de Frango com Molho Especial",
+      "descricao": "Iscas de frango servidas com o molho de alho exclusivo da casa.",
+      "preco": "29.99",
+      "imagem_url": "https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80",
+      "ativo": false,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Frango Empanado com Barbecue",
+      "descricao": "Cubinhos de frango empanados acompanhados de barbecue.",
+      "preco": "30.99",
+      "imagem_url": "https://images.unsplash.com/photo-1562967916-eb82221dfb92?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Batata Frita com Cheddar",
+      "descricao": "Porção de batatas fritas generosamente cobertas com queijo cheddar.",
+      "preco": "22.99",
+      "imagem_url": "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Batata Rústica com Ervas",
+      "descricao": "Batatas cortadas em gomos com casca e temperadas com alecrim.",
+      "preco": "19.99",
+      "imagem_url": "https://images.unsplash.com/photo-1518013431117-eb1465fa5752?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Mandioca Frita Crocante",
+      "descricao": "Pedaços de mandioca (aipim) fritos na perfeição.",
+      "preco": "18.99",
+      "imagem_url": "https://images.unsplash.com/photo-1639024471283-03518883512d?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Polenta Frita com Parmesão",
+      "descricao": "Palitos de polenta polvilhados com queijo parmesão ralado.",
+      "preco": "21.99",
+      "imagem_url": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Combo Aperitivo da Casa",
+      "descricao": "Um mix completo com os melhores aperitivos do nosso cardápio.",
+      "preco": "49.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Asinhas ao Molho de Mel e Mostarda",
+      "descricao": "Asinhas crocantes envoltas num molho agridoce maravilhoso.",
+      "preco": "32.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Asinhas ao Molho de Alho",
+      "descricao": "Asinhas fritas com uma cobertura saborosa de creme de alho.",
+      "preco": "30.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Tiras de Frango com Cheddar",
+      "descricao": "Tiras de frango frito servidas com muito cheddar derretido.",
+      "preco": "31.99",
+      "imagem_url": "https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Bolinho de Frango com Queijo",
+      "descricao": "Bolinhos recheados com frango desfiado e queijo derretido.",
+      "preco": "23.99",
+      "imagem_url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Mini Coxinhas de Frango",
+      "descricao": "Porção com deliciosas mini coxinhas de frango tradicionais.",
+      "preco": "21.99",
+      "imagem_url": "https://images.unsplash.com/photo-1601050690117-94f5f6fa8bd7?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Chips de Batata com Molho da Casa",
+      "descricao": "Batatas em rodelas bem fininhas, acompanhadas do molho especial.",
+      "preco": "19.99",
+      "imagem_url": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Batata Frita com Bacon e Cheddar",
+      "descricao": "Clássica porção de batatas com cheddar e pedacinhos de bacon.",
+      "preco": "27.99",
+      "imagem_url": "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Combo Asinhas + Batata",
+      "descricao": "Uma combinação irresistível de asinhas fritas com batatas.",
+      "preco": "39.99",
+      "imagem_url": "https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "aperitivos"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Refrigerante Cola 2L",
+      "descricao": "Refrigerante sabor cola na versão 2 litros.",
+      "preco": "14.99",
+      "imagem_url": "https://acdn-us.mitiendanube.com/stores/001/043/122/products/499_secundario-8f5cb963633401774117745586921722-1024-1024.webp",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Suco Natural de Laranja",
+      "descricao": "Suco de laranja espremido na hora.",
+      "preco": "9.99",
+      "imagem_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": [
+        {
+          "rotulo": "300ml",
+          "acrescimo": "0.00"
+        },
+        {
+          "rotulo": "500ml",
+          "acrescimo": "3.00"
+        }
+      ]
+    },
+    {
+      "nome": "Água Mineral 500ml",
+      "descricao": "Água mineral sem gás bem gelada.",
+      "preco": "4.99",
+      "imagem_url": "https://www.imigrantesbebidas.com.br/bebida/images/products/full/2893-agua-mineral-crystal-sem-gas-500ml.jpg",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Chá Gelado de Pêssego",
+      "descricao": "Chá refrescante com sabor natural de pêssego.",
+      "preco": "8.99",
+      "imagem_url": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Suco de Uva Integral",
+      "descricao": "Suco 100% uva, sem adição de açúcares.",
+      "preco": "10.99",
+      "imagem_url": "https://www.vinhosevinhos.com/media/catalog/product/cache/f551083cd20de7ac8cf7d25adc91480d/s/u/suco-de-uva-quinta-do-morgado-tinto-1l.jpg",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Refrigerante Guaraná 2L",
+      "descricao": "O tradicional refrigerante de guaraná em versão família.",
+      "preco": "13.99",
+      "imagem_url": "https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Refrigerante Cola Lata 350ml",
+      "descricao": "Refrigerante sabor cola em lata.",
+      "preco": "6.99",
+      "imagem_url": "https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Refrigerante Guaraná Lata 350ml",
+      "descricao": "Refrigerante sabor guaraná em lata.",
+      "preco": "6.49",
+      "imagem_url": "https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Suco Natural de Maracujá",
+      "descricao": "Suco de maracujá feito da fruta.",
+      "preco": "10.99",
+      "imagem_url": "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Suco Natural de Abacaxi",
+      "descricao": "Suco refrescante de abacaxi batido na hora.",
+      "preco": "9.99",
+      "imagem_url": "https://images.unsplash.com/photo-1546173159-315724a31696?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Suco Natural de Morango",
+      "descricao": "Suco feito com morangos frescos.",
+      "preco": "11.99",
+      "imagem_url": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Limonada Natural",
+      "descricao": "Limonada simples, gelada e refrescante.",
+      "preco": "8.99",
+      "imagem_url": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Limonada Suíça",
+      "descricao": "Limões batidos com leite condensado e gelo.",
+      "preco": "10.99",
+      "imagem_url": "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Água Mineral com Gás 500ml",
+      "descricao": "Água mineral gaseificada.",
+      "preco": "5.49",
+      "imagem_url": "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Chá Gelado de Limão",
+      "descricao": "Chá preto servido gelado com um toque de limão.",
+      "preco": "8.99",
+      "imagem_url": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Chá Gelado de Frutas Vermelhas",
+      "descricao": "Chá aromático de frutas vermelhas super refrescante.",
+      "preco": "9.99",
+      "imagem_url": "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Suco de Acerola",
+      "descricao": "Suco puro de acerola batido na hora.",
+      "preco": "9.99",
+      "imagem_url": "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Água de Coco",
+      "descricao": "Água de coco 100% natural, ideal para matar a sede.",
+      "preco": "8.99",
+      "imagem_url": "https://images.unsplash.com/photo-1581375074612-d1fd0e661aeb?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Refrigerante Laranja 2L",
+      "descricao": "Refrigerante de laranja tamanho família.",
+      "preco": "13.99",
+      "imagem_url": "https://images.unsplash.com/photo-1629203849820-fdd70d49c38e?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Água Mineral 1,5L",
+      "descricao": "Garrafa grande de água mineral sem gás.",
+      "preco": "7.99",
+      "imagem_url": "https://images.unsplash.com/photo-1564419320461-6870880221ad?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "bebidas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Brownie com Chocolate",
+      "descricao": "Brownie macio por dentro e com casquinha crocante.",
+      "preco": "12.99",
+      "imagem_url": "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Brownie com Sorvete",
+      "descricao": "Brownie quente acompanhado de uma bola de sorvete de creme.",
+      "preco": "17.99",
+      "imagem_url": "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Pudim de Leite Condensado",
+      "descricao": "O tradicional pudim de leite liso e com bastante calda.",
+      "preco": "11.99",
+      "imagem_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Cheesecake de Frutas Vermelhas",
+      "descricao": "Fatia de cheesecake servida com geleia de frutas vermelhas.",
+      "preco": "16.99",
+      "imagem_url": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Torta de Chocolate",
+      "descricao": "Torta com recheio denso e cremoso de chocolate intenso.",
+      "preco": "15.99",
+      "imagem_url": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Mousse de Chocolate",
+      "descricao": "Mousse de chocolate bem aerada e geladinha.",
+      "preco": "10.99",
+      "imagem_url": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Mousse de Maracujá",
+      "descricao": "Mousse refrescante de maracujá com sementinhas na cobertura.",
+      "preco": "10.99",
+      "imagem_url": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Pavê de Chocolate",
+      "descricao": "Sobremesa de família com biscoito champanhe e cremes.",
+      "preco": "12.99",
+      "imagem_url": "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Banoffee",
+      "descricao": "Torta de banana com doce de leite, chantilly e base de biscoito.",
+      "preco": "15.99",
+      "imagem_url": "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Torta de Limão",
+      "descricao": "Torta cítrica de limão coberta com merengue tostado.",
+      "preco": "13.99",
+      "imagem_url": "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Doce de Leite com Queijo",
+      "descricao": "A autêntica sobremesa mineira de queijo minas com doce de leite.",
+      "preco": "11.99",
+      "imagem_url": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Brigadeiro Gourmet",
+      "descricao": "Dois brigadeiros em tamanho especial feitos com chocolate puro.",
+      "preco": "9.99",
+      "imagem_url": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Cocada Cremosa",
+      "descricao": "Cocada branca feita na panela, super cremosa e doce na medida.",
+      "preco": "9.99",
+      "imagem_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Romeu e Julieta",
+      "descricao": "Fatias de goiabada e queijo, a clássica combinação brasileira.",
+      "preco": "12.99",
+      "imagem_url": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Pudim de Chocolate",
+      "descricao": "Uma variação perfeita do pudim de leite com muito chocolate.",
+      "preco": "12.99",
+      "imagem_url": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Mini Churros com Doce de Leite",
+      "descricao": "Porção de churros passados no açúcar e canela com doce de leite.",
+      "preco": "13.99",
+      "imagem_url": "https://images.unsplash.com/photo-1624371414361-e670edf4898d?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Petit Gâteau de Chocolate",
+      "descricao": "Bolo recheado com creme de chocolate que derrete no prato.",
+      "preco": "18.99",
+      "imagem_url": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Cheesecake de Maracujá",
+      "descricao": "Cheesecake cremosa servida com calda azedinha de maracujá.",
+      "preco": "16.99",
+      "imagem_url": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Torta Holandesa",
+      "descricao": "Fatia de torta gelada com base de biscoito e cobertura de chocolate.",
+      "preco": "15.99",
+      "imagem_url": "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    },
+    {
+      "nome": "Brigadeiro com Morango",
+      "descricao": "Massa de brigadeiro recheada com um grande morango fresco.",
+      "preco": "13.99",
+      "imagem_url": "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?w=500&q=80",
+      "ativo": true,
+      "categorias": [
+        "sobremesas"
+      ],
+      "tamanhos": []
+    }
+  ]
+}

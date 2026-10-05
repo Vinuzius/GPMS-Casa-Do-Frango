@@ -7,6 +7,7 @@ import { Admin }            from './pages/admin/admin';
 import { ProductDetail }    from './shared/components/product-detail/product-detail';
 import { authGuard }        from './shared/guards/auth.guard';
 import { adminGuard }       from './shared/guards/admin.guard';
+import { cardapioResolver } from './shared/resolvers/cardapio.resolver';
 import { Carrinho }         from './pages/carrinho/carrinho';
 import { HistoricoPedidos } from './pages/historico-pedidos/historico-pedidos';
 import { Notificacoes }     from './pages/notificacoes/notificacoes';
@@ -45,6 +46,7 @@ export const routes: Routes = [
   {
     path: 'admin/produtos',
     canActivate: [adminGuard],
+    resolve: { cardapio: cardapioResolver },
     children: [
       { path: '',                 component: ProdutosIndex },
       { path: 'novo',             component: ProdutoForm },      // precisa vir ANTES de ':id'
@@ -55,6 +57,7 @@ export const routes: Routes = [
   {
     path: 'admin/categorias',
     canActivate: [adminGuard],
+    resolve: { cardapio: cardapioResolver },
     children: [
       { path: '', component: CategoriasIndex },
       { path: 'nova', component: CategoriaForm },

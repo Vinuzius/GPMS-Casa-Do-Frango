@@ -51,18 +51,36 @@ CREATE TABLE IF NOT EXISTS enderecos (
 
 CREATE TABLE IF NOT EXISTS categorias (
   id SERIAL PRIMARY KEY,
+  slug VARCHAR(60) NOT NULL UNIQUE,   -- identificador usado nas URLs e na API
   nome VARCHAR(60) NOT NULL,
+  descricao TEXT,
   ordem INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS itens_cardapio (
   id SERIAL PRIMARY KEY,
-  categoria_id INT NOT NULL REFERENCES categorias(id) ON DELETE RESTRICT,
   nome VARCHAR(120) NOT NULL,
   descricao TEXT,
   preco NUMERIC(10,2) NOT NULL,
-  imagem_url VARCHAR(255),   -- URL pública de um bucket do Supabase Storage
+  imagem_url TEXT,
   ativo BOOLEAN NOT NULL DEFAULT TRUE
+);
+
+-- Um item pode estar em várias categorias
+CREATE TABLE IF NOT EXISTS item_categorias (
+  item_id INT NOT NULL REFERENCES itens_cardapio(id) ON DELETE CASCADE,
+  categoria_id INT NOT NULL REFERENCES categorias(id) ON DELETE CASCADE,
+  PRIMARY KEY (item_id, categoria_id)
+);
+
+-- Tamanhos opcionais de um item
+CREATE TABLE IF NOT EXISTS item_tamanhos (
+  id SERIAL PRIMARY KEY,
+  item_id INT NOT NULL REFERENCES itens_cardapio(id) ON DELETE CASCADE,
+  rotulo VARCHAR(60) NOT NULL,
+  acrescimo NUMERIC(10,2) NOT NULL DEFAULT 0,  -- somado ao preço base do item
+  ordem INT NOT NULL DEFAULT 0,
+  UNIQUE (item_id, rotulo)
 );
 
 -- ---------------------------------------------------------
@@ -200,6 +218,8 @@ ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.enderecos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.categorias ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.itens_cardapio ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.item_categorias ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.item_tamanhos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.carrinhos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.carrinho_itens ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pedidos ENABLE ROW LEVEL SECURITY;

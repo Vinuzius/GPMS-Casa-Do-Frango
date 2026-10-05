@@ -3,6 +3,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductsService } from '../../../../shared/services/products.service';
 import { Product } from '../../../../shared/models/product.model';
 import { CategoriesService } from '../../../../shared/services/categories.service';
+import { mensagemDeErro } from '../../../../shared/utils/http-error';
 
 
 @Component({
@@ -13,8 +14,7 @@ import { CategoriesService } from '../../../../shared/services/categories.servic
   styleUrl: './produtos-show.scss',
 })
 export class ProdutoShow implements OnInit {
-  product: Product | undefined;
-  notFound = false;
+  private productId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -31,18 +31,29 @@ export class ProdutoShow implements OnInit {
       .join(', ');
   }
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.product = id ? this.productsService.getProductById(id) : undefined;
-    this.notFound = !this.product;
+    this.productId = this.route.snapshot.paramMap.get('id');
   }
 
-  deleteProduct(): void {
-    if (!this.product) return;
+  get product(): Product | undefined {
+    return this.productId ? this.productsService.getProductById(this.productId) : undefined;
+  }
 
-    const confirmed = confirm(`Tem certeza que deseja excluir "${this.product.name}"?`);
-    if (confirmed) {
-      this.productsService.deleteProduct(this.product.id);
+  get notFound(): boolean {
+    return !this.product;
+  }
+
+  async deleteProduct(): Promise<void> {
+    const product = this.product;
+    if (!product) return;
+
+    const confirmed = confirm(`Tem certeza que deseja excluir "${product.name}"?`);
+    if (!confirmed) return;
+
+    try {
+      await this.productsService.deleteProduct(product.id);
       this.router.navigate(['/admin/produtos']);
+    } catch (erro) {
+      alert(mensagemDeErro(erro, 'Não foi possível excluir o produto.'));
     }
   }
 }

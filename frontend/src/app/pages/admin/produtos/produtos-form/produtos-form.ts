@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../../../shared/services/products.service';
-import { Product } from '../../../../shared/models/product.model';
+import { ProductInput } from '../../../../shared/models/product.model';
 import { CategoriesService } from '../../../../shared/services/categories.service';
 import { Category } from '../../../../shared/models/category.model';
 import { TagSelect } from '../../../../shared/components/tag-select/tag-select';
+import { mensagemDeErro } from '../../../../shared/utils/http-error';
 
 @Component({
   selector: 'app-produto-form',
@@ -17,16 +18,14 @@ import { TagSelect } from '../../../../shared/components/tag-select/tag-select';
 export class ProdutoForm implements OnInit {
   isEditMode = false;
   productId: string | null = null;
-  categories: Category[] = [];
+  readonly erro = signal<string | null>(null);
 
-  formData: Omit<Product, 'id'> = {
+  formData: ProductInput = {
     name: '',
     description: '',
     categoryIds: [],
     price: 0,
-    rating: 5,
     imageUrl: '',
-    isDrink: false,
     available: true,
     sizes: [],
   };
@@ -41,19 +40,24 @@ export class ProdutoForm implements OnInit {
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.productId;
-    this.categories = this.categoriesService.getAllCategories();
 
+    // o cardapioResolver da rota garante que os produtos já foram carregados
     if (this.isEditMode && this.productId) {
       const existing = this.productsService.getProductById(this.productId);
       if (existing) {
-        const { id, ...rest } = existing;
+        const { id, isDrink, ...rest } = existing;
         this.formData = {
           ...rest,
+          categoryIds: [...existing.categoryIds],
           available: existing.available !== false,
-          sizes: existing.sizes ? [...existing.sizes] : [],
+          sizes: (existing.sizes ?? []).map((size) => ({ ...size })),
         };
       }
     }
+  }
+
+  get categories(): Category[] {
+    return this.categoriesService.getAllCategories();
   }
 
   addSize(): void {
@@ -64,13 +68,19 @@ export class ProdutoForm implements OnInit {
     this.formData.sizes = this.formData.sizes?.filter((_, i) => i !== index);
   }
 
-  onSubmit(): void {
-    if (this.isEditMode && this.productId) {
-      this.productsService.updateProduct(this.productId, this.formData);
-    } else {
-      this.productsService.createProduct(this.formData);
+  async onSubmit(): Promise<void> {
+    this.erro.set(null);
+
+    try {
+      if (this.isEditMode && this.productId) {
+        await this.productsService.updateProduct(this.productId, this.formData);
+      } else {
+        await this.productsService.createProduct(this.formData);
+      }
+      this.router.navigate(['/admin/produtos']);
+    } catch (erro) {
+      this.erro.set(mensagemDeErro(erro, 'Não foi possível salvar o produto.'));
     }
-    this.router.navigate(['/admin/produtos']);
   }
 
   cancel(): void {
