@@ -16,16 +16,25 @@
       }
     </div>
 
-    <!-- Barra de categorias -->
+    <!-- cardapio.html — trecho da barra de categorias -->
     <div class="category-bar">
-      @for (category of categories; track category.value) {
+      <button
+        type="button"
+        class="category-pill"
+        [class.active]="activeCategory === 'todos'"
+        (click)="selectCategory('todos')"
+      >
+        Todos
+      </button>
+
+      @for (category of categories; track category.id) {
         <button
           type="button"
           class="category-pill"
-          [class.active]="activeCategory === category.value"
-          (click)="selectCategory(category.value)"
+          [class.active]="activeCategory === category.id"
+          (click)="selectCategory(category.id)"
         >
-          {{ category.label }}
+          {{ category.name }}
         </button>
       }
     </div>

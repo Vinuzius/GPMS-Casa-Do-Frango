@@ -1,0 +1,98 @@
+@use 'variables' as *;
+
+.tag-select {
+  position: relative;
+}
+
+.tag-select-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 2px solid #eadbd6;
+  border-radius: 10px;
+  cursor: text;
+  transition: border-color 0.2s;
+
+  &:focus-within {
+    border-color: $primary-color;
+  }
+
+  input {
+    flex: 1;
+    min-width: 80px;
+    border: none;
+    outline: none;
+    font: inherit;
+    background: transparent;
+  }
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #{$primary-color}18;
+  color: $primary-color;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 5px 8px 5px 12px;
+  border-radius: 20px;
+
+  button {
+    border: none;
+    background: none;
+    color: $primary-color;
+    cursor: pointer;
+    font-size: 11px;
+    opacity: 0.7;
+    padding: 0;
+    line-height: 1;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.tag-select-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: $white;
+  border: 2px solid #eadbd6;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  padding: 6px;
+}
+
+.tag-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 12px;
+  border: none;
+  background: none;
+  border-radius: 8px;
+  font-size: 14px;
+  color: $text-dark;
+  cursor: pointer;
+
+  &:hover {
+    background: $bg-color;
+  }
+}
+
+.tag-empty {
+  display: block;
+  padding: 9px 12px;
+  font-size: 13px;
+  color: $text-dark;
+  opacity: 0.5;
+}

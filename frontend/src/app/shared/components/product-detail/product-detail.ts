@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Product, ProductSize } from '../../models/product.model';
 import { ProductsService } from '../../services/products.service';
 import { CartService } from '../../services/cart.service';
+import { CategoriesService } from '../../services/categories.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,6 +27,8 @@ export class ProductDetail implements OnInit {
     private cartService: CartService,
     private location: Location, // lembrar onde tava na pagina
     private router: Router, // para navegar para outra rota
+    private categoriesService: CategoriesService, // novo
+
 
   ) {}
 
@@ -47,6 +50,13 @@ export class ProductDetail implements OnInit {
     if (!this.product) return 0;
     return this.product.price + (this.selectedSize?.priceModifier ?? 0);
   }
+
+  get categoryNames(): string {
+  if (!this.product) return '';
+  return this.product.categoryIds
+    .map((id) => this.categoriesService.getCategoryById(id)?.name ?? id)
+    .join(', ');
+}
 
   selectSize(size: ProductSize): void {
     this.selectedSize = size;

@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
 import { AuthService } from '../../shared/services/auth.service';
+
+type LoginView = 'login' | 'request' | 'code';
 
 function traduzirErro(mensagem: string): string {
   if (mensagem === 'Invalid login credentials') {
@@ -23,13 +25,24 @@ function traduzirErro(mensagem: string): string {
 export class Login {
   private readonly fb = inject(FormBuilder);
 
+  readonly view = signal<LoginView>('login');
   readonly form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     senha: ['', [Validators.required, Validators.minLength(6)]],
   });
+  readonly recoveryForm = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+  });
+  readonly codeForm = this.fb.group({
+    code: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
+    newPassword: ['', [Validators.required, Validators.minLength(6)]],
+    confirmPassword: ['', [Validators.required]],
+  });
 
   enviando = false;
   erro: string | null = null;
+  aviso: string | null = null;
+  private recoveryCode = '';
 
   constructor(
     private authService: AuthService,
@@ -56,5 +69,54 @@ export class Login {
     }
 
     this.router.navigateByUrl('/dashboard');
+  }
+
+  showRecovery(): void {
+    this.view.set('request');
+    this.erro = null;
+    this.aviso = null;
+    this.recoveryForm.reset();
+  }
+
+  backToLogin(): void {
+    this.view.set('login');
+    this.erro = null;
+    this.aviso = null;
+  }
+
+  sendRecoveryCode(): void {
+    if (this.recoveryForm.invalid) {
+      this.recoveryForm.markAllAsTouched();
+      return;
+    }
+
+    this.recoveryCode = '123456';
+    this.view.set('code');
+    this.erro = null;
+    this.codeForm.reset();
+  }
+
+  resetPassword(): void {
+    if (this.codeForm.invalid) {
+      this.codeForm.markAllAsTouched();
+      return;
+    }
+
+    const { code, newPassword, confirmPassword } = this.codeForm.getRawValue();
+    if (code !== this.recoveryCode) {
+      this.erro = 'Código inválido. Use o código enviado para o seu e-mail.';
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      this.erro = 'As senhas não conferem.';
+      return;
+    }
+
+    localStorage.setItem('casa-do-frango-mock-password', newPassword!);
+    this.view.set('login');
+    this.form.patchValue({ email: this.recoveryForm.controls.email.value, senha: '' });
+    this.erro = null;
+    this.aviso = 'Senha redefinida com sucesso. Você já pode entrar.';
+    this.codeForm.reset();
   }
 }

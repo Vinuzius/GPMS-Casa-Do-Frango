@@ -9,7 +9,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  category: ProductCategory;
+  categoryIds: string[]; // antes: category: ProductCategory (agora é array)
   price: number;
   rating: number;
   imageUrl: string;

@@ -1,0 +1,32 @@
+<div class="admin-page">
+  <div class="admin-header">
+    <h2>Categorias</h2>
+    <a routerLink="/admin/categorias/nova" class="new-btn">+ Nova Categoria</a>
+  </div>
+
+  <table class="products-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (category of categories; track category.id) {
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>{{ category.description || '—' }}</td>
+          <td class="actions-cell">
+            <a [routerLink]="['/admin/categorias', category.id, 'editar']" class="view-btn">Editar</a>
+            <button type="button" class="delete-link" (click)="deleteCategory(category)">Excluir</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="3" class="empty-row">Nenhuma categoria cadastrada.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

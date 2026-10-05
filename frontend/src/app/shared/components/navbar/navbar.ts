@@ -16,6 +16,7 @@ export class Navbar implements AfterViewInit {
   @ViewChild('topbarEl') topbarEl!: ElementRef<HTMLElement>;
 
   isProfileMenuOpen = false;
+  isAdminMenuOpen = false;
   readonly cartItemCount: Signal<number>;
   readonly unreadNotificationCount: Signal<number>;
 
@@ -50,11 +51,22 @@ export class Navbar implements AfterViewInit {
 
   toggleProfileMenu(event: MouseEvent): void {
     event.stopPropagation();
+    this.isAdminMenuOpen = false;
     this.isProfileMenuOpen = !this.isProfileMenuOpen;
   }
 
   closeProfileMenu(): void {
     this.isProfileMenuOpen = false;
+  }
+
+  toggleAdminMenu(event: MouseEvent): void {
+    event.stopPropagation();
+    this.isProfileMenuOpen = false;
+    this.isAdminMenuOpen = !this.isAdminMenuOpen;
+  }
+
+  closeAdminMenu(): void {
+    this.isAdminMenuOpen = false;
   }
 
   async sair(): Promise<void> {
@@ -65,8 +77,11 @@ export class Navbar implements AfterViewInit {
 
   @HostListener('document:click', ['$event.target'])
   onDocumentClick(target: EventTarget | null): void {
-    if (!this.isProfileMenuOpen) return;
+    if (!this.isProfileMenuOpen && !this.isAdminMenuOpen) return;
     const clickedInside = target instanceof Node && this.elementRef.nativeElement.contains(target);
-    if (!clickedInside) this.closeProfileMenu();
+    if (!clickedInside) {
+      this.closeProfileMenu();
+      this.closeAdminMenu();
+    }
   }
 }

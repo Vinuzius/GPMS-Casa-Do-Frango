@@ -1,0 +1,39 @@
+<div class="admin-page">
+  @if (notFound) {
+    <div class="state-message">
+      <h3>Produto não encontrado</h3>
+      <a routerLink="/admin/produtos" class="back-link">← Voltar</a>
+    </div>
+  } @else if (product) {
+    <a routerLink="/admin/produtos" class="back-link">← Voltar aos produtos</a>
+
+    <div class="show-content">
+      <img [src]="product.imageUrl" [alt]="product.name" class="show-image" />
+
+      <div class="show-info">
+        <span class="show-category">{{ categoryNames }}</span>
+        <h2>{{ product.name }}</h2>
+        <p class="show-description">{{ product.description }}</p>
+        <div class="show-price">R$ {{ product.price.toFixed(2) }}</div>
+
+        <span class="status-badge" [class.inactive]="product.available === false">
+          {{ product.available === false ? 'Indisponível' : 'Disponível' }}
+        </span>
+
+        @if (product.sizes?.length) {
+          <div class="show-sizes">
+            <h4>Tamanhos</h4>
+            @for (size of product.sizes; track size.label) {
+              <div class="size-item">{{ size.label }} (+R$ {{ size.priceModifier.toFixed(2) }})</div>
+            }
+          </div>
+        }
+
+        <div class="show-actions">
+          <a [routerLink]="['/admin/produtos', product.id, 'editar']" class="edit-btn">Editar</a>
+          <button type="button" class="delete-btn" (click)="deleteProduct()">Excluir</button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -10,6 +10,7 @@ type PaymentType = 'pix' | 'card';
 
 interface Address {
   label: string;
+  isPrimary: boolean;
   street: string;
   number: string;
   neighborhood: string;
@@ -28,6 +29,7 @@ interface Address {
   styleUrl: './carrinho.scss',
 })
 export class Carrinho {
+  readonly cartNotice;
   readonly cartItems;
   readonly itemCount;
   readonly subtotal;
@@ -35,7 +37,8 @@ export class Carrinho {
   selectedPayment = signal<PaymentType>('pix');
   checkoutStep = signal<'cart' | 'payment'>('cart');
   readonly addresses = signal<Address[]>(this.loadAddresses());
-  selectedAddress = signal<Address>(this.addresses()[0] ?? this.defaultAddress());
+  selectedAddress = signal<Address | null>(this.addresses()[0] ?? null);
+  addressDraft: Address = this.emptyAddress();
   isAddressMenuOpen = signal(false);
   coupon = '';
 
@@ -44,6 +47,7 @@ export class Carrinho {
     private ordersService: OrdersService,
     private router: Router,
   ) {
+    this.cartNotice = this.cartService.cartNotice;
     this.cartItems = this.cartService.cartItems;
     this.itemCount = this.cartService.itemCount;
     this.subtotal = this.cartService.subtotal;
@@ -58,7 +62,21 @@ export class Carrinho {
   }
 
   decreaseQuantity(index: number): void {
+    const item = this.cartItems()[index];
     this.cartService.decrease(index);
+    if (item?.quantity === 1) {
+      this.showNotice(`Produto removido com sucesso.`);
+    }
+  }
+
+  removeItem(index: number): void {
+    const item = this.cartItems()[index];
+    this.cartService.remove(index);
+    if (item) this.showNotice(`Produto removido com sucesso.`);
+  }
+
+  dismissCartNotice(): void {
+    this.cartService.clearNotice();
   }
 
   continueToPayment(): void {
@@ -82,7 +100,28 @@ export class Carrinho {
     this.isAddressMenuOpen.set(false);
   }
 
+  saveAddress(): void {
+    if (!this.addressDraft.street.trim() || !this.addressDraft.number.trim()) return;
+
+    const address: Address = {
+      ...this.addressDraft,
+      label: this.addressDraft.label.trim() || 'Casa',
+      isPrimary: this.addresses().length === 0,
+    };
+    const updatedAddresses = [...this.addresses(), address];
+    this.addresses.set(updatedAddresses);
+    this.selectedAddress.set(address);
+    this.addressDraft = this.emptyAddress();
+    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(updatedAddresses));
+    this.showNotice('Endereço salvo com sucesso.');
+  }
+
   finishOrder(): void {
+    if (this.selectedService() === 'delivery' && !this.selectedAddress()) {
+      this.showNotice('Cadastre um endereço para receber seu pedido.');
+      return;
+    }
+
     const order = this.ordersService.confirmOrder(this.selectedService(), this.selectedPayment());
     if (order) this.router.navigate(['/pedidos']);
   }
@@ -99,18 +138,26 @@ export class Carrinho {
       }
     }
 
-    return [this.defaultAddress()];
+    return [];
   }
 
-  private defaultAddress(): Address {
+  private emptyAddress(): Address {
     return {
-      label: 'Casa',
-      street: 'Rua das Flores',
-      number: '123',
-      neighborhood: 'Centro',
-      city: 'São Paulo',
-      state: 'SP',
-      zipCode: '01000-000',
+      label: '',
+      isPrimary: false,
+      street: '',
+      number: '',
+      neighborhood: '',
+      city: '',
+      state: '',
+      zipCode: '',
     };
+  }
+
+  private showNotice(message: string): void {
+    this.cartService.showNotice(message);
+    window.setTimeout(() => {
+      if (this.cartService.cartNotice() === message) this.cartService.clearNotice();
+    }, 5000);
   }
 }

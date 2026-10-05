@@ -22,6 +22,29 @@
     <a routerLink="/pedidos" routerLinkActive="active">
       Pedidos
     </a>
+
+  <div class="nav-dropdown">
+    <button
+      type="button"
+      class="nav-dropdown-trigger"
+      [class.active]="isAdminMenuOpen"
+      (click)="toggleAdminMenu($event)"
+    >
+      Admin
+      <span class="chevron" [class.open]="isAdminMenuOpen">▾</span>
+    </button>
+
+    @if (isAdminMenuOpen) {
+      <div class="nav-dropdown-menu">
+        <a routerLink="/admin/produtos" routerLinkActive="active" (click)="closeAdminMenu()">
+          Produtos
+        </a>
+        <a routerLink="/admin/categorias" routerLinkActive="active" (click)="closeAdminMenu()">
+          Categorias
+        </a>
+      </div>
+    }
+  </div>
   </nav>
 
   <div class="search-bar">

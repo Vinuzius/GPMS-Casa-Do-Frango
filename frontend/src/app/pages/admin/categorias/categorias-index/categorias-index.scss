@@ -1,0 +1,77 @@
+@use 'variables' as *;
+
+.admin-page {
+  padding-top: var(--topbar-height, 90px);
+  max-width: 900px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0 25px;
+
+  h2 { color: $text-dark; }
+
+  .new-btn {
+    background: $primary-color;
+    color: $white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+  }
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: $white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+
+  th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid #f0e9e6;
+  }
+
+  th {
+    background: $bg-color;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: $text-dark;
+    opacity: 0.6;
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 14px;
+  }
+
+  .view-btn {
+    color: $primary-color;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .delete-link {
+    background: none;
+    border: none;
+    color: #c0392b;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+  }
+
+  .empty-row {
+    text-align: center;
+    padding: 40px;
+    opacity: 0.6;
+  }
+}

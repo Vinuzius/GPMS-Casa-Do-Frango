@@ -1,4 +1,11 @@
 <main class="profile-page">
+	@if (cartNotice()) {
+		<div class="cart-notice" role="status">
+			<mat-icon aria-hidden="true">check_circle</mat-icon>
+			<span>{{ cartNotice() }}</span>
+			<button type="button" aria-label="Fechar aviso" (click)="dismissCartNotice()">✕</button>
+		</div>
+	}
 	<header class="profile-heading">
 		<div>
 			<p class="eyebrow">Área do cliente</p>
@@ -11,48 +18,94 @@
 	<div class="profile-layout">
 		<aside class="profile-menu" aria-label="Opções do perfil">
 			<div class="profile-avatar" aria-hidden="true">👤</div>
-			<strong>Paulo Henrique Ganso</strong>
-			<span>phgansolu@gmail.com</span>
+			<strong>{{ profile().name }}</strong>
+			<span>{{ profile().email }}</span>
 
 			<nav>
 				<button type="button" [class.active]="activeSection() === 'details'" (click)="showDetails()"><mat-icon aria-hidden="true">person_outline</mat-icon> Dados cadastrais</button>
 				<button type="button" [class.active]="activeSection() === 'addresses'" (click)="showAddresses()"><mat-icon aria-hidden="true">location_on</mat-icon> Meus endereços</button>
+				<button type="button" [class.active]="activeSection() === 'password'" (click)="showPassword()"><mat-icon aria-hidden="true">lock_outline</mat-icon> Alterar senha</button>
 			</nav>
 		</aside>
 
 		<section class="profile-content" aria-live="polite">
 			@if (activeSection() === 'details') {
 				<div class="content-heading"><p class="section-kicker">Minha conta</p><h2>Dados cadastrais</h2><p>Confira e mantenha seus dados sempre atualizados.</p></div>
-				<form class="details-form">
-					<label>Nome completo<input type="text" value="Paulo Henrique Ganso" /></label>
-					<label>Email<input type="email" value="phgansolu@gmail.com" /></label>
-					<label>Data de nascimento<input type="date" value="1989-10-12" /></label>
-					<label>Gênero<select><option selected>Homem</option><option>Mulher</option><option>Prefiro não informar</option></select></label>
-					<label>Número de telefone<input type="tel" value="(21) 9 4002 8922" /></label>
-					<button class="save-button" type="button" disabled>Salvar alterações</button>
+				<form class="details-form" (submit)="$event.preventDefault(); saveProfile()">
+					<label>Nome completo<input name="name" type="text" [(ngModel)]="profileDraft.name" /></label>
+					<label>Email<input name="email" type="email" [(ngModel)]="profileDraft.email" /></label>
+					<label>Data de nascimento<input name="birthDate" type="date" [(ngModel)]="profileDraft.birthDate" /></label>
+					<label>Gênero<select name="gender" [(ngModel)]="profileDraft.gender"><option value="Homem">Homem</option><option value="Mulher">Mulher</option><option value="Prefiro não informar">Prefiro não informar</option></select></label>
+					<label>Número de telefone<input name="phone" type="tel" [(ngModel)]="profileDraft.phone" /></label>
+					<button class="save-button" type="submit" [disabled]="!hasProfileChanges() || !profileDraft.name.trim() || !profileDraft.email.trim()">Salvar alterações</button>
 				</form>
-			} @else {
+			} @else if (activeSection() === 'addresses') {
 				<div class="content-heading"><p class="section-kicker">Onde receber</p><h2>Meus endereços</h2><p>Escolha onde deseja receber seus próximos pedidos.</p></div>
 				@for (address of addresses(); track $index; let index = $index) {
 					<article class="address-card">
 						<div class="address-icon"><mat-icon aria-hidden="true">home</mat-icon></div>
-						<div class="address-copy"><div><strong>{{ address.label }}</strong>@if (index === 0) { <span class="default-label">Principal</span> }</div><p>{{ address.street }}, {{ address.number }}<br>{{ address.neighborhood }}, {{ address.city }} - {{ address.state }}<br>CEP {{ address.zipCode }}</p></div>
-						<button class="edit-button" type="button" (click)="editAddress(index)"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
+						<div class="address-copy"><div><strong>{{ address.label }}</strong>@if (address.isPrimary) { <span class="default-label">Principal</span> }</div><p>{{ address.street }}, {{ address.number }}<br>{{ address.neighborhood }}, {{ address.city }} - {{ address.state }}<br>CEP {{ address.zipCode }}</p></div>
+						<div class="address-actions">
+							@if (!address.isPrimary) {
+								<button class="primary-address-button" type="button" (click)="makeAddressPrimary(index)">Tornar principal</button>
+							}
+							<button class="edit-button" type="button" (click)="editAddress(index)"><mat-icon aria-hidden="true">edit</mat-icon> Editar</button>
+						</div>
 					</article>
 				}
 				@if (isAddressFormOpen()) {
-					<form class="address-form">
-						<h3>{{ editingAddressIndex() === null ? 'Novo endereço' : 'Editar endereço' }}</h3>
-						<label>Rua<input name="street" [(ngModel)]="addressDraft.street" placeholder="Nome da rua" /></label>
-						<label>Número<input name="number" [(ngModel)]="addressDraft.number" placeholder="Número" /></label>
-						<label>Bairro<input name="neighborhood" [(ngModel)]="addressDraft.neighborhood" placeholder="Bairro" /></label>
-						<label>Cidade<input name="city" [(ngModel)]="addressDraft.city" placeholder="Cidade" /></label>
-						<label>Estado<input name="state" [(ngModel)]="addressDraft.state" placeholder="UF" /></label>
-						<label>CEP<input name="zipCode" [(ngModel)]="addressDraft.zipCode" placeholder="00000-000" /></label>
-						<div class="address-form-actions"><button type="button" class="cancel-button" (click)="cancelAddressForm()">Cancelar</button><button type="button" class="save-address-button" (click)="saveAddress()">Salvar endereço</button></div>
-					</form>
+					<div class="dialog-backdrop" (click)="cancelAddressForm()">
+						<section class="address-dialog" role="dialog" aria-modal="true" aria-labelledby="address-dialog-title" (click)="$event.stopPropagation()">
+							<div class="dialog-heading">
+								<div>
+									<p class="section-kicker">{{ editingAddressIndex() === null ? 'Novo endereço' : 'Editar endereço' }}</p>
+									<h3 id="address-dialog-title">{{ editingAddressIndex() === null ? 'Adicionar endereço' : 'Editar endereço' }}</h3>
+								</div>
+								<button class="dialog-close" type="button" aria-label="Fechar diálogo" (click)="cancelAddressForm()">
+									<mat-icon aria-hidden="true">close</mat-icon>
+								</button>
+							</div>
+							<form class="address-form" (submit)="$event.preventDefault(); saveAddress()">
+								<label class="address-label-field">Nome do endereço
+									<input name="label" [(ngModel)]="addressDraft.label" list="address-label-options" placeholder="Ex.: Casa, Trabalho" />
+								</label>
+								<datalist id="address-label-options">
+									<option value="Casa"></option>
+									<option value="Trabalho"></option>
+								</datalist>
+								<label>Rua<input name="street" [(ngModel)]="addressDraft.street" placeholder="Nome da rua" /></label>
+								<label>Número<input name="number" [(ngModel)]="addressDraft.number" placeholder="Número" /></label>
+								<label>Bairro<input name="neighborhood" [(ngModel)]="addressDraft.neighborhood" placeholder="Bairro" /></label>
+								<label>Cidade<input name="city" [(ngModel)]="addressDraft.city" placeholder="Cidade" /></label>
+								<label>Estado<input name="state" [(ngModel)]="addressDraft.state" placeholder="UF" /></label>
+								<label>CEP<input name="zipCode" [(ngModel)]="addressDraft.zipCode" placeholder="00000-000" /></label>
+								<div class="address-form-actions">
+									<button type="button" class="cancel-button" (click)="cancelAddressForm()">Cancelar</button>
+									@if (editingAddressIndex() !== null) {
+										<button type="button" class="delete-address-button" (click)="deleteAddress()">Excluir endereço</button>
+									}
+									<button type="submit" class="save-address-button">Salvar endereço</button>
+								</div>
+							</form>
+						</section>
+					</div>
 				}
 				<button class="add-address-button" type="button" (click)="addAddress()"><mat-icon aria-hidden="true">add</mat-icon> Adicionar novo endereço</button>
+			} @else {
+				<div class="content-heading"><p class="section-kicker">Segurança</p><h2>Alterar senha</h2><p>Atualize sua senha para manter sua conta protegida.</p></div>
+				<form class="password-form" (submit)="$event.preventDefault(); savePassword()">
+					<label>Senha atual
+						<input name="currentPassword" type="password" autocomplete="current-password" [(ngModel)]="passwordDraft.current" />
+					</label>
+					<label>Nova senha
+						<input name="newPassword" type="password" autocomplete="new-password" [(ngModel)]="passwordDraft.next" />
+					</label>
+					<label>Confirmar nova senha
+						<input name="passwordConfirmation" type="password" autocomplete="new-password" [(ngModel)]="passwordDraft.confirmation" />
+					</label>
+					<p class="password-hint">A nova senha deve ter pelo menos 6 caracteres.</p>
+					<button class="save-button" type="submit">Salvar nova senha</button>
+				</form>
 			}
 		</section>
 	</div>

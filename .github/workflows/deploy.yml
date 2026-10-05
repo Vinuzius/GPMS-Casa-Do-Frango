@@ -36,6 +36,10 @@ jobs:
         run: npm run build -- --configuration production --base-href /${{ github.event.repository.name }}/
         working-directory: ./frontend
 
+      - name: Create SPA fallback (404.html)
+        run: cp dist/front-end/browser/index.html dist/front-end/browser/404.html
+        working-directory: ./frontend
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
