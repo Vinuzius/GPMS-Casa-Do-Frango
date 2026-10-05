@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.src.controller import auth_controller
+from app.src.controller import auth_controller, perfil_controller
 
 
 def get_routers():
@@ -11,5 +11,6 @@ def get_routers():
         return {"status": "ok"}
 
     api_router.include_router(auth_controller.router, prefix="/auth", tags=["Auth"])
+    api_router.include_router(perfil_controller.router, prefix="/perfil", tags=["Perfil"])
 
     return api_router

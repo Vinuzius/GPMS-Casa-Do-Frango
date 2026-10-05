@@ -1,9 +1,10 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.src.core.config import settings
 from app.src.core.openapi import LICENSE_INFO, TAGS_METADATA
 from app.src.core.routers import get_routers
-  
+
 app = FastAPI(
     title=settings.api_title,
     description=settings.api_description,
@@ -12,6 +13,15 @@ app = FastAPI(
     openapi_tags=TAGS_METADATA,
     docs_url="/api/docs",
 )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200", "http://127.0.0.1:4200"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(get_routers())
 
 

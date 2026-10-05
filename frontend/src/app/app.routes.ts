@@ -6,6 +6,7 @@ import { Cardapio }         from './pages/cardapio/cardapio';
 import { Admin }            from './pages/admin/admin';
 import { ProductDetail }    from './shared/components/product-detail/product-detail';
 import { authGuard }        from './shared/guards/auth.guard';
+import { adminGuard }       from './shared/guards/admin.guard';
 import { Carrinho }         from './pages/carrinho/carrinho';
 import { HistoricoPedidos } from './pages/historico-pedidos/historico-pedidos';
 import { Notificacoes }     from './pages/notificacoes/notificacoes';
@@ -33,7 +34,7 @@ export const routes: Routes = [
       { path: 'dashboard',            component: Dashboard },
       { path: 'cardapio',             component: Cardapio },
       { path: 'cardapio/produto/:id', component: ProductDetail },
-      { path: 'admin',                component: Admin },
+      { path: 'admin',                component: Admin, canActivate: [adminGuard] },
       { path: 'carrinho',             component: Carrinho },
       { path: 'perfil',               component: Perfil },
       { path: 'notificacoes',         component: Notificacoes },
@@ -43,7 +44,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/produtos',
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     children: [
       { path: '',                 component: ProdutosIndex },
       { path: 'novo',             component: ProdutoForm },      // precisa vir ANTES de ':id'
@@ -53,7 +54,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/categorias',
-    canActivate: [authGuard],
+    canActivate: [adminGuard],
     children: [
       { path: '', component: CategoriasIndex },
       { path: 'nova', component: CategoriaForm },

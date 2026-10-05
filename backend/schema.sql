@@ -161,3 +161,49 @@ CREATE TRIGGER trg_carrinhos_atualizado_em
 CREATE TRIGGER trg_pedidos_atualizado_em
   BEFORE UPDATE ON pedidos
   FOR EACH ROW EXECUTE FUNCTION set_atualizado_em();
+
+-- ---------------------------------------------------------
+-- 7. TRIGGER: cria profile automaticamente ao criar usuário
+-- em auth.users (signup pelo app OU criação manual via dashboard)
+-- ---------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.profiles (id, nome, telefone)
+  VALUES (
+    NEW.id,
+    COALESCE(NEW.raw_user_meta_data->>'nome', 'Usuário'),
+    NEW.raw_user_meta_data->>'telefone'
+  );
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- ---------------------------------------------------------
+-- 8. ROW LEVEL SECURITY
+-- RLS ativado sem policies bloqueia o acesso direto às tabelas
+-- pela API pública da Supabase (papéis anon/authenticated).
+-- O backend conecta como postgres (dono) e não é afetado.
+-- Toda tabela nova precisa da mesma linha.
+-- ---------------------------------------------------------
+
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.enderecos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.categorias ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.itens_cardapio ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.carrinhos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.carrinho_itens ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.pedidos ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.pedido_itens ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.pedido_status_historico ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.conversas ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.mensagens ENABLE ROW LEVEL SECURITY;

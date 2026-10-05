@@ -15,9 +15,23 @@ export interface Perfil {
 export class PerfilService {
   readonly perfil = signal<Perfil | null>(null);
 
+  private carregando: Promise<void> | null = null;
+
   constructor(private http: HttpClient) {}
 
-  async carregarPerfil(accessToken: string): Promise<void> {
+  carregarPerfil(accessToken: string): Promise<void> {
+    this.carregando ??= this.buscarPerfil(accessToken).finally(() => (this.carregando = null));
+    return this.carregando;
+  }
+
+  async obterPerfil(accessToken: string): Promise<Perfil | null> {
+    if (!this.perfil()) {
+      await this.carregarPerfil(accessToken);
+    }
+    return this.perfil();
+  }
+
+  private async buscarPerfil(accessToken: string): Promise<void> {
     try {
       const perfil = await firstValueFrom(
         this.http.get<Perfil>(`${environment.apiUrl}/perfil/me`, {

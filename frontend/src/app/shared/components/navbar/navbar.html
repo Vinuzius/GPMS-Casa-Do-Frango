@@ -23,6 +23,7 @@
       Pedidos
     </a>
 
+  @if (perfilService.perfil()?.is_admin) {
   <div class="nav-dropdown">
     <button
       type="button"
@@ -45,6 +46,7 @@
       </div>
     }
   </div>
+  }
   </nav>
 
   <div class="search-bar">
