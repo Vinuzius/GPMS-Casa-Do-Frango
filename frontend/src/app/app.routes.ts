@@ -17,10 +17,9 @@ import { ProdutoShow }      from './pages/admin/produtos/produtos-show/produtos-
 import { ProdutoForm }      from './pages/admin/produtos/produtos-form/produtos-form';
 import { CategoriasIndex }  from './pages/admin/categorias/categorias-index/categorias-index';
 import { CategoriaForm }    from './pages/admin/categorias/categorias-form/categorias-form';
-import { environment }     from '../environments/environment';
 
 export const routes: Routes = [
-  { path: '', redirectTo: environment.bypassAuth ? '/dashboard' : '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Rota padrão
   
   // Rotas públicas (fora do guard)
   { path: 'login',    component: Login },
