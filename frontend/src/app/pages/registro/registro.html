@@ -1,5 +1,5 @@
 <div class="auth-page">
-  @if (cadastroPendenteConfirmacao) {
+  @if (cadastroPendenteConfirmacao()) {
     <div class="auth-card">
       <div class="auth-brand">
         <img src="assets/logo.png" alt="Casa do Frango" />
@@ -45,12 +45,12 @@
         <span class="campo-erro">A senha precisa ter pelo menos 6 caracteres.</span>
       }
 
-      @if (erro) {
-        <p class="erro-geral">{{ erro }}</p>
+      @if (erro()) {
+        <p class="erro-geral">{{ erro() }}</p>
       }
 
-      <button type="submit" [disabled]="enviando">
-        {{ enviando ? 'Criando conta...' : 'Criar conta' }}
+      <button type="submit" [disabled]="enviando()">
+        {{ enviando() ? 'Criando conta...' : 'Criar conta' }}
       </button>
 
       <p class="rodape">

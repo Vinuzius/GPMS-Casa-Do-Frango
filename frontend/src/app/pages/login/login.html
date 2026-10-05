@@ -24,15 +24,15 @@
       <span class="campo-erro">A senha precisa ter pelo menos 6 caracteres.</span>
     }
 
-    @if (erro) {
-      <p class="erro-geral">{{ erro }}</p>
+    @if (erro()) {
+      <p class="erro-geral">{{ erro() }}</p>
     }
-    @if (aviso) {
-      <p class="aviso-geral">{{ aviso }}</p>
+    @if (aviso()) {
+      <p class="aviso-geral">{{ aviso() }}</p>
     }
 
-    <button type="submit" [disabled]="enviando">
-      {{ enviando ? 'Entrando...' : 'Entrar' }}
+    <button type="submit" [disabled]="enviando()">
+      {{ enviando() ? 'Entrando...' : 'Entrar' }}
     </button>
 
     <button class="link-button" type="button" (click)="showRecovery()">Esqueceu sua senha?</button>
@@ -52,7 +52,7 @@
       @if (recoveryForm.controls.email.invalid && recoveryForm.controls.email.touched) {
         <span class="campo-erro">Informe um e-mail válido.</span>
       }
-      @if (erro) { <p class="erro-geral">{{ erro }}</p> }
+      @if (erro()) { <p class="erro-geral">{{ erro() }}</p> }
       <button type="submit">Enviar código</button>
       <button class="link-button" type="button" (click)="backToLogin()">Voltar para o login</button>
     </form>
@@ -61,7 +61,7 @@
       <div class="auth-brand"><img src="assets/logo.png" alt="Casa do Frango" /><span>Casa do Frango</span></div>
       <h1>Redefinir senha</h1>
       <p class="descricao">Digite o código recebido e escolha uma nova senha.</p>
-      @if (aviso) { <p class="aviso-geral">{{ aviso }}</p> }
+      @if (aviso()) { <p class="aviso-geral">{{ aviso() }}</p> }
       <label>
         Código de verificação
         <input placeholder="123456" inputmode="numeric" maxlength="6" formControlName="code" autocomplete="one-time-code" />
@@ -77,7 +77,7 @@
         Confirmar nova senha
         <input type="password" formControlName="confirmPassword" autocomplete="new-password" />
       </label>
-      @if (erro) { <p class="erro-geral">{{ erro }}</p> }
+      @if (erro()) { <p class="erro-geral">{{ erro() }}</p> }
       <button type="submit">Redefinir senha</button>
       <button class="link-button" type="button" (click)="backToLogin()">Voltar para o login</button>
     </form>
