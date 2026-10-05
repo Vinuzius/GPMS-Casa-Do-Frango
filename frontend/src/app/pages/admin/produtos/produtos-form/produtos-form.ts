@@ -47,7 +47,11 @@ export class ProdutoForm implements OnInit {
       const existing = this.productsService.getProductById(this.productId);
       if (existing) {
         const { id, ...rest } = existing;
-        this.formData = { ...rest, sizes: existing.sizes ? [...existing.sizes] : [] };
+        this.formData = {
+          ...rest,
+          available: existing.available !== false,
+          sizes: existing.sizes ? [...existing.sizes] : [],
+        };
       }
     }
   }
