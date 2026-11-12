@@ -1,0 +1,140 @@
+// pedidos-index.scss
+@use 'variables' as *;
+
+.admin-page {
+  padding-top: var(--topbar-height, 90px);
+  max-width: 900px;
+  margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.admin-header {
+  margin: 30px 0 20px;
+  h2 { color: $text-dark; }
+}
+
+.status-filter {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.filter-pill {
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: 2px solid transparent;
+  background: $white;
+  color: $text-dark;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  &:hover { border-color: #{$primary-color}55; }
+  &.active { background: $primary-color; color: $white; }
+}
+
+.pedidos-list {
+  display: grid;
+  gap: 14px;
+}
+
+.pedido-card {
+  background: $white;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.pedido-header {
+  display: grid;
+  grid-template-columns: 70px 1fr auto auto 20px;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 20px;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover { background: #fffaf8; }
+
+  .pedido-id { font-weight: 800; color: $text-dark; }
+  .pedido-data { color: $text-dark; opacity: 0.65; font-size: 14px; }
+  .pedido-total { font-weight: 700; color: $primary-color; }
+
+  .chevron {
+    font-size: 12px;
+    transition: transform 0.2s;
+    &.open { transform: rotate(180deg); }
+  }
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  background: #eee;
+  color: #555;
+
+  &[data-status='RECEBIDO'] { background: #e8f0fe; color: #1a56db; }
+  &[data-status='EM_PREPARO'] { background: #fff4e0; color: #b7791f; }
+  &[data-status='SAIU_PARA_ENTREGA'] { background: #efe8fe; color: #6b3fd4; }
+  &[data-status='ENTREGUE'] { background: #e3f5e9; color: #2d8a4e; }
+  &[data-status='CANCELADO'] { background: #f5e3e3; color: #c0392b; }
+}
+
+.pedido-detalhes {
+  padding: 0 20px 20px;
+  border-top: 1px solid #f0e9e6;
+
+  h4 { margin: 18px 0 8px; font-size: 14px; color: $text-dark; }
+
+  .itens-list, .historico-list { list-style: none; padding: 0; margin: 0; }
+
+  .itens-list li, .historico-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 14px;
+    border-bottom: 1px dashed #f0e9e6;
+  }
+
+  .meta { font-size: 14px; opacity: 0.7; margin: 12px 0 0; }
+}
+
+.status-update {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+
+  label { font-size: 13px; font-weight: 700; color: $text-dark; }
+
+  select {
+    padding: 8px 12px;
+    border: 2px solid #eadbd6;
+    border-radius: 10px;
+    font: inherit;
+    outline: none;
+    background: $white;
+
+    &:focus { border-color: $primary-color; }
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  opacity: 0.6;
+}
+
+@media (max-width: 600px) {
+  .admin-page { padding-left: 20px; padding-right: 20px; }
+  .pedido-header { grid-template-columns: 1fr auto; row-gap: 6px; }
+}

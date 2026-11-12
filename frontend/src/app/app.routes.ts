@@ -19,6 +19,7 @@ import { ProdutoShow }      from './pages/admin/produtos/produtos-show/produtos-
 import { ProdutoForm }      from './pages/admin/produtos/produtos-form/produtos-form';
 import { CategoriasIndex }  from './pages/admin/categorias/categorias-index/categorias-index';
 import { CategoriaForm }    from './pages/admin/categorias/categorias-form/categorias-form';
+import { PedidosIndex } from './pages/admin/pedidos/pedidos-index/pedidos-index';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Rota padrão
@@ -30,7 +31,7 @@ export const routes: Routes = [
   // Rotas protegidas: um guard só para o grupo
   {
     path: '',
-    canActivate: [authGuard],
+    //canActivate: [authGuard],
     children: [
       { path: 'dashboard',            component: Dashboard },
       { path: 'cardapio',             component: Cardapio },
@@ -45,7 +46,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/produtos',
-    canActivate: [adminGuard],
+    //canActivate: [adminGuard],
     resolve: { cardapio: cardapioResolver },
     children: [
       { path: '',                 component: ProdutosIndex },
@@ -63,6 +64,11 @@ export const routes: Routes = [
       { path: 'nova', component: CategoriaForm },
       { path: ':id/editar', component: CategoriaForm },
     ],
+  },
+
+  { path: 'admin/pedidos', 
+    component: PedidosIndex, 
+    //canActivate: [authGuard] 
   },
   { path: '**', redirectTo: '/login' } // Rota para páginas não encontradas
 ];

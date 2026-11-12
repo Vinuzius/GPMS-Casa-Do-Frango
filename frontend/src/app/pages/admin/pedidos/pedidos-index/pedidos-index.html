@@ -1,0 +1,68 @@
+<!-- pedidos-index.html -->
+<div class="admin-page">
+  <div class="admin-header">
+    <h2>Pedidos</h2>
+  </div>
+
+  <div class="status-filter">
+    <button type="button" class="filter-pill" [class.active]="filtroStatus() === 'TODOS'" (click)="filtroStatus.set('TODOS')">
+      Todos
+    </button>
+    @for (s of statusList; track s) {
+      <button type="button" class="filter-pill" [class.active]="filtroStatus() === s" (click)="filtroStatus.set(s)">
+        {{ statusLabel[s] }}
+      </button>
+    }
+  </div>
+
+  <div class="pedidos-list">
+    @for (pedido of pedidosFiltrados(); track pedido.id) {
+      <article class="pedido-card">
+        <button type="button" class="pedido-header" [attr.aria-expanded]="expandidoId() === pedido.id" (click)="toggle(pedido.id)">
+          <span class="pedido-id">#{{ pedido.id }}</span>
+          <span class="pedido-data">{{ pedido.criado_em | date: 'dd/MM/yyyy HH:mm' }}</span>
+          <span class="pedido-total">R$ {{ pedido.total.toFixed(2) }}</span>
+          <span class="status-badge" [attr.data-status]="pedido.status">{{ statusLabel[pedido.status] }}</span>
+          <span class="chevron" [class.open]="expandidoId() === pedido.id">▾</span>
+        </button>
+
+        @if (expandidoId() === pedido.id) {
+          <div class="pedido-detalhes">
+            <h4>Itens</h4>
+            <ul class="itens-list">
+              @for (item of pedido.itens; track item.id) {
+                <li>
+                  <span>{{ item.quantidade }}x {{ item.nome_item }}</span>
+                  <span>R$ {{ item.subtotal.toFixed(2) }}</span>
+                </li>
+              }
+            </ul>
+
+            <p class="meta">Pagamento: {{ pagamentoLabel[pedido.forma_pagamento] }}</p>
+
+            <div class="status-update">
+              <label [for]="'status-' + pedido.id">Atualizar status</label>
+              <select [id]="'status-' + pedido.id" #sel (change)="mudarStatus(pedido, sel.value)">
+                @for (s of statusList; track s) {
+                  <option [value]="s" [selected]="s === pedido.status">{{ statusLabel[s] }}</option>
+                }
+              </select>
+            </div>
+
+            <h4>Histórico de status</h4>
+            <ol class="historico-list">
+              @for (h of pedido.historico; track h.id) {
+                <li>
+                  <strong>{{ statusLabel[h.status_novo] }}</strong>
+                  <span>{{ h.alterado_em | date: 'dd/MM HH:mm' }}</span>
+                </li>
+              }
+            </ol>
+          </div>
+        }
+      </article>
+    } @empty {
+      <div class="empty-state">Nenhum pedido encontrado.</div>
+    }
+  </div>
+</div>
