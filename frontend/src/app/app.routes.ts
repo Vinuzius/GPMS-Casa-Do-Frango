@@ -70,5 +70,6 @@ export const routes: Routes = [
     component: PedidosIndex, 
     canActivate: [authGuard] 
   },
+  
   { path: '**', redirectTo: '/login' } // Rota para páginas não encontradas
 ];
