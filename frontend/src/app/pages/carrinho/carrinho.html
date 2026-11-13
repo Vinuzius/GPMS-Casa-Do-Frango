@@ -100,6 +100,13 @@
           <button class="payment-option" [class.selected]="selectedPayment() === 'card'" type="button" role="radio" [attr.aria-checked]="selectedPayment() === 'card'" (click)="selectPayment('card')"><mat-icon aria-hidden="true">credit_card</mat-icon><span><strong>Cartão</strong><small>Crédito ou débito</small></span><mat-icon class="payment-check" aria-hidden="true">check_circle</mat-icon></button>
         </div>
 
+        @if (selectedService() === 'pickup') {
+          <h2 class="address-title">Retirada no local</h2>
+          <div class="address-card">
+            <mat-icon aria-hidden="true">storefront</mat-icon>
+            <div><strong>Casa do Frango</strong><span>Você será avisado quando o pedido estiver pronto para retirada.</span></div>
+          </div>
+        } @else {
         <h2 class="address-title">Endereço de entrega</h2>
         @if (!addresses().length) {
           <div class="address-empty">
@@ -140,19 +147,20 @@
           </div>
           @if (isAddressMenuOpen()) {
             <div class="address-options" id="address-options" role="listbox" aria-label="Endereços disponíveis">
-              @for (address of addresses(); track $index) {
-                <button class="address-option" [class.selected]="selectedAddress() === address" type="button" role="option" [attr.aria-selected]="selectedAddress() === address" (click)="selectAddress(address)">
+              @for (address of addresses(); track address.id) {
+                <button class="address-option" [class.selected]="selectedAddress()?.id === address.id" type="button" role="option" [attr.aria-selected]="selectedAddress()?.id === address.id" (click)="selectAddress(address)">
                   <span><strong>{{ address.label }}</strong><small>{{ address.street }}, {{ address.number }} · {{ address.city }} - {{ address.state }}</small></span>
-                  @if (selectedAddress() === address) { <mat-icon aria-hidden="true">check</mat-icon> }
+                  @if (selectedAddress()?.id === address.id) { <mat-icon aria-hidden="true">check</mat-icon> }
                 </button>
               }
             </div>
           }
         </div>
         }
+        }
       </section>
 
-      <aside class="finish-panel"><p class="section-kicker">Resumo da compra</p><div class="finish-line"><span>{{ itemCount() }} itens</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><div class="finish-line"><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="finish-total"><span>Total</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><button class="finish-button" type="button" [disabled]="selectedService() === 'delivery' && !selectedAddress()" (click)="finishOrder()">Finalizar compra<mat-icon aria-hidden="true">check</mat-icon></button><p class="secure-note"><mat-icon aria-hidden="true">lock</mat-icon> Compra segura</p></aside>
+      <aside class="finish-panel"><p class="section-kicker">Resumo da compra</p><div class="finish-line"><span>{{ itemCount() }} itens</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div><div class="finish-line"><span>Taxa de serviço</span><strong>Grátis</strong></div><div class="finish-total"><span>Total</span><strong>R$ {{ subtotal().toFixed(2) }}</strong></div>@if (orderError()) { <p class="order-error" role="alert">{{ orderError() }}</p> }<button class="finish-button" type="button" [disabled]="sending() || (selectedService() === 'delivery' && !selectedAddress())" (click)="finishOrder()">{{ sending() ? 'Enviando pedido...' : 'Finalizar compra' }}<mat-icon aria-hidden="true">check</mat-icon></button><p class="secure-note"><mat-icon aria-hidden="true">lock</mat-icon> Compra segura</p></aside>
     </div>
   }
 </main>

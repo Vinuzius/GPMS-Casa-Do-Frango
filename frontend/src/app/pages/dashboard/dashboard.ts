@@ -1,4 +1,4 @@
-import { Component, Signal } from '@angular/core';
+import { Component, Signal, signal } from '@angular/core';
 import { ProductCard } from '../../shared/components/product-card/product-card';
 import { ProductsService } from '../../shared/services/products.service';
 import { Product } from '../../shared/models/product.model';
@@ -22,6 +22,7 @@ interface PromoBanner {
 
 export class Dashboard {
   readonly cartNotice: Signal<string | null>;
+  readonly mostOrdered = signal<Product[]>([]);
 
   promos: PromoBanner[] = [
     {
@@ -61,6 +62,8 @@ export class Dashboard {
     private cartService: CartService,
   ) {
     this.cartNotice = this.cartService.cartNotice;
+    // Seção opcional: some se a API falhar ou ainda não houver pedidos
+    this.productsService.getMostOrdered().then((products) => this.mostOrdered.set(products)).catch(() => undefined);
     if (this.cartNotice()) window.setTimeout(() => this.cartService.clearNotice(), 5000);
   }
 
