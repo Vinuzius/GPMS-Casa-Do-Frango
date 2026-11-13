@@ -108,7 +108,9 @@ CREATE TABLE IF NOT EXISTS carrinho_itens (
 CREATE TABLE IF NOT EXISTS pedidos (
   id SERIAL PRIMARY KEY,
   usuario_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
-  endereco_id INT NOT NULL REFERENCES enderecos(id) ON DELETE RESTRICT,
+  endereco_id INT REFERENCES enderecos(id) ON DELETE SET NULL,   -- nulo na retirada
+  endereco_snapshot JSONB,   -- cópia do endereço no momento da compra
+  tipo_atendimento VARCHAR(10) NOT NULL DEFAULT 'entrega' CHECK (tipo_atendimento IN ('entrega', 'retirada')),
   forma_pagamento forma_pagamento_enum NOT NULL DEFAULT 'dinheiro',
   status status_pedido_enum NOT NULL DEFAULT 'recebido',
   total NUMERIC(10,2) NOT NULL,
@@ -117,6 +119,10 @@ CREATE TABLE IF NOT EXISTS pedidos (
 );
 
 CREATE INDEX IF NOT EXISTS idx_pedidos_status ON pedidos(status);
+CREATE INDEX IF NOT EXISTS idx_pedidos_criado_em ON pedidos(criado_em);
+
+-- Pedidos são numerados a partir de 1001
+SELECT setval('pedidos_id_seq', 1000);
 
 -- Snapshot dos itens no momento da compra
 CREATE TABLE IF NOT EXISTS pedido_itens (
@@ -125,10 +131,13 @@ CREATE TABLE IF NOT EXISTS pedido_itens (
   item_cardapio_id INT NOT NULL REFERENCES itens_cardapio(id) ON DELETE RESTRICT,
   nome_item VARCHAR(120) NOT NULL,
   categoria_item VARCHAR(60) NOT NULL,
+  tamanho_item VARCHAR(60),
   quantidade INT NOT NULL,
   preco_unitario NUMERIC(10,2) NOT NULL,
   subtotal NUMERIC(10,2) NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS idx_pedido_itens_item ON pedido_itens(item_cardapio_id);
 
 CREATE TABLE IF NOT EXISTS pedido_status_historico (
   id SERIAL PRIMARY KEY,
