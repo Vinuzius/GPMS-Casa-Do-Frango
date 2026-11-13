@@ -101,12 +101,12 @@
   background: #eee;
   color: #555;
 
-  &[data-status='RECEBIDO'] { background: #e8f0fe; color: #1a56db; }
-  &[data-status='EM_PREPARO'] { background: #fff4e0; color: #b7791f; }
-  &[data-status='CONFIRMADO'] { background: #e0f7f4; color: #48ac9e; }
-  &[data-status='SAIU_PARA_ENTREGA'] { background: #efe8fe; color: #6b3fd4; }
-  &[data-status='ENTREGUE'] { background: #e3f5e9; color: #2d8a4e; }
-  &[data-status='CANCELADO'] { background: #f5e3e3; color: #c0392b; }
+  &[data-status='recebido'] { background: #e8f0fe; color: #1a56db; }
+  &[data-status='confirmado'] { background: #e0f2f1; color: #00796b; }
+  &[data-status='em_preparo'] { background: #fff4e0; color: #b7791f; }
+  &[data-status='saiu_para_entrega'] { background: #efe8fe; color: #6b3fd4; }
+  &[data-status='entregue'] { background: #e3f5e9; color: #2d8a4e; }
+  &[data-status='cancelado'] { background: #f5e3e3; color: #c0392b; }
 }
 
 .pedido-detalhes {

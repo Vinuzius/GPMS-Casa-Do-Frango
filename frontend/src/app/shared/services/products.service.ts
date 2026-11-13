@@ -82,6 +82,14 @@ export class ProductsService {
     return this.lista().filter((p) => p.categoryIds.includes(categoryId));
   }
 
+  // Produtos mais vendidos, calculados pelo backend a partir dos pedidos
+  async getMostOrdered(limit = 8): Promise<Product[]> {
+    const produtos = await firstValueFrom(
+      this.http.get<ProdutoApi[]>(`${environment.apiUrl}/cardapio/mais-pedidos?limite=${limit}`),
+    );
+    return produtos.map(fromApi);
+  }
+
   getProductById(id: string): Product | undefined {
     return this.lista().find((p) => p.id === id);
   }

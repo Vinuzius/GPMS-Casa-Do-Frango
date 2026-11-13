@@ -4,6 +4,7 @@ import { Registro }         from './pages/registro/registro';
 import { Dashboard }        from './pages/dashboard/dashboard';
 import { Cardapio }         from './pages/cardapio/cardapio';
 import { Admin }            from './pages/admin/admin';
+import { AdminPedidos }     from './pages/admin/pedidos/admin-pedidos';
 import { ProductDetail }    from './shared/components/product-detail/product-detail';
 import { authGuard }        from './shared/guards/auth.guard';
 import { adminGuard }       from './shared/guards/admin.guard';
@@ -44,6 +45,7 @@ export const routes: Routes = [
       { path: 'historico-pedidos',    component: HistoricoPedidos },
     ],
   },
+  { path: 'admin/pedidos', component: AdminPedidos, canActivate: [adminGuard] },
   {
     path: 'admin/produtos',
     canActivate: [adminGuard],

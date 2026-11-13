@@ -1,23 +1,13 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
+import { Address, emptyAddress } from '../../shared/models/address.model';
+import { PaymentType, ServiceType } from '../../shared/models/order.model';
+import { AddressesService } from '../../shared/services/addresses.service';
 import { CartService } from '../../shared/services/cart.service';
 import { OrdersService } from '../../shared/services/orders.service';
-
-type ServiceType = 'delivery' | 'pickup';
-type PaymentType = 'pix' | 'card';
-
-interface Address {
-  label: string;
-  isPrimary: boolean;
-  street: string;
-  number: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode: string;
-}
+import { mensagemDeErro } from '../../shared/utils/http-error';
 
 @Component({
   selector: 'app-carrinho',
@@ -33,24 +23,38 @@ export class Carrinho {
   readonly cartItems;
   readonly itemCount;
   readonly subtotal;
+  readonly addresses;
   selectedService = signal<ServiceType>('delivery');
   selectedPayment = signal<PaymentType>('pix');
   checkoutStep = signal<'cart' | 'payment'>('cart');
-  readonly addresses = signal<Address[]>(this.loadAddresses());
-  selectedAddress = signal<Address | null>(this.addresses()[0] ?? null);
-  addressDraft: Address = this.emptyAddress();
+  private readonly selectedAddressId = signal<number | null>(null);
+  readonly selectedAddress = computed<Address | null>(() => {
+    const addresses = this.addresses();
+    return (
+      addresses.find((a) => a.id === this.selectedAddressId()) ??
+      addresses.find((a) => a.isPrimary) ??
+      addresses[0] ??
+      null
+    );
+  });
+  addressDraft: Address = emptyAddress();
   isAddressMenuOpen = signal(false);
+  readonly sending = signal(false);
+  readonly orderError = signal<string | null>(null);
   coupon = '';
 
   constructor(
     private cartService: CartService,
     private ordersService: OrdersService,
+    private addressesService: AddressesService,
     private router: Router,
   ) {
     this.cartNotice = this.cartService.cartNotice;
     this.cartItems = this.cartService.cartItems;
     this.itemCount = this.cartService.itemCount;
     this.subtotal = this.cartService.subtotal;
+    this.addresses = this.addressesService.addresses;
+    this.addressesService.load().catch(() => undefined);
   }
 
   selectService(service: ServiceType): void {
@@ -96,62 +100,47 @@ export class Carrinho {
   }
 
   selectAddress(address: Address): void {
-    this.selectedAddress.set(address);
+    this.selectedAddressId.set(address.id ?? null);
     this.isAddressMenuOpen.set(false);
   }
 
-  saveAddress(): void {
+  async saveAddress(): Promise<void> {
     if (!this.addressDraft.street.trim() || !this.addressDraft.number.trim()) return;
 
-    const address: Address = {
-      ...this.addressDraft,
-      label: this.addressDraft.label.trim() || 'Casa',
-      isPrimary: this.addresses().length === 0,
-    };
-    const updatedAddresses = [...this.addresses(), address];
-    this.addresses.set(updatedAddresses);
-    this.selectedAddress.set(address);
-    this.addressDraft = this.emptyAddress();
-    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(updatedAddresses));
-    this.showNotice('Endereço salvo com sucesso.');
+    try {
+      const address = await this.addressesService.create({
+        ...this.addressDraft,
+        label: this.addressDraft.label.trim() || 'Casa',
+      });
+      this.selectedAddressId.set(address.id ?? null);
+      this.addressDraft = emptyAddress();
+      this.showNotice('Endereço salvo com sucesso.');
+    } catch (erro) {
+      this.orderError.set(mensagemDeErro(erro, 'Não foi possível salvar o endereço.'));
+    }
   }
 
-  finishOrder(): void {
-    if (this.selectedService() === 'delivery' && !this.selectedAddress()) {
+  async finishOrder(): Promise<void> {
+    const delivery = this.selectedService() === 'delivery';
+    if (delivery && !this.selectedAddress()) {
       this.showNotice('Cadastre um endereço para receber seu pedido.');
       return;
     }
 
-    const order = this.ordersService.confirmOrder(this.selectedService(), this.selectedPayment());
-    if (order) this.router.navigate(['/pedidos']);
-  }
-
-  private loadAddresses(): Address[] {
-    const storedAddresses = localStorage.getItem('casa-do-frango-addresses');
-
-    if (storedAddresses) {
-      try {
-        const addresses = JSON.parse(storedAddresses) as Address[];
-        if (Array.isArray(addresses) && addresses.length) return addresses;
-      } catch {
-        localStorage.removeItem('casa-do-frango-addresses');
-      }
+    this.sending.set(true);
+    this.orderError.set(null);
+    try {
+      await this.ordersService.placeOrder(
+        this.selectedService(),
+        this.selectedPayment(),
+        delivery ? (this.selectedAddress()?.id ?? null) : null,
+      );
+      this.router.navigate(['/pedidos']);
+    } catch (erro) {
+      this.orderError.set(mensagemDeErro(erro, 'Não foi possível finalizar o pedido. Tente novamente.'));
+    } finally {
+      this.sending.set(false);
     }
-
-    return [];
-  }
-
-  private emptyAddress(): Address {
-    return {
-      label: '',
-      isPrimary: false,
-      street: '',
-      number: '',
-      neighborhood: '',
-      city: '',
-      state: '',
-      zipCode: '',
-    };
   }
 
   private showNotice(message: string): void {

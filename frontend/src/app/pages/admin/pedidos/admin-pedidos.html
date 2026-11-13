@@ -1,0 +1,123 @@
+<main class="admin-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Painel administrativo</p>
+      <h1>Acompanhamento de pedidos</h1>
+      <p class="subtitle">Atualiza sozinho a cada 30 segundos.</p>
+    </div>
+    <a class="link-button" routerLink="/admin">← Dashboard</a>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" [class.active]="tab() === 'active'" [attr.aria-selected]="tab() === 'active'" (click)="tab.set('active')">Em andamento</button>
+    <button type="button" role="tab" [class.active]="tab() === 'finished'" [attr.aria-selected]="tab() === 'finished'" (click)="tab.set('finished')">Finalizados ({{ finished().length }})</button>
+  </div>
+
+  @if (error()) {
+    <p class="error" role="alert">{{ error() }}</p>
+  }
+
+  @if (!loaded()) {
+    <p class="empty">Carregando pedidos... (se a API estava parada, pode levar até um minuto)</p>
+  } @else if (tab() === 'active') {
+    <div class="board">
+      @for (column of columns(); track column.status) {
+        <section class="column" [attr.aria-label]="column.title">
+          <h2>{{ column.title }} <span>{{ column.orders.length }}</span></h2>
+          @for (order of column.orders; track order.id) {
+            <article class="order-card">
+              <button type="button" class="card-main" (click)="open(order)">
+                <span class="card-top">
+                  <strong>#{{ order.id }}</strong>
+                  <span class="elapsed">{{ elapsed(order) }}</span>
+                </span>
+                <span class="customer">{{ order.customer?.name ?? 'Cliente' }}</span>
+                <span class="items">{{ order.itemsSummary }}</span>
+                <span class="card-bottom">
+                  <span class="service">{{ order.service === 'pickup' ? 'Retirada' : 'Entrega' }} · {{ paymentLabels[order.payment] }}</span>
+                  <strong>{{ money(order.total) }}</strong>
+                </span>
+              </button>
+              <div class="actions">
+                @if (nextStatus[order.status]; as next) {
+                  <button type="button" class="advance" [disabled]="busyId() === order.id" (click)="advance(order)">
+                    {{ busyId() === order.id ? 'Salvando...' : statusLabel(next, order.service) }}
+                  </button>
+                }
+                <button type="button" class="cancel" [disabled]="busyId() === order.id" (click)="cancel(order)">Cancelar</button>
+              </div>
+            </article>
+          } @empty {
+            <p class="empty">Nenhum pedido.</p>
+          }
+        </section>
+      }
+    </div>
+  } @else {
+    <table class="finished">
+      <thead>
+        <tr><th>Pedido</th><th>Cliente</th><th>Itens</th><th>Status</th><th class="num">Total</th><th>Feito em</th></tr>
+      </thead>
+      <tbody>
+        @for (order of finished(); track order.id) {
+          <tr (click)="open(order)">
+            <td><strong>#{{ order.id }}</strong></td>
+            <td>{{ order.customer?.name ?? '—' }}</td>
+            <td class="items">{{ order.itemsSummary }}</td>
+            <td><span [class]="'status ' + order.status">{{ statusLabel(order.status, order.service) }}</span></td>
+            <td class="num">{{ money(order.total) }}</td>
+            <td>{{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6" class="empty">Nenhum pedido finalizado.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (selected(); as order) {
+    <div class="backdrop" (click)="close()">
+      <section class="detail" role="dialog" aria-modal="true" [attr.aria-label]="'Pedido #' + order.id" (click)="$event.stopPropagation()">
+        <header>
+          <div>
+            <p class="eyebrow">Pedido #{{ order.id }}</p>
+            <h2>{{ statusLabel(order.status, order.service) }}</h2>
+          </div>
+          <button type="button" class="close" aria-label="Fechar" (click)="close()">✕</button>
+        </header>
+
+        <p class="meta">
+          {{ order.customer?.name ?? 'Cliente' }}@if (order.customer?.phone) { · {{ order.customer?.phone }} }
+          <br />{{ order.service === 'pickup' ? 'Retirada no local' : 'Entrega' }} · {{ paymentLabels[order.payment] }} · {{ order.createdAt | date: 'dd/MM/yyyy HH:mm' }}
+        </p>
+        @if (order.address) {
+          <p class="meta">{{ order.address.street }}, {{ order.address.number }} — {{ order.address.neighborhood }}, {{ order.address.city }}/{{ order.address.state }}</p>
+        }
+
+        <h3>Itens</h3>
+        <ul class="detail-items">
+          @for (item of order.items; track $index) {
+            <li><span>{{ item.quantity }}x {{ item.name }}<small>{{ item.size ? ' (' + item.size + ')' : '' }}</small></span><strong>{{ money(item.subtotal) }}</strong></li>
+          }
+          <li class="total"><span>Total</span><strong>{{ money(order.total) }}</strong></li>
+        </ul>
+
+        @if (order.history?.length) {
+          <h3>Histórico</h3>
+          <ol class="history">
+            @for (entry of order.history; track $index) {
+              <li><strong>{{ statusLabel(entry.to, order.service) }}</strong> <span>{{ entry.at | date: 'dd/MM HH:mm' }}</span></li>
+            }
+          </ol>
+        }
+
+        @if (nextStatus[order.status]; as next) {
+          <div class="actions">
+            <button type="button" class="advance" [disabled]="busyId() === order.id" (click)="advance(order)">{{ statusLabel(next, order.service) }}</button>
+            <button type="button" class="cancel" [disabled]="busyId() === order.id" (click)="cancel(order)">Cancelar pedido</button>
+          </div>
+        }
+      </section>
+    </div>
+  }
+</main>

@@ -37,14 +37,17 @@
 
     @if (isAdminMenuOpen) {
       <div class="nav-dropdown-menu">
+        <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeAdminMenu()">
+          Dashboard
+        </a>
+        <a routerLink="/admin/pedidos" routerLinkActive="active" (click)="closeAdminMenu()">
+          Painel Pedidos
+        </a>
         <a routerLink="/admin/produtos" routerLinkActive="active" (click)="closeAdminMenu()">
           Produtos
         </a>
         <a routerLink="/admin/categorias" routerLinkActive="active" (click)="closeAdminMenu()">
           Categorias
-        </a>
-        <a routerLink="/admin/pedidos" routerLinkActive="active" (click)="closeAdminMenu()">
-          Pedidos
         </a>
       </div>
     }

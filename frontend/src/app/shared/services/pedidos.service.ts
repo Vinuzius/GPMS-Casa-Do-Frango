@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import {
   PedidoCompleto, PedidoItem, PedidoStatusHistorico, StatusPedido,
 } from '../models/pedido.model';
-import { MOCK_PEDIDOS } from './pedidos.mock';
+import { MOCK_PEDIDOS } from '../mocks/pedidos.mock';
 
 // Rota Assumida baseado nas views antigas
 const PEDIDOS_URL = `${environment.apiUrl}/admin/pedidos`;
