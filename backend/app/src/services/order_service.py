@@ -118,11 +118,12 @@ class OrderService:
         self, user_id: UUID, data: OrderCreateInput
     ) -> OrderDetailOutput:
         # Criação de pedido com validação de integridade de endereço e cardápio
-        address = self.repository.get_address_by_id(data.address_id)
-        if not address:
-            raise NaoEncontrado("Endereço de entrega não encontrado.")
-        if address["usuario_id"] != user_id:
-            raise DadosInvalidos("O endereço selecionado não pertence ao usuário.")
+        address_snapshot = None
+        if data.service_type == "entrega":
+            address = self.repository.get_address_by_id(data.address_id)
+            if not address or address["usuario_id"] != user_id:
+                raise NaoEncontrado("Endereço de entrega não encontrado.")
+            address_snapshot = {k: v for k, v in address.items() if k != "usuario_id"}
 
         if not data.items:
             raise DadosInvalidos("O pedido precisa conter ao menos um item.")
@@ -137,7 +138,8 @@ class OrderService:
             if not menu_item["ativo"]:
                 raise DadosInvalidos(f"O item '{menu_item['nome']}' não está disponível.")
 
-            unit_price = Decimal(str(menu_item["preco"]))
+            size_label, size_extra = self._resolve_size(menu_item, item_input.size)
+            unit_price = Decimal(str(menu_item["preco"])) + size_extra
             subtotal = unit_price * item_input.quantity
             total += subtotal
 
@@ -146,6 +148,7 @@ class OrderService:
                     "item_menu_id": menu_item["id"],
                     "item_name": menu_item["nome"],
                     "item_category": menu_item["categoria"],
+                    "item_size": size_label,
                     "quantity": item_input.quantity,
                     "unit_price": unit_price,
                     "subtotal": subtotal,
@@ -158,6 +161,8 @@ class OrderService:
             payment_method=data.payment_method.value,
             total=total,
             status=StatusPedido.RECEBIDO.value,
+            service_type=data.service_type,
+            address_snapshot=address_snapshot,
         )
 
         for item_data in processed_items:
@@ -166,6 +171,7 @@ class OrderService:
                 item_menu_id=item_data["item_menu_id"],
                 item_name=item_data["item_name"],
                 item_category=item_data["item_category"],
+                item_size=item_data["item_size"],
                 quantity=item_data["quantity"],
                 unit_price=item_data["unit_price"],
                 subtotal=item_data["subtotal"],
@@ -181,21 +187,47 @@ class OrderService:
 
         return self.get_user_order_by_id(order_id, user_id)
 
+    @staticmethod
+    def _resolve_size(menu_item: dict, requested: str | None) -> tuple[str | None, Decimal]:
+        # Preço do tamanho vem do banco; sem escolha, vale o primeiro tamanho (padrão da tela)
+        sizes = menu_item.get("tamanhos") or []
+        if not sizes:
+            if requested:
+                raise DadosInvalidos(f"O item '{menu_item['nome']}' não possui tamanhos.")
+            return None, Decimal("0")
+        if requested is None:
+            chosen = sizes[0]
+        else:
+            chosen = next((s for s in sizes if s["rotulo"] == requested), None)
+            if chosen is None:
+                raise DadosInvalidos(
+                    f"Tamanho '{requested}' não existe para o item '{menu_item['nome']}'."
+                )
+        return chosen["rotulo"], Decimal(str(chosen["acrescimo"]))
+
+    @staticmethod
+    def _build_item(it: dict) -> OrderItemOutput:
+        return OrderItemOutput(
+            id=it["id"],
+            item_menu_id=it["item_cardapio_id"],
+            item_name=it["nome_item"],
+            item_category=it["categoria_item"],
+            item_size=it.get("tamanho_item"),
+            quantity=it["quantidade"],
+            unit_price=float(it["preco_unitario"]),
+            subtotal=float(it["subtotal"]),
+        )
+
     def _build_order_summary(
         self, row: dict, include_customer: bool = False
     ) -> OrderSummaryOutput:
         items = row.get("itens") or []
         total_items = sum(it.get("quantidade", 1) for it in items)
-        items_summary = (
-            ", ".join(
-                f"{it['nome_item']} ({it['quantidade']}x)"
-                if it.get("quantidade", 1) > 1
-                else it["nome_item"]
-                for it in items
-            )
-            if items
-            else None
-        )
+        def describe(it: dict) -> str:
+            name = f"{it['nome_item']} ({it['tamanho_item']})" if it.get("tamanho_item") else it["nome_item"]
+            return f"{name} ({it['quantidade']}x)" if it.get("quantidade", 1) > 1 else name
+
+        items_summary = ", ".join(describe(it) for it in items) if items else None
 
         customer = None
         if include_customer and row.get("cliente_nome"):
@@ -207,6 +239,7 @@ class OrderService:
 
         return OrderSummaryOutput(
             id=row["id"],
+            service_type=row.get("tipo_atendimento") or "entrega",
             payment_method=FormaPagamento(row["forma_pagamento"]),
             status=StatusPedido(row["status"]),
             total=float(row["total"]),
@@ -214,22 +247,12 @@ class OrderService:
             updated_at=row["atualizado_em"],
             total_items=total_items,
             items_summary=items_summary,
+            items=[self._build_item(it) for it in items],
             customer=customer,
         )
 
     def _build_order_detail(self, order: dict) -> OrderDetailOutput:
-        items = [
-            OrderItemOutput(
-                id=it["id"],
-                item_menu_id=it["item_cardapio_id"],
-                item_name=it["nome_item"],
-                item_category=it["categoria_item"],
-                quantity=it["quantidade"],
-                unit_price=float(it["preco_unitario"]),
-                subtotal=float(it["subtotal"]),
-            )
-            for it in (order.get("itens") or [])
-        ]
+        items = [self._build_item(it) for it in (order.get("itens") or [])]
 
         history = [
             OrderStatusHistoryOutput(
@@ -249,7 +272,7 @@ class OrderService:
         address = None
         if order.get("endereco"):
             address = OrderAddressOutput(
-                id=order["endereco"]["id"],
+                id=order["endereco"].get("id") or 0,
                 nickname=order["endereco"].get("apelido"),
                 street=order["endereco"]["logradouro"],
                 number=order["endereco"].get("numero"),
@@ -272,6 +295,7 @@ class OrderService:
             id=order["id"],
             user_id=order["usuario_id"],
             address_id=order.get("endereco_id"),
+            service_type=order.get("tipo_atendimento") or "entrega",
             payment_method=FormaPagamento(order["forma_pagamento"]),
             status=StatusPedido(order["status"]),
             total=float(order["total"]),

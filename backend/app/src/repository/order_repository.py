@@ -1,3 +1,4 @@
+import json
 from decimal import Decimal
 from uuid import UUID
 
@@ -9,6 +10,7 @@ SELECT_ORDERS_BASE = """
         p.id,
         p.usuario_id,
         p.endereco_id,
+        p.tipo_atendimento,
         p.forma_pagamento,
         p.status,
         p.total,
@@ -23,6 +25,7 @@ SELECT_ORDERS_BASE = """
                     'item_cardapio_id', pi.item_cardapio_id,
                     'nome_item', pi.nome_item,
                     'categoria_item', pi.categoria_item,
+                    'tamanho_item', pi.tamanho_item,
                     'quantidade', pi.quantidade,
                     'preco_unitario', pi.preco_unitario,
                     'subtotal', pi.subtotal
@@ -48,21 +51,8 @@ SELECT_ORDER_DETAILED = """
         p.atualizado_em,
         pr.nome AS cliente_nome,
         pr.telefone AS cliente_telefone,
-        CASE
-            WHEN e.id IS NOT NULL THEN
-                json_build_object(
-                    'id', e.id,
-                    'apelido', e.apelido,
-                    'logradouro', e.logradouro,
-                    'numero', e.numero,
-                    'complemento', e.complemento,
-                    'bairro', e.bairro,
-                    'cidade', e.cidade,
-                    'estado', e.estado,
-                    'cep', e.cep
-                )
-            ELSE NULL
-        END AS endereco,
+        p.tipo_atendimento,
+        p.endereco_snapshot AS endereco,
         COALESCE((
             SELECT json_agg(
                 json_build_object(
@@ -70,6 +60,7 @@ SELECT_ORDER_DETAILED = """
                     'item_cardapio_id', pi.item_cardapio_id,
                     'nome_item', pi.nome_item,
                     'categoria_item', pi.categoria_item,
+                    'tamanho_item', pi.tamanho_item,
                     'quantidade', pi.quantidade,
                     'preco_unitario', pi.preco_unitario,
                     'subtotal', pi.subtotal
@@ -95,7 +86,6 @@ SELECT_ORDER_DETAILED = """
         ), '[]'::json) AS historico
     FROM pedidos p
     JOIN profiles pr ON pr.id = p.usuario_id
-    LEFT JOIN enderecos e ON e.id = p.endereco_id
     WHERE p.id = :id
 """
 
@@ -160,21 +150,27 @@ class OrderRepository:
     def create_order(
         self,
         user_id: UUID,
-        address_id: int,
+        address_id: int | None,
         payment_method: str,
         total: Decimal,
         status: str = "recebido",
+        service_type: str = "entrega",
+        address_snapshot: dict | None = None,
     ) -> int:
-        # Insere um novo pedido
+        # Insere um novo pedido, guardando uma cópia do endereço da entrega
         return self.db.execute(
             text(
-                "INSERT INTO pedidos (usuario_id, endereco_id, forma_pagamento, total, status) "
-                "VALUES (:user_id, :address_id, :payment_method, :total, :status) "
+                "INSERT INTO pedidos (usuario_id, endereco_id, endereco_snapshot, tipo_atendimento, "
+                "forma_pagamento, total, status) "
+                "VALUES (:user_id, :address_id, CAST(:address_snapshot AS jsonb), :service_type, "
+                ":payment_method, :total, :status) "
                 "RETURNING id"
             ),
             {
                 "user_id": user_id,
                 "address_id": address_id,
+                "address_snapshot": json.dumps(address_snapshot) if address_snapshot else None,
+                "service_type": service_type,
                 "payment_method": payment_method,
                 "total": total,
                 "status": status,
@@ -190,14 +186,15 @@ class OrderRepository:
         quantity: int,
         unit_price: Decimal,
         subtotal: Decimal,
+        item_size: str | None = None,
     ) -> int:
         # Insere item snapshot no momento da compra
         return self.db.execute(
             text(
                 "INSERT INTO pedido_itens (pedido_id, item_cardapio_id, nome_item, "
-                "categoria_item, quantidade, preco_unitario, subtotal) "
+                "categoria_item, tamanho_item, quantidade, preco_unitario, subtotal) "
                 "VALUES (:order_id, :item_menu_id, :item_name, :item_category, "
-                ":quantity, :unit_price, :subtotal) "
+                ":item_size, :quantity, :unit_price, :subtotal) "
                 "RETURNING id"
             ),
             {
@@ -205,6 +202,7 @@ class OrderRepository:
                 "item_menu_id": item_menu_id,
                 "item_name": item_name,
                 "item_category": item_category,
+                "item_size": item_size,
                 "quantity": quantity,
                 "unit_price": unit_price,
                 "subtotal": subtotal,
@@ -267,7 +265,15 @@ class OrderRepository:
                         WHERE ic.item_id = i.id
                         ORDER BY c.ordem, c.id
                         LIMIT 1
-                    ), 'Geral') AS categoria
+                    ), 'Geral') AS categoria,
+                    COALESCE((
+                        SELECT json_agg(
+                            json_build_object('rotulo', t.rotulo, 'acrescimo', t.acrescimo)
+                            ORDER BY t.ordem, t.id
+                        )
+                        FROM item_tamanhos t
+                        WHERE t.item_id = i.id
+                    ), '[]'::json) AS tamanhos
                 FROM itens_cardapio i
                 WHERE i.id = :id
                 """
