@@ -81,6 +81,39 @@
       </div>
     </section>
 
+    <!-- Seção Mais pedidos (ranking calculado pelo backend) -->
+    @if (mostOrdered().length) {
+    <section class="menu-section">
+      <div class="section-header">
+        <h3 class="section-title">Mais pedidos</h3>
+      </div>
+
+      <div class="carousel-wrapper">
+        <button
+          type="button"
+          class="carousel-arrow carousel-arrow-left"
+          aria-label="Mover mais pedidos para a esquerda"
+          (click)="moveCarousel(-1, mostOrderedCarousel)">
+          <span class="arrow-icon">‹</span>
+        </button>
+
+        <div class="product-grid" #mostOrderedCarousel>
+          @for (product of mostOrdered(); track product.id) {
+            <app-product-card [product]="product"></app-product-card>
+          }
+        </div>
+
+        <button
+          type="button"
+          class="carousel-arrow carousel-arrow-right"
+          aria-label="Mover mais pedidos para a direita"
+          (click)="moveCarousel(1, mostOrderedCarousel)">
+          <span class="arrow-icon">›</span>
+        </button>
+      </div>
+    </section>
+    }
+
     <!-- Seção Refeições -->
     <section class="menu-section">
       <div class="section-header">

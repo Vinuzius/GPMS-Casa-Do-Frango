@@ -104,3 +104,5 @@
 @media (max-width: 520px) { .checkout-address-form { grid-template-columns: 1fr; } .checkout-address-form label:first-child, .save-checkout-address-button { grid-column: auto; } }
 @media (max-width: 700px) { .cart-notice { top: calc(var(--topbar-height, 90px) + 8px); right: 18px; width: calc(100vw - 36px); } }
 @keyframes notice-enter { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.order-error { margin: 12px 0 0; color: #c0392b; font-size: 0.85rem; font-weight: 700; }

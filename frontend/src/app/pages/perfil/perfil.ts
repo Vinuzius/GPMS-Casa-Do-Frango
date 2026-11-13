@@ -3,19 +3,11 @@ import { ActivatedRoute } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-import';
 import { MATERIAL_IMPORTS } from '../../shared/material-imports';
 import { CartService } from '../../shared/services/cart.service';
+import { Address, emptyAddress } from '../../shared/models/address.model';
+import { AddressesService } from '../../shared/services/addresses.service';
+import { mensagemDeErro } from '../../shared/utils/http-error';
 
 type ProfileSection = 'details' | 'addresses' | 'password';
-
-interface Address {
-  label: string;
-  isPrimary: boolean;
-  street: string;
-  number: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  zipCode: string;
-}
 
 interface UserProfile {
   name: string;
@@ -40,10 +32,10 @@ interface PasswordDraft {
 export class Perfil implements OnInit {
   activeSection = signal<ProfileSection>('details');
   profile = signal<UserProfile>(this.loadProfile());
-  addresses = signal<Address[]>(this.loadAddresses());
+  readonly addresses: Signal<Address[]>;
   isAddressFormOpen = signal(false);
   editingAddressIndex = signal<number | null>(null);
-  addressDraft: Address = this.emptyAddress();
+  addressDraft: Address = emptyAddress();
   profileDraft: UserProfile = { ...this.profile() };
   passwordDraft: PasswordDraft = this.emptyPasswordDraft();
   readonly cartNotice: Signal<string | null>;
@@ -51,8 +43,11 @@ export class Perfil implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cartService: CartService,
+    private addressesService: AddressesService,
   ) {
     this.cartNotice = this.cartService.cartNotice;
+    this.addresses = this.addressesService.addresses;
+    this.addressesService.load().catch(() => this.showNotice('Não foi possível carregar seus endereços.'));
   }
 
   ngOnInit(): void {
@@ -138,7 +133,7 @@ export class Perfil implements OnInit {
   }
 
   addAddress(): void {
-    this.addressDraft = this.emptyAddress();
+    this.addressDraft = emptyAddress();
     this.editingAddressIndex.set(null);
     this.isAddressFormOpen.set(true);
   }
@@ -147,53 +142,54 @@ export class Perfil implements OnInit {
     this.isAddressFormOpen.set(false);
   }
 
-  deleteAddress(): void {
+  async deleteAddress(): Promise<void> {
     const index = this.editingAddressIndex();
     if (index === null) return;
 
     const address = this.addresses()[index];
-    if (!address || !window.confirm(`Excluir o endereço "${address.label || 'selecionado'}"?`)) return;
+    if (!address?.id || !window.confirm(`Excluir o endereço "${address.label || 'selecionado'}"?`)) return;
 
-    this.addresses.update((addresses) => {
-      const remainingAddresses = addresses.filter((_, addressIndex) => addressIndex !== index);
-      if (address?.isPrimary && remainingAddresses.length > 0) {
-        remainingAddresses[0] = { ...remainingAddresses[0], isPrimary: true };
-      }
-      return remainingAddresses;
-    });
-    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
-    this.isAddressFormOpen.set(false);
-    this.showNotice('Endereço excluído com sucesso.');
+    try {
+      await this.addressesService.remove(address.id);
+      this.isAddressFormOpen.set(false);
+      this.showNotice('Endereço excluído com sucesso.');
+    } catch (erro) {
+      this.showNotice(mensagemDeErro(erro, 'Não foi possível excluir o endereço.'));
+    }
   }
 
-  saveAddress(): void {
+  async saveAddress(): Promise<void> {
     if (!this.addressDraft.street.trim() || !this.addressDraft.number.trim()) return;
 
-    const newAddress: Address = {
+    const address: Address = {
       ...this.addressDraft,
       label: this.addressDraft.label.trim() || `Endereço ${this.addresses().length + 1}`,
     };
-    const index = this.editingAddressIndex();
-    this.addresses.update((addresses) => {
-      if (index === null) return [...addresses, newAddress];
-
-      return addresses.map((address, addressIndex) => addressIndex === index ? newAddress : address);
-    });
-    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
-    this.isAddressFormOpen.set(false);
-    this.showNotice(index === null ? 'Endereço salvo com sucesso.' : 'Endereço atualizado com sucesso.');
+    const editing = this.editingAddressIndex() !== null;
+    try {
+      if (editing) {
+        await this.addressesService.update(address);
+      } else {
+        await this.addressesService.create(address);
+      }
+      this.isAddressFormOpen.set(false);
+      this.showNotice(editing ? 'Endereço atualizado com sucesso.' : 'Endereço salvo com sucesso.');
+    } catch (erro) {
+      this.showNotice(mensagemDeErro(erro, 'Não foi possível salvar o endereço.'));
+    }
   }
 
-  makeAddressPrimary(index: number): void {
-    if (this.addresses()[index]?.isPrimary) return;
+  async makeAddressPrimary(index: number): Promise<void> {
+    const address = this.addresses()[index];
+    if (!address?.id || address.isPrimary) return;
 
-    this.addresses.update((addresses) => addresses.map((address, addressIndex) => ({
-      ...address,
-      isPrimary: addressIndex === index,
-    })));
-    localStorage.setItem('casa-do-frango-addresses', JSON.stringify(this.addresses()));
-    this.isAddressFormOpen.set(false);
-    this.showNotice('Endereço principal atualizado com sucesso.');
+    try {
+      await this.addressesService.makePrimary(address.id);
+      this.isAddressFormOpen.set(false);
+      this.showNotice('Endereço principal atualizado com sucesso.');
+    } catch (erro) {
+      this.showNotice(mensagemDeErro(erro, 'Não foi possível atualizar o endereço principal.'));
+    }
   }
 
   dismissCartNotice(): void {
@@ -203,10 +199,6 @@ export class Perfil implements OnInit {
   @HostListener('document:keydown.escape')
   closeAddressDialogWithEscape(): void {
     if (this.isAddressFormOpen()) this.cancelAddressForm();
-  }
-
-  private emptyAddress(): Address {
-    return { label: '', isPrimary: false, street: '', number: '', neighborhood: '', city: '', state: '', zipCode: '' };
   }
 
   private emptyPasswordDraft(): PasswordDraft {
@@ -241,22 +233,5 @@ export class Perfil implements OnInit {
     window.setTimeout(() => {
       if (this.cartNotice() === message) this.cartService.clearNotice();
     }, 5000);
-  }
-
-  private loadAddresses(): Address[] {
-    const storedAddresses = localStorage.getItem('casa-do-frango-addresses');
-    if (storedAddresses) {
-      try {
-        const parsedAddresses = JSON.parse(storedAddresses) as Partial<Address>[];
-        return parsedAddresses.map((address, index) => ({
-          ...address,
-          isPrimary: address.isPrimary ?? index === 0,
-        })) as Address[];
-      } catch {
-        localStorage.removeItem('casa-do-frango-addresses');
-      }
-    }
-
-    return [{ label: 'Casa', isPrimary: true, street: 'Rua das Flores', number: '123', neighborhood: 'Centro', city: 'São Paulo', state: 'SP', zipCode: '01000-000' }];
   }
 }

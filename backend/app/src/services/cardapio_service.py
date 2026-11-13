@@ -65,6 +65,9 @@ class CardapioService:
     def listar_produtos(self) -> list[dict]:
         return self.repository.listar_produtos()
 
+    def mais_pedidos(self, limite: int) -> list[dict]:
+        return self.repository.mais_pedidos(limite)
+
     def buscar_produto(self, produto_id: int) -> dict:
         produto = self.repository.buscar_produto(produto_id)
         if produto is None:

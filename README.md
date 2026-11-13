@@ -80,6 +80,17 @@ O projeto conta com uma arquitetura separada em **Frontend (Angular)** e **Backe
    ```
    O backend estará disponível em `http://localhost:8000` (documentação Swagger interativa em `http://localhost:8000/docs`).
 
+#### Banco de dados: migrações e dados de exemplo
+
+> **Atenção:** desenvolvimento e o site publicado usam o **mesmo** banco Supabase. Tudo que for criado localmente aparece em produção.
+
+- As migrações ficam em `backend/migrations/` e são aplicadas à mão, em ordem, no SQL Editor da Supabase. Todas podem ser executadas mais de uma vez sem efeito colateral.
+- Pedidos de demonstração para o dashboard (cria ~40 pedidos dos últimos 30 dias na conta informada):
+  ```bash
+  python -m seeds.seed_pedidos email-do-cliente@exemplo.com
+  python -m seeds.seed_pedidos email-do-cliente@exemplo.com --limpar   # apaga todos os pedidos dessa conta
+  ```
+
 ---
 
 ### 2. Configurando e Rodando o Frontend

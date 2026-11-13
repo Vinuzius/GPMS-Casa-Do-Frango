@@ -13,15 +13,29 @@ from app.src.schemas.cardapio import (
     ProdutoEntrada,
     ProdutoSaida,
 )
+from app.src.schemas.dashboard import DashboardSaida, Periodo
 from app.src.schemas.order import (
     OrderDetailOutput,
     OrderSummaryOutput,
     OrderUpdateStatusInput,
 )
 from app.src.services.cardapio_service import CardapioService
+from app.src.services.dashboard_service import DashboardService
 from app.src.services.order_service import OrderService
 
 router = APIRouter(dependencies=[Depends(require_admin)])
+
+
+# --- dashboard ---
+
+
+@router.get("/dashboard", response_model=DashboardSaida)
+def dashboard(
+    periodo: Periodo = Query(default="30d", description="hoje, 7d, 30d ou tudo"),
+    db: Session = Depends(get_db),
+):
+    """Indicadores, rankings e últimos pedidos do painel administrativo."""
+    return DashboardService(db).resumo(periodo)
 
 
 # --- categorias ---
