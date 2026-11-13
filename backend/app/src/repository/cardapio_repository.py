@@ -72,6 +72,28 @@ class CardapioRepository:
         linhas = self.db.execute(text(SELECT_PRODUTOS + " ORDER BY i.id")).mappings()
         return [dict(linha) for linha in linhas]
 
+    def mais_pedidos(self, limite: int) -> list[dict]:
+        """Produtos ativos mais vendidos, sem contar pedidos cancelados."""
+        linhas = self.db.execute(
+            text(
+                SELECT_PRODUTOS
+                + """
+                JOIN (
+                    SELECT pi.item_cardapio_id, SUM(pi.quantidade) AS quantidade
+                    FROM pedido_itens pi
+                    JOIN pedidos p ON p.id = pi.pedido_id
+                    WHERE p.status <> 'cancelado'
+                    GROUP BY pi.item_cardapio_id
+                ) vendas ON vendas.item_cardapio_id = i.id
+                WHERE i.ativo
+                ORDER BY vendas.quantidade DESC, i.id
+                LIMIT :limite
+                """
+            ),
+            {"limite": limite},
+        ).mappings()
+        return [dict(linha) for linha in linhas]
+
     def buscar_produto(self, produto_id: int) -> dict | None:
         linha = self.db.execute(
             text(SELECT_PRODUTOS + " WHERE i.id = :id"), {"id": produto_id}

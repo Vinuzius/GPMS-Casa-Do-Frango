@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.src.core.database import get_db
@@ -16,6 +16,11 @@ def listar_categorias(db: Session = Depends(get_db)):
 @router.get("/produtos", response_model=list[ProdutoSaida])
 def listar_produtos(db: Session = Depends(get_db)):
     return CardapioService(db).listar_produtos()
+
+
+@router.get("/mais-pedidos", response_model=list[ProdutoSaida])
+def mais_pedidos(limite: int = Query(default=8, ge=1, le=20), db: Session = Depends(get_db)):
+    return CardapioService(db).mais_pedidos(limite)
 
 
 @router.get("/produtos/{produto_id}", response_model=ProdutoSaida)
