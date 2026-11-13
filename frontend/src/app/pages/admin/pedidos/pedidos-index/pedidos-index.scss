@@ -10,25 +10,44 @@
 }
 
 .admin-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   margin: 30px 0 20px;
-  h2 { color: $text-dark; }
+
+  h2 { color: $text-dark; margin: 0; }
+}
+
+.badge-exemplo {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #fff4e0;
+  color: #b7791f;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .status-filter {
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
   margin-bottom: 25px;
+
+  &::-webkit-scrollbar { display: none; }
 }
 
 .filter-pill {
-  padding: 8px 18px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  padding: 8px 14px;
   border-radius: 25px;
   border: 2px solid transparent;
   background: $white;
   color: $text-dark;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   transition: 0.2s;
 
@@ -84,6 +103,7 @@
 
   &[data-status='RECEBIDO'] { background: #e8f0fe; color: #1a56db; }
   &[data-status='EM_PREPARO'] { background: #fff4e0; color: #b7791f; }
+  &[data-status='CONFIRMADO'] { background: #e0f7f4; color: #48ac9e; }
   &[data-status='SAIU_PARA_ENTREGA'] { background: #efe8fe; color: #6b3fd4; }
   &[data-status='ENTREGUE'] { background: #e3f5e9; color: #2d8a4e; }
   &[data-status='CANCELADO'] { background: #f5e3e3; color: #c0392b; }
@@ -137,4 +157,100 @@
 @media (max-width: 600px) {
   .admin-page { padding-left: 20px; padding-right: 20px; }
   .pedido-header { grid-template-columns: 1fr auto; row-gap: 6px; }
+}
+
+.search-bar {
+  margin-bottom: 16px;
+
+  input {
+    width: 100%;
+    max-width: 360px;
+    padding: 10px 15px;
+    border: 2px solid #eadbd6;
+    border-radius: 10px;
+    font: inherit;
+    outline: none;
+
+    &:focus { border-color: $primary-color; }
+  }
+}
+
+.confirmacao {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #fff7f4;
+  border: 2px solid #f5c1b5;
+  border-radius: 10px;
+  font-size: 14px;
+
+  span { flex: 1 1 220px; }
+
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .btn-confirmar { background: $primary-color; color: $white; }
+  .btn-cancelar { background: $bg-color; color: $text-dark; }
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 25px;
+  flex-wrap: wrap;
+
+  button {
+    padding: 8px 14px;
+    border: 2px solid #eadbd6;
+    border-radius: 8px;
+    background: $white;
+    color: $text-dark;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover:not(:disabled) { border-color: $primary-color; }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
+  }
+
+  .page-btn.active {
+    background: $primary-color;
+    border-color: $primary-color;
+    color: $white;
+  }
+
+  .confirmacao {
+    .erro {
+      flex-basis: 100%;
+      margin: 0;
+      color: #c0392b;
+      font-weight: 600;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+  }
+
+  .btn-retry {
+    margin-top: 12px;
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    background: $primary-color;
+    color: $white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  
 }

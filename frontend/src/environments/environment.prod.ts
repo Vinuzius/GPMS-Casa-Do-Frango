@@ -3,4 +3,5 @@ export const environment = {
   supabaseUrl: 'https://rxmkfnyqcllvzahhdbpp.supabase.co',
   supabasePublishableKey: 'sb_publishable_aNcQV7YBpIWrOLFPfWU1DQ_Q5kzcxlh',
   apiUrl: 'https://casa-do-frango-api.onrender.com',
+  pedidosMock: true, // true = usa dados de exemplo se a API falhar ou vier sem pedidos
 };

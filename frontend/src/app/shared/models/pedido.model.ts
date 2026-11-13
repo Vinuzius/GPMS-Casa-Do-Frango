@@ -1,9 +1,10 @@
-// ⚠️ Os valores dos dois types abaixo precisam ser idênticos aos de enums.py
-export type StatusPedido = 'RECEBIDO' | 'EM_PREPARO' | 'SAIU_PARA_ENTREGA' | 'ENTREGUE' | 'CANCELADO';
+// checar enum.py
+export type StatusPedido = 'RECEBIDO' | 'CONFIRMADO' | 'EM_PREPARO' | 'SAIU_PARA_ENTREGA' | 'ENTREGUE' | 'CANCELADO';
 export type FormaPagamento = 'DINHEIRO' | 'PIX' | 'CARTAO';
 
 export const STATUS_LABEL: Record<StatusPedido, string> = {
   RECEBIDO: 'Recebido',
+  CONFIRMADO: 'Confirmado',
   EM_PREPARO: 'Em preparo',
   SAIU_PARA_ENTREGA: 'Saiu para entrega',
   ENTREGUE: 'Entregue',

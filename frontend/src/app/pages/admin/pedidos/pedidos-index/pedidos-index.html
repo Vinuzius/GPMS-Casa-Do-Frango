@@ -1,22 +1,33 @@
-<!-- pedidos-index.html -->
 <div class="admin-page">
   <div class="admin-header">
     <h2>Pedidos</h2>
+    @if (usandoMock()) {
+      <span class="badge-exemplo">Dados de exemplo · {{ motivoMock() }}</span>
+    }
+  </div>
+
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Buscar por nº do pedido ou item..."
+      #busca
+      (input)="buscar(busca.value)"
+    />
   </div>
 
   <div class="status-filter">
-    <button type="button" class="filter-pill" [class.active]="filtroStatus() === 'TODOS'" (click)="filtroStatus.set('TODOS')">
+    <button type="button" class="filter-pill" [class.active]="filtroStatus() === 'TODOS'" (click)="filtrarStatus('TODOS')">
       Todos
     </button>
     @for (s of statusList; track s) {
-      <button type="button" class="filter-pill" [class.active]="filtroStatus() === s" (click)="filtroStatus.set(s)">
+      <button type="button" class="filter-pill" [class.active]="filtroStatus() === s" (click)="filtrarStatus(s)">
         {{ statusLabel[s] }}
       </button>
     }
   </div>
 
   <div class="pedidos-list">
-    @for (pedido of pedidosFiltrados(); track pedido.id) {
+    @for (pedido of pedidosDaPagina(); track pedido.id) {
       <article class="pedido-card">
         <button type="button" class="pedido-header" [attr.aria-expanded]="expandidoId() === pedido.id" (click)="toggle(pedido.id)">
           <span class="pedido-id">#{{ pedido.id }}</span>
@@ -42,12 +53,32 @@
 
             <div class="status-update">
               <label [for]="'status-' + pedido.id">Atualizar status</label>
-              <select [id]="'status-' + pedido.id" #sel (change)="mudarStatus(pedido, sel.value)">
+              <select [id]="'status-' + pedido.id" #sel (change)="escolherStatus(pedido, sel.value)">
                 @for (s of statusList; track s) {
-                  <option [value]="s" [selected]="s === pedido.status">{{ statusLabel[s] }}</option>
+                  <option [value]="s" [selected]="s === (statusPendente() ?? pedido.status)">
+                    {{ statusLabel[s] }}
+                  </option>
                 }
               </select>
             </div>
+
+            @if (statusPendente(); as novo) {
+              <div class="confirmacao" role="alert">
+                <span>
+                  Alterar de <strong>{{ statusLabel[pedido.status] }}</strong>
+                  para <strong>{{ statusLabel[novo] }}</strong>?
+                </span>
+                <button type="button" class="btn-confirmar" [disabled]="salvandoStatus()" (click)="confirmarStatus(pedido)">
+                  {{ salvandoStatus() ? 'Salvando...' : 'Confirmar' }}
+                </button>
+                <button type="button" class="btn-cancelar" [disabled]="salvandoStatus()" (click)="cancelarStatus()">
+                  Cancelar
+                </button>
+                @if (erroStatus(); as erro) {
+                  <p class="erro">{{ erro }}</p>
+                }
+              </div>
+            }
 
             <h4>Histórico de status</h4>
             <ol class="historico-list">
@@ -62,7 +93,34 @@
         }
       </article>
     } @empty {
-      <div class="empty-state">Nenhum pedido encontrado.</div>
+      <div class="empty-state">
+        @if (carregando()) {
+          <p>Carregando pedidos...</p>
+        } @else if (falhou()) {
+          <p>Não foi possível carregar os pedidos.</p>
+          <button type="button" class="btn-retry" (click)="recarregar()">Tentar novamente</button>
+        } @else {
+          <p>Nenhum pedido encontrado.</p>
+        }
+      </div>
     }
   </div>
+
+  @if (pedidosFiltrados().length > 0) {
+    <div class="pagination">
+      <button type="button" (click)="irParaPagina(paginaAtual() - 1)" [disabled]="paginaAtual() === 1">
+        ‹ Anterior
+      </button>
+
+      @for (n of numerosPagina(); track n) {
+        <button type="button" class="page-btn" [class.active]="n === paginaAtual()" (click)="irParaPagina(n)">
+          {{ n }}
+        </button>
+      }
+
+      <button type="button" (click)="irParaPagina(paginaAtual() + 1)" [disabled]="paginaAtual() === totalPaginas()">
+        Próximo ›
+      </button>
+    </div>
+  }
 </div>

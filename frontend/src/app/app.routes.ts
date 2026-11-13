@@ -31,7 +31,7 @@ export const routes: Routes = [
   // Rotas protegidas: um guard só para o grupo
   {
     path: '',
-    //canActivate: [authGuard],
+    canActivate: [authGuard],
     children: [
       { path: 'dashboard',            component: Dashboard },
       { path: 'cardapio',             component: Cardapio },
@@ -46,7 +46,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/produtos',
-    //canActivate: [adminGuard],
+    canActivate: [adminGuard],
     resolve: { cardapio: cardapioResolver },
     children: [
       { path: '',                 component: ProdutosIndex },
@@ -68,7 +68,7 @@ export const routes: Routes = [
 
   { path: 'admin/pedidos', 
     component: PedidosIndex, 
-    //canActivate: [authGuard] 
+    canActivate: [authGuard] 
   },
   { path: '**', redirectTo: '/login' } // Rota para páginas não encontradas
 ];
